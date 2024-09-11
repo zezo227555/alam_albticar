@@ -31,6 +31,7 @@
                     <td>{{ $employee->salary }}</td>
                     <td>{{ $employee->section->name }}</td>
                     <td>
+                        <a href="{{ route('employee.salary_create', $employee->id) }}" class="btn btn-success">صرف مرتب</a>
                         <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-info">تعديل</a>
                         <form action="{{ route('employee.destroy', $employee->id) }}" method="post" class="d-inline form_delete">
                             @csrf

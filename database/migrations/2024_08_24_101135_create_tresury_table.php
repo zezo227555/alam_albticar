@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('type');
             $table->foreignId('season_id')->nullable()->constrained('season');
             $table->foreignId('student_id')->nullable()->constrained('student');
+            $table->foreignId('student_id')->nullable()->constrained('employee');
             $table->float('value');
             $table->timestamps();
         });

@@ -19,7 +19,6 @@ Route::get('dashboard', [AuthController::class,'main'])->name('main');
 Route::resource('users', UserController::class);
 Route::resource('section', SectionController::class);
 Route::resource('student', StudentController::class);
-Route::resource('employee', EmployeeController::class);
 Route::resource('treasury', TreasuryController::class);
 
 // الاعدادات
@@ -49,3 +48,7 @@ Route::get('treasury/season_and_section/student_enroll', [TreasuryController::cl
 Route::post('treasury/season_and_section/create_student_inroll', [TreasuryController::class, 'create_student_inroll'])->name('tresury.create_student_inroll');
 Route::post('treasury/season_and_section/update_student_inroll', [TreasuryController::class, 'update_student_inroll'])->name('tresury.update_student_inroll');
 Route::get('treasury/season_and_section/update_student_inroll_receipt', [TreasuryController::class, 'student_enroll_receipt'])->name('treasury.student_enroll_receipt');
+
+// شؤون الموظفين
+Route::resource('employee', EmployeeController::class);
+Route::get('employee/salary_create/{employee_id}', [EmployeeController::class, 'salary_create'])->name('employee.salary_create');

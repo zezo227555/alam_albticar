@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Season;
 use App\Models\Section;
+use App\Models\Treasury;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -46,14 +48,6 @@ class EmployeeController extends Controller
         ]);
 
         return redirect()->back()->with('success','تمت الاضافة بنجاح');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Employee $employee)
-    {
-        //
     }
 
     /**
@@ -112,5 +106,23 @@ class EmployeeController extends Controller
     {
         $employee->delete();
         return redirect()->back()->with('success','تمت الحذف بنجاح');
+    }
+
+    public function salary_create($employee_id)
+    {
+        $seasons = Season::all();
+        $employee = Employee::find($employee_id);
+        return view('employee.salary_create', ['employee' => $employee, 'seasons' => $seasons]);
+    }
+
+    public function salary_store(Request $request)
+    {
+        $request->validate([
+            'ammount' => 'required|min:0',
+            'season' => 'required',
+            'employee_id' => 'required',
+        ]);
+
+        $receipt = Treasury::where('')
     }
 }
