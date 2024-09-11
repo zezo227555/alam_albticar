@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
@@ -11,11 +12,13 @@ use App\Http\Controllers\TreasuryController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// الصلاحيات
 Route::get("login", [AuthController::class, "loginForm"])->name('loginForm');
 Route::post("loging", [AuthController::class,"login"])->name('loging');
 Route::get("logout", [AuthController::class,"logout"])->name('logout');
 Route::get('dashboard', [AuthController::class,'main'])->name('main');
 
+// موارد النظام
 Route::resource('users', UserController::class);
 Route::resource('section', SectionController::class);
 Route::resource('student', StudentController::class);
@@ -52,3 +55,9 @@ Route::get('treasury/season_and_section/update_student_inroll_receipt', [Treasur
 // شؤون الموظفين
 Route::resource('employee', EmployeeController::class);
 Route::get('employee/salary_create/{employee_id}', [EmployeeController::class, 'salary_create'])->name('employee.salary_create');
+Route::post('employee/salary_store', [EmployeeController::class, 'salary_store'])->name('employee.salary_store');
+Route::post('employee/salary_update', [EmployeeController::class, 'salary_update'])->name('employee.salary_update');
+
+// التقارير
+Route::get('reports/students_inroll_form', [ReportController::class, 'students_inroll_form'])->name('reports.students_inroll_form');
+Route::get('reports/students_inroll', [ReportController::class, 'students_inroll'])->name('reports.students_inroll');

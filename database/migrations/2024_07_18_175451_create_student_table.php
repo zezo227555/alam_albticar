@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nationality', 20);
             $table->string('gender', 15);
             $table->integer('student_semester')->default(1);
-            $table->foreignId('section_id')->nullable()->constrained('section');
+            $table->foreignId('section_id')->constrained('section');
             $table->string('attendance_type', 10);
             $table->timestamps();
         });

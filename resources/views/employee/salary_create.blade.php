@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-<form action="" method="post">
+<form action="{{ route('employee.salary_store') }}" method="post">
+    @csrf
     <div class="card card-primary">
         <div class="card-header">
         <h3 class="card-title">صرف مرتب الموظف {{ $employee->name }}</h3>
@@ -19,7 +20,7 @@
                     <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                     </div>
-                    <input type="number" class="form-control" value="{{ $employee->salary }}">
+                    <input type="number" name="ammount" class="form-control" value="{{ $employee->salary }}">
                     <div class="input-group-append">
                     <span class="input-group-text">.00</span>
                     </div>

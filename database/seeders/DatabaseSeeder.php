@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Employee;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
@@ -32,7 +34,33 @@ class DatabaseSeeder extends Seeder
 
         Section::create([
             'name' => 'حاسوب',
-            'level' => 'عالي'
+            'level' => 'عالي',
+        ]);
+
+        Course::create([
+            'name' => 'اساسيات برمجة',
+            'semester' => 1,
+            'section_id' => 1,
+        ]);
+
+        Course::create([
+            'name' => 'رياضيات',
+            'semester' => 1,
+            'section_id' => 1,
+        ]);
+
+        Employee::create([
+            'name' => 'employee',
+            'type' => 'موظف اداري',
+            'salary' => '3000',
+            'section_id' => 1,
+        ]);
+
+        Employee::create([
+            'name' => 'teatcher',
+            'type' => 'عضو هيئة تدريس',
+            'salary' => '2500',
+            'section_id' => 1,
         ]);
 
         for($i = 0; $i <= 100; $i++){
@@ -43,7 +71,8 @@ class DatabaseSeeder extends Seeder
                 'nationality' => 'ليبي',
                 'gender' => 'ذكر',
                 'section_id' => 1,
-                'attendance_type' => 'نظامي'
+                'season_id' => 1,
+                'attendance_type' => 'نظامي',
             ]);
         }
     }

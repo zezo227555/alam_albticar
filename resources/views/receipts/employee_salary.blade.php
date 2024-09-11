@@ -47,8 +47,8 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="text-muted">
-                                    <h5 class="font-size-16 mb-3">ايصال صرف مرتبات عن الفصل {{ $season->name }} {{ $season->created_at->format('Y') }} للموظف/ة {{ $employee->name }}</h5>
-                                    <h5 class="font-size-15 mb-2">{{ $receipt->student->name }}</h5>
+                                    <h5 class="font-size-16 mb-3">ايصال صرف مرتبات عن الفصل الدراسي {{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }} للموظف/ة</h5>
+                                    <h5 class="font-size-15 mb-2">{{ $receipt->employee->name }}</h5>
                                     <p class="mb-1">4068 Post Avenue Newfolden, MN 56738</p>
                                     <p class="mb-1">PrestonMiller@armyspy.com</p>
                                     <p>001-234-5678</p>
@@ -87,7 +87,7 @@
                                         <tr>
                                             <td>{{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }}</td>
                                             <td><span class="btn btn-success">{{ $receipt->value }} دل</span></td>
-                                            <td><span class="btn btn-danger">{{ $employee->salary - $receipt->value }} دل</span></td>
+                                            <td><span class="btn btn-danger">{{ $receipt->employee->salary - $receipt->value }} دل</span></td>
                                         </tr>
                                     </tbody><!-- end tbody -->
                                 </table><!-- end table -->
@@ -95,6 +95,7 @@
                             <div class="d-print-none mt-4">
                                 <div class="float-end">
                                     <a href="javascript:window.print()" class="btn btn-primary me-1 w-25">طباعة <i class="fa fa-print"></i></a>
+                                    <a href="{{ route('employee.index') }}" class="btn btn-secondary w-25 mx-3">رجوع</a>
                                 </div>
                             </div>
                         </div>

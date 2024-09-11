@@ -15,6 +15,7 @@ class Student extends Model
 
     protected $fillable = [
         'name', 'nationla_id', 'phone', 'nationality', 'section_id', 'attendance_type', 'gender', 'student_semester'
+        ,'season_id',
     ];
 
     public function section() : BelongsTo
@@ -30,5 +31,10 @@ class Student extends Model
     public function treasury() : HasMany
     {
         return $this->hasMany(Treasury::class);
+    }
+
+    public function season() : BelongsTo
+    {
+        return $this->belongsTo(Season::class);
     }
 }

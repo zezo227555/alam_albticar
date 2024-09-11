@@ -16,7 +16,9 @@ class EmployeeController extends Controller
     public function index()
     {
         $employee = Employee::all();
-        return view('employee.employee', ['employee' => $employee]);
+        $season = Season::where('active', '=', 1)->first();
+        $receipts = Treasury::where('type', '=', 'مرتبات')->where('season_id', '=', $season->id)->get();
+        return view('employee.employee', ['employee' => $employee, 'receipts' => $receipts]);
     }
 
     /**
@@ -119,10 +121,28 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'ammount' => 'required|min:0',
-            'season' => 'required',
+            'season_id' => 'required',
             'employee_id' => 'required',
         ]);
 
-        $receipt = Treasury::where('')
+        $receipt = Treasury::create([
+            'type' => 'مرتبات',
+            'season_id' => $request->season_id,
+            'employee_id' => $request->employee_id,
+            'value' => $request->ammount
+        ]);
+
+        return view('receipts.employee_salary', ['receipt' => $receipt]);
+    }
+
+    public function salary_update(Request $request)
+    {
+        $receipt = Treasury::find($request->receipt_id);
+
+        $receipt->update([
+            'value' => $request->ammount,
+        ]);
+
+        return view('receipts.employee_salary', ['receipt' => $receipt]);
     }
 }
