@@ -74,7 +74,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('student.index') }}" class="nav-link">
+                <a href="{{ route('student.select_section') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>قائمة الطلبة</p>
                 </a>
@@ -89,6 +89,12 @@
                 <a href="{{ route('grade.old_grade_sheet_form') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>كشف درجات الطلبة</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('reports.season_resault_search_form') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>نتائج الفصل الدراسي</p>
                 </a>
               </li>
             </ul>
@@ -152,6 +158,12 @@
                 <a href="{{ route('reports.students_inroll_form') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>كشوفات الطلبة</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('reports.student_payments_form') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>كشوفات تجديد القيد</p>
                 </a>
               </li>
             </ul>

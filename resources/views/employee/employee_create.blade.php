@@ -69,6 +69,17 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>رقم الهاتف</label>
+                    @error('phone')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                    <input name="phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ old('phone') }}">
+                </div>
+            </div>
+        </div>
       </div>
       <!-- /.card-body -->
 

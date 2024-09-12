@@ -9,6 +9,8 @@ use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\assertNotTrue;
+
 class GradeController extends Controller
 {
     public function index($student_id)
@@ -23,9 +25,14 @@ class GradeController extends Controller
     public function create_grade_sheet($student_id)
     {
         $season = Season::where('active', '=', 1)->first();
+        
         $student = Student::find($student_id);
-        $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
-        $courses = Course::where('section_id', '=', $student->section_id)->get();
+
+        $grades = Grade::where('student_id', '=', $student_id)
+        ->where('season_id', '=', $season->id)->get();
+
+        $courses = Course::where('section_id', '=', $student->section_id)
+        ->where('semester', '=', $student->student_semester)->get();
 
         if($grades->isNotEmpty()) {
             return redirect()->back()->with('error', 'يوجد كشف مسبقا للطالب');
@@ -36,7 +43,8 @@ class GradeController extends Controller
                 'student_id' => $student_id,
                 'season_id' => $season->id,
                 'course_id' => $course->id,
-                'section_id' => $course->section->id
+                'section_id' => $course->section->id,
+                'active' => true,
             ]);
         }
 
@@ -45,11 +53,19 @@ class GradeController extends Controller
 
     public function update_grade_sheet(Request $request)
     {
-        foreach($request->resault as $key => $resault)
+        foreach($request->semester_work as $key => $semester_work)
         {
             $grade = Grade::find($key);
             $grade->update([
-                'resault' => $resault
+                'semester_work' => $semester_work
+            ]);
+        }
+
+        foreach($request->final as $key => $final)
+        {
+            $grade = Grade::find($key);
+            $grade->update([
+                'final' => $final
             ]);
         }
 

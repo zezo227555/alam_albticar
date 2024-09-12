@@ -1,7 +1,7 @@
 @extends('layouts.body_structer')
 
 @section('content_header')
-    المستخدمين
+    شؤون الطلبة
 @endsection
 
 @section('content')
@@ -9,35 +9,32 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">مستخدمو النظام</h3>
+        <h3 class="card-title">قائمة الطلبة بقسم <b>{{ $section->name }} ({{ $section->level }})</b></h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+          <th>رقم القيد</th>
           <th>الاسم</th>
           <th>رقم الهاتف</th>
-          <th>القسم</th>
+          <th>الفصل الدراسي</th>
           <th>صفة القيد</th>
           <th>اجراء</th>
         </tr>
         </thead>
         <tbody>
-            @foreach ($student as $student)
+            @foreach ($students as $student)
                 <tr>
+                    <td>{{ $student->st_id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->section->name }}</td>
                     <td>{{ $student->attendance_type }}</td>
                     <td>
                         <a href="{{ route('student.edit', $student->id) }}" class="btn btn-info">تعديل</a>
-                        <form action="{{ route('student.destroy', $student->id) }}" method="post" class="d-inline form_delete">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
-                        </form>
-                        <a href="{{ route('grade', $student->id) }}" class="btn btn-warning">رصد درجات الطالب</a>
+                        <a href="{{ route('student.show', $student->id) }}" class="btn btn-secondary">عرض</a>
                     </td>
                 </tr>
             @endforeach

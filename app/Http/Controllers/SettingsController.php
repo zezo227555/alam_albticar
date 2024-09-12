@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Season;
+use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -56,6 +57,36 @@ class SettingsController extends Controller
 
     public function season_close(Request $request)
     {
+        $students = Student::with(['grade' => function ($query) {
+            $query->where('active', '=', 1);
+        }])->get();
+
+        foreach ($students as $student) {
+            if (!$student->grade->isEmpty()) {
+                $conter = 0;
+                foreach ($student->grade as $g) {
+                    if ($g->semester_work + $g->final >= 50) {
+                        $conter ++;
+                    }
+
+                    $g->update([
+                        'active' => false,
+                    ]);
+                }
+
+                if (count($student->grade) == $conter) {
+                    $semester = $student->student_semester;
+                    $semester ++;
+
+                    $student->update([
+                        'student_semester' => $semester
+                    ]);
+
+                    $semester = 0;
+                }
+            }
+        }
+
         $request->validate([
             'season_id' => 'required'
         ]);

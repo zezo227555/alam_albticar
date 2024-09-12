@@ -13,7 +13,7 @@ class Employee extends Model
     protected $table = 'employee';
 
     protected $fillable = [
-        'name', 'type', 'salary', 'section_id'
+        'name', 'type', 'salary', 'section_id', 'phone'
     ];
 
     public function section() : BelongsTo

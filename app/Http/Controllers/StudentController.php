@@ -11,10 +11,18 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function select_section()
     {
-        $student = Student::all();
-        return view("student.student", ["student"=> $student]);
+        $sections = Section::all();
+        return view('student.select_section', ['sections' => $sections]);
+    }
+
+    public function index(Request $request)
+    {
+        $students = Student::where('section_id', '=', $request->section_id)->get();
+        $section = Section::find($request->section_id);
+        return view("student.student", ["students"=> $students, 'section' => $section]);
     }
 
     /**
@@ -34,7 +42,8 @@ class StudentController extends Controller
         $request->validate([
             'name' => 'required',
             'nationla_id' => 'required|unique:student,nationla_id',
-            'phone' => 'required|unique:student,phone',
+            'phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
+            'preant_phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
             'gender' => 'required',
             'nationality' => 'required',
             'section_id' => 'required',
@@ -52,7 +61,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        return view('student.student_show', ['student' => $student]);
     }
 
     /**
@@ -112,5 +121,17 @@ class StudentController extends Controller
     {
         $student->delete();
         return redirect()->back()->with('success','تم الحذف بنجاح');
+    }
+
+    public function premot_student_form()
+    {
+        $sections = Section::all();
+        return view('student.premot_student_form', ['sections' => $sections]);
+    }
+
+    public function premot_student(Request $request)
+    {
+        $students = Student::where('section_id', '=', $request->section_id)->get();
+        return view('student.premot_student', ['students' => $students]);
     }
 }

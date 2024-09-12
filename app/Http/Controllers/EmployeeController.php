@@ -38,6 +38,7 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required',
             'type' => 'required',
+            'phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
             'salary' => 'required|min:0',
             'section_id' => 'required',
         ]);
@@ -46,10 +47,16 @@ class EmployeeController extends Controller
             'name' => $request->name,
             'type' => $request->type,
             'salary' => $request->salary,
+            'phone' => $request->phone,
             'section_id' => $request->section_id,
         ]);
 
         return redirect()->back()->with('success','تمت الاضافة بنجاح');
+    }
+
+    public function show(Employee $employee)
+    {
+        return view('employee.employee_show', ['employee' => $employee]);
     }
 
     /**

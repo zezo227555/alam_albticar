@@ -5,10 +5,10 @@
 @endsection
 
 @section('content')
-    <form action="{{ route('reports.students_inroll') }}" method="GET">
+    <form action="{{ route('reports.student_payments') }}" method="GET">
         @csrf
         <div class="card card-primary">
-            <div class="card-header">بحث عن كشوفات الطلبة</div>
+            <div class="card-header">بحث عن ايصالات تجديد القيد للطلبة</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-6">

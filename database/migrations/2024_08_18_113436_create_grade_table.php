@@ -17,7 +17,9 @@ return new class extends Migration
             $table->foreignId('student_id')->constrained('student');
             $table->foreignId('section_id')->constrained('section');
             $table->foreignId('season_id')->constrained('season');
-            $table->float('resault')->default(0);
+            $table->boolean('active');
+            $table->float('final')->default(0);
+            $table->float('semester_work')->default(0);
             $table->timestamps();
         });
     }

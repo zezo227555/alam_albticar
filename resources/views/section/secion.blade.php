@@ -110,6 +110,7 @@
                                 <select class="custom-select" name="level">
                                   <option value="متوسط">متوسط</option>
                                   <option value="عالي">عالي</option>
+                                  <option value="بكالوريس">بكالوريس</option>
                                 </select>
                             </div>
                         </div>

@@ -32,7 +32,6 @@
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
                     <select name="nationality" class="mySelect form-control select2 select2-hidden-accessible" style="width: 100%;">
-                        <option>اختر الجنسية</option>
                         <option value="ليبي">ليبي</option>
                         <option value="البحرين">بحريني</option>
                         <option value="جزر القمر">قمري</option>
@@ -87,8 +86,7 @@
                     @error('section_id')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <select name="section_id" class="mySelect form-control select2" style="width: 100%;">
-                        <option>اختر القسم</option>
+                    <select name="section_id" class="form-control select2" style="width: 100%;">
                         @foreach ($sections as $section)
                             <option value="{{ $section->id }}">{{ $section->name }}</option>
                         @endforeach
@@ -101,7 +99,6 @@
                     <p class="text-danger">{{ $message }}</p>
                 @enderror
                 <select name="gender" class="form-control">
-                    <option>اختر الجنس</option>
                     <option value="ذكر">ذكر</option>
                     <option value="انثى">انثى</option>
                 </select>
@@ -120,15 +117,19 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group mt-2">
-                    <label>اختر الفصل الدراسي</label>
-                    <select class="form-control" name="student_semester">
-                      <option value="1">الفصل 1</option>
-                      <option value="2">الفصل 2</option>
-                      <option value="3">الفصل 3</option>
-                      <option value="4">الفصل 4</option>
-                      <option value="5">الفصل 5</option>
-                      <option value="6">الفصل 6</option>
-                    </select>
+                    <label>رقم القيد</label>
+                    <input type="text" name="st_id" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>رقم هاتف ولي الامر</label>
+                    @error('perant_phone')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                    <input name="perant_phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ old('perant_phone') }}">
                 </div>
             </div>
         </div>

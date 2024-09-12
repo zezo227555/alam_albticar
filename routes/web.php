@@ -21,7 +21,6 @@ Route::get('dashboard', [AuthController::class,'main'])->name('main');
 // موارد النظام
 Route::resource('users', UserController::class);
 Route::resource('section', SectionController::class);
-Route::resource('student', StudentController::class);
 Route::resource('treasury', TreasuryController::class);
 
 // الاعدادات
@@ -61,3 +60,11 @@ Route::post('employee/salary_update', [EmployeeController::class, 'salary_update
 // التقارير
 Route::get('reports/students_inroll_form', [ReportController::class, 'students_inroll_form'])->name('reports.students_inroll_form');
 Route::get('reports/students_inroll', [ReportController::class, 'students_inroll'])->name('reports.students_inroll');
+Route::get('reports/student_payments_form', [ReportController::class, 'student_payments_form'])->name('reports.student_payments_form');
+Route::get('reports/student_payments', [ReportController::class, 'student_payments'])->name('reports.student_payments');
+Route::get('reports/season_resault_search/form', [ReportController::class, 'season_resault_search_form'])->name('reports.season_resault_search_form');
+Route::get('reports/season_resault_search', [ReportController::class, 'season_resault_search'])->name('reports.season_resault_search');
+
+// شؤون الطلبة
+Route::resource('student', StudentController::class);
+Route::get('student/select_section/form', [StudentController::class, 'select_section'])->name('student.select_section');

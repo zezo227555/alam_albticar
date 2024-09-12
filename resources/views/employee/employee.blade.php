@@ -24,7 +24,6 @@
         <tr>
           <th>الاسم</th>
           <th>النوع</th>
-          <th>المرتب</th>
           <th>القسم</th>
           <th>اجراء</th>
         </tr>
@@ -34,7 +33,6 @@
                 <tr>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->type }}</td>
-                    <td>{{ $employee->salary }}</td>
                     <td>{{ $employee->section->name }}</td>
                     <td>
                         @foreach ($receipts as $receipt)
@@ -59,11 +57,7 @@
                         @endif
 
                         <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-info">تعديل</a>
-                        <form action="{{ route('employee.destroy', $employee->id) }}" method="post" class="d-inline form_delete">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
-                        </form>
+                        <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-secondary">عرض</a>
                     </td>
                 </tr>
                 @php

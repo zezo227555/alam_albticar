@@ -21,7 +21,8 @@
                 <thead>
                 <tr>
                   <th>المادة</th>
-                  <th>الدرجة</th>
+                  <th>اعمال السنة</th>
+                  <th>النهائي</th>
                   <th>النتيجة</th>
                   <th>تاريخ اخر تعديل</th>
                 </tr>
@@ -31,10 +32,13 @@
                         <tr>
                             <td>{{ $grade->course->name }}</td>
                             <td>
-                                <input type="number" name="resault[{{ $grade->id }}]" value="{{ $grade->resault }}" min="0" max="100">
+                                <input type="number" name="semester_work[{{ $grade->id }}]" value="{{ $grade->semester_work }}" min="0" max="40">
                             </td>
                             <td>
-                                @if ($grade->resault >= 50)
+                                <input type="number" name="final[{{ $grade->id }}]" value="{{ $grade->final }}" min="0" max="60">
+                            </td>
+                            <td>
+                                @if ($grade->semester_work + $grade->final >= 50)
                                     <span class="btn btn-success">ناجح</span>
                                 @else
                                     <span class="btn btn-danger">راسب</span>

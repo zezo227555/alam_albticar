@@ -27,5 +27,8 @@
         body{
             overflow-x: hidden;
         }
+        th, td {
+            text-align: center !important;
+        }
     </style>
 </head>

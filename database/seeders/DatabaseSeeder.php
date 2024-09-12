@@ -63,8 +63,9 @@ class DatabaseSeeder extends Seeder
             'section_id' => 1,
         ]);
 
-        for($i = 0; $i <= 100; $i++){
+        for($i = 0; $i <= 1; $i++){
             Student::create([
+                'st_id' => $i,
                 'name' => "student $i",
                 'nationla_id' => "1209$i",
                 'phone' => "092-$i",
