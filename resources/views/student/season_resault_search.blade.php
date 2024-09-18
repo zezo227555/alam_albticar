@@ -13,7 +13,9 @@
             @if (count($sections) > 1)
                 كافة الاقسام
             @else
-                {{ $sections->name }} ({{ $sections->level }})
+                @foreach ($sections as $section)
+                    {{ $section->name }} ({{ $section->level }})
+                @endforeach
             @endif
         </b></h3>
     </div>
@@ -45,29 +47,37 @@
                     <td>{{ $student->student_semester }}</td>
                     <td>{{ $student->attendance_type }}</td>
                     <td>
-                        @foreach ($student->grade as $g)
-                            @php
-                                $final_grade += $g->semester_work;
-                                $final_grade += $g->final;
-                            @endphp
-                            @if ($g->semester_work + $g->final >= 50)
-                                @php
-                                    $conter ++;
-                                @endphp
-                            @endif
-                        @endforeach
-
-                        @if (count($student->grade) == $conter)
-                            <span class="btn btn-success">ناجح</span>
+                        @if ($student->grade->isEmpty())
+                            <span class="btn btn-warning">لا يوجد كشف درجات</span>
                         @else
-                            <span class="btn btn-danger">راسب</span>
+                            @foreach ($student->grade as $g)
+                                @php
+                                    $final_grade += $g->semester_work;
+                                    $final_grade += $g->final;
+                                @endphp
+                                @if ($g->semester_work + $g->final >= 50)
+                                    @php
+                                        $conter ++;
+                                    @endphp
+                                @endif
+                            @endforeach
+
+                            @if (count($student->grade) == $conter)
+                                <span class="btn btn-success">ناجح</span>
+                            @else
+                                <span class="btn btn-danger">راسب</span>
+                            @endif
                         @endif
                     </td>
                     <td>
-                        @php
-                            $precent = ($final_grade * 100) / (count($student->grade) * 100);
-                        @endphp
-                        <span class="btn btn-info">{{ $precent }}</span>
+                        @if ($student->grade->isEmpty())
+                            <span class="btn btn-secondary">لا يوجد</span>
+                        @else
+                            @php
+                                $precent = ($final_grade * 100) / (count($student->grade) * 100);
+                            @endphp
+                            <span class="btn btn-info">{{ $precent }}</span>
+                        @endif
                     </td>
                 </tr>
             @endforeach

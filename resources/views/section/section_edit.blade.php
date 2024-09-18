@@ -35,6 +35,7 @@
                         <select class="custom-select" name="level">
                           <option value="متوسط" {{ $section->level == 'متوسط' ? 'selected' : '' }}>متوسط</option>
                           <option value="عالي" {{ $section->level == 'عالي' ? 'selected' : '' }}>عالي</option>
+                          <option value="بكالوريس" {{ $section->level == 'بكالوريس' ? 'selected' : '' }}>بكالوريس</option>
                         </select>
                     </div>
                 </div>

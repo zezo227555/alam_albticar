@@ -33,15 +33,10 @@
                 <tr>
                     <td>{{ $section->name }}</td>
                     <td>{{ $section->level }}</td>
-                    <td>{{ $section->created_at->format('Y-m-d') }}</td>
+                    <td>{{ $section->created_at->format('Y-m-d | h:m A') }}</td>
                     <td>
                         <a href="{{ route('course.index', $section->id) }}" class="btn btn-secondary">قائمة المواد</a>
                         <a href="{{ route('section.edit', $section->id) }}" class="btn btn-info">تعديل</a>
-                        <form action="{{ route('section.destroy', $section->id) }}" method="post" class="d-inline form_delete">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
-                        </form>
                     </td>
                 </tr>
             @endforeach

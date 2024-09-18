@@ -119,15 +119,24 @@
                     <option value="انتساب" {{ $student->gender == 'انتساب' ? 'selcted' : '' }}>انتساب</option>
                 </select>
             </div>
-        </div>
-        <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>رقم هاتف ولي الامر</label>
                     @error('perant_phone')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <input name="perant_phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ $sudent->perant_phone }}">
+                    <input name="perant_phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ $student->perant_phone }}">
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>رقم القيد</label>
+                    @error('st_id')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                    <input name="st_id" type="text" class="form-control" value="{{ $student->st_id }}">
                 </div>
             </div>
         </div>

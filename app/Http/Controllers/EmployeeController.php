@@ -119,7 +119,7 @@ class EmployeeController extends Controller
 
     public function salary_create($employee_id)
     {
-        $seasons = Season::all();
+        $seasons = Season::orderBy('created_at', 'desc')->get();
         $employee = Employee::find($employee_id);
         return view('employee.salary_create', ['employee' => $employee, 'seasons' => $seasons]);
     }

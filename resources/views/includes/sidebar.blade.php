@@ -166,6 +166,18 @@
                   <p>كشوفات تجديد القيد</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ route('reports.employee_season_salary_form') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>كشوفات المرتبات</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('reports.account_statement_form') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>كشف حساب الخزينة</p>
+                </a>
+              </li>
             </ul>
           </li>
           <li class="nav-item has-treeview">

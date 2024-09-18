@@ -37,6 +37,11 @@ class DatabaseSeeder extends Seeder
             'level' => 'عالي',
         ]);
 
+        Section::create([
+            'name' => 'محاسبة',
+            'level' => 'عالي',
+        ]);
+
         Course::create([
             'name' => 'اساسيات برمجة',
             'semester' => 1,
@@ -53,6 +58,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'employee',
             'type' => 'موظف اداري',
             'salary' => '3000',
+            'phone' => '092-1',
             'section_id' => 1,
         ]);
 
@@ -60,18 +66,51 @@ class DatabaseSeeder extends Seeder
             'name' => 'teatcher',
             'type' => 'عضو هيئة تدريس',
             'salary' => '2500',
+            'phone' => '092-0',
             'section_id' => 1,
         ]);
 
-        for($i = 0; $i <= 1; $i++){
+        Employee::create([
+            'name' => 'employee',
+            'type' => 'موظف اداري',
+            'salary' => '3000',
+            'phone' => '092-3',
+            'section_id' => 2,
+        ]);
+
+        Employee::create([
+            'name' => 'teatcher',
+            'type' => 'عضو هيئة تدريس',
+            'salary' => '2500',
+            'phone' => '092-4',
+            'section_id' => 2,
+        ]);
+
+        for($i = 0; $i <= 3; $i++){
             Student::create([
                 'st_id' => $i,
                 'name' => "student $i",
                 'nationla_id' => "1209$i",
                 'phone' => "092-$i",
                 'nationality' => 'ليبي',
+                'perant_phone' => "092-$i",
                 'gender' => 'ذكر',
                 'section_id' => 1,
+                'season_id' => 1,
+                'attendance_type' => 'نظامي',
+            ]);
+        }
+
+        for($i = 4; $i <= 7; $i++){
+            Student::create([
+                'st_id' => $i,
+                'name' => "student $i",
+                'nationla_id' => "1209$i",
+                'phone' => "092-$i",
+                'nationality' => 'ليبي',
+                'perant_phone' => "092-$i",
+                'gender' => 'ذكر',
+                'section_id' => 2,
                 'season_id' => 1,
                 'attendance_type' => 'نظامي',
             ]);

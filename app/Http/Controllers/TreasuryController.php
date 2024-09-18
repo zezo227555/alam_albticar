@@ -15,13 +15,13 @@ class TreasuryController extends Controller
      */
     public function index()
     {
-        $treasury = Treasury::all();
+        $treasury = Treasury::paginate(25);
         return view('treasury.treasury', ['treasury' => $treasury]);
     }
 
     public function select_season_and_section()
     {
-        $seasons = Season::orderBy('created_at')->get();
+        $seasons = Season::orderBy('created_at', 'desc')->get();
         $sections = Section::all();
         return view('treasury.select_season_and_section', ['seasons' => $seasons, 'sections' => $sections]);
     }
@@ -46,14 +46,18 @@ class TreasuryController extends Controller
             'value' => 'required',
         ]);
 
+        $season = Season::where('active', '=', 1)->first();
+
         if($request->value_type == 'صرف'){
             Treasury::create([
                 'type' => $request->type,
+                'season_id' => $season->id,
                 'value' => -$request->value,
             ]);
         }else{
             Treasury::create([
                 'type' => $request->type,
+                'season_id' => $season->id,
                 'value' => $request->value,
             ]);
         }
@@ -67,6 +71,7 @@ class TreasuryController extends Controller
         Treasury::create([
             'type' => 'تجديد قيد',
             'season_id' => $request->season_id,
+            'section_id' => $request->section_id,
             'student_id' => $request->student_id,
             'value' => $request->value
         ]);
@@ -90,22 +95,6 @@ class TreasuryController extends Controller
     {
         $receipt = Treasury::find($request->receipt_id);
         return view('receipts.student_enroll', ['receipt' => $receipt]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Treasury $treasury)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Treasury $treasury)
-    {
-        //
     }
 
     /**

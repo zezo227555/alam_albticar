@@ -33,6 +33,7 @@
                                 @csrf
                                 <input type="text" name="student_id" value="{{ $student->id }}" hidden>
                                 <input type="text" name="season_id" value="{{ $season->id }}" hidden>
+                                <input type="text" name="section_id" value="{{ $student->section->id }}" hidden>
 
                                 <input type="number" name="value" min="0">
                                 <input type="submit" value="حفظ" class="btn btn-warning mx-2">

@@ -39,7 +39,6 @@
                     <td>{{ $treasury->value }}</td>
                     <td>{{ $treasury->created_at->format('Y-m-d | h:i A') }}</td>
                     <td>
-                        <a href="{{ route('treasury.edit', $treasury->id) }}" class="btn btn-info">تعديل</a>
                         <form action="{{ route('treasury.destroy', $treasury->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')

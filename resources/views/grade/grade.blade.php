@@ -5,7 +5,12 @@
 @endsection
 
 @section('content_action')
-    <a href="{{ route('grade.create_grade_sheet', $student->id) }}" class="btn btn-primary">انشاء كشف درجات للطالب</a>
+    <form action="{{ route('grade.create_grade_sheet') }}" method="GET">
+        @csrf
+        <input type="text" name="student_id" value="{{ $student->id }}" hidden>
+        <input type="text" name="season_id" value="{{ $season->id }}" hidden>
+        <input type="submit" value="انشاء كشف درجات" class="btn btn-primary">
+    </form>
 @endsection
 
 @section('content')
@@ -24,6 +29,7 @@
                   <th>اعمال السنة</th>
                   <th>النهائي</th>
                   <th>النتيجة</th>
+                  <th>المجموع</th>
                   <th>تاريخ اخر تعديل</th>
                 </tr>
                 </thead>
@@ -37,6 +43,7 @@
                             <td>
                                 <input type="number" name="final[{{ $grade->id }}]" value="{{ $grade->final }}" min="0" max="60">
                             </td>
+                            <td>{{ $grade->total }}</td>
                             <td>
                                 @if ($grade->semester_work + $grade->final >= 50)
                                     <span class="btn btn-success">ناجح</span>

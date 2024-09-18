@@ -15,6 +15,7 @@ class GradeController extends Controller
 {
     public function index($student_id)
     {
+        dd($student_id);
         $student = Student::find($student_id);
         $season = Season::where('active', '=', 1)->first();
         $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
@@ -22,13 +23,13 @@ class GradeController extends Controller
         return view('grade.grade', ['grades' => $grades, 'student' => $student,]);
     }
 
-    public function create_grade_sheet($student_id)
+    public function create_grade_sheet(Request $request)
     {
-        $season = Season::where('active', '=', 1)->first();
-        
-        $student = Student::find($student_id);
+        $season = Season::find($request->season_id);
 
-        $grades = Grade::where('student_id', '=', $student_id)
+        $student = Student::find($request->student_id);
+
+        $grades = Grade::where('student_id', '=', $request->student_id)
         ->where('season_id', '=', $season->id)->get();
 
         $courses = Course::where('section_id', '=', $student->section_id)
@@ -40,7 +41,7 @@ class GradeController extends Controller
 
         foreach($courses as $course){
             Grade::create([
-                'student_id' => $student_id,
+                'student_id' => $request->student_id,
                 'season_id' => $season->id,
                 'course_id' => $course->id,
                 'section_id' => $course->section->id,
@@ -59,6 +60,9 @@ class GradeController extends Controller
             $grade->update([
                 'semester_work' => $semester_work
             ]);
+            $grade->update([
+                'total' => $grade->semester_work + $grade->final
+            ]);
         }
 
         foreach($request->final as $key => $final)
@@ -67,6 +71,9 @@ class GradeController extends Controller
             $grade->update([
                 'final' => $final
             ]);
+            $grade->update([
+                'total' => $grade->semester_work + $grade->final
+            ]);
         }
 
         return redirect()->back()->with('success', 'تم التعديل بنجاح');
@@ -74,7 +81,7 @@ class GradeController extends Controller
 
     public function old_grade_sheet_form()
     {
-        $seasons = Season::orderBy('created_at', 'asc')->get();
+        $seasons = Season::orderBy('created_at', 'desc')->get();
         $sections = Section::all();
         return view('grade.old_grade_sheet_form', [
             'seasons' => $seasons, 'sections' => $sections
@@ -91,7 +98,8 @@ class GradeController extends Controller
     public function old_grade_sheet_search($student_id, $section_id, $season_id)
     {
         $student = Student::find($student_id);
+        $season = Season::find($season_id);
         $grades = Grade::where('student_id', '=', $student_id)->where('section_id', '=', $section_id)->where('season_id', '=', $season_id)->get();
-        return view('grade.grade', ['grades' => $grades, 'student' => $student]);
+        return view('grade.grade', ['grades' => $grades, 'student' => $student, 'season' => $season]);
     }
 }

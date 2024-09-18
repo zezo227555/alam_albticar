@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
+use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -133,5 +135,65 @@ class StudentController extends Controller
     {
         $students = Student::where('section_id', '=', $request->section_id)->get();
         return view('student.premot_student', ['students' => $students]);
+    }
+
+    public function get_student_season_resault_form()
+    {
+        $seasons = Season::orderBy('created_at', 'desc')->get();
+        return view('student.get_student_season_resault_form', ['seasons' => $seasons]);
+    }
+
+    public function get_student_season_resault(Request $request)
+    {
+        $request->validate([
+            'season_id' => 'required',
+            'student_id' => 'required',
+        ]);
+
+        $student = Student::find($request->student_id);
+        $grades = Grade::where('student_id', '=', $request->student_id)
+        ->where('show_grades', '=', 0)->where('season_id', '=', $request->season_id)->get();
+        return view('student.get_student_season_resault', ['student' => $student, 'grades' => $grades]);
+    }
+
+    public function deactivate_student(Request $request)
+    {
+        $student = Student::find($request->student_id);
+        $student->update([
+            'active' => false,
+        ]);
+
+        return redirect()->back()->with('success', 'تم ايقاف التفعيل');
+    }
+
+    public function activate_student(Request $request)
+    {
+        $student = Student::find($request->student_id);
+        $student->update([
+            'active' => true,
+        ]);
+
+        return redirect()->back()->with('success', 'تم التفعيل');
+    }
+
+    public function deactivate_multiple_student(Request $request)
+    {
+        foreach($request->stop_st_id as $st) {
+            $student = Student::find($st);
+            $student->update([
+                'active' => false,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'تم ايقاف التفعيل');
+    }
+
+    public function student_full_marksheet($student_id)
+    {
+        $student = Student::find($student_id);
+        $grades = Grade::where('student_id', '=', $student_id)
+        ->where('total', '>=', 50)->orderBy('created_at', 'asc')->get();
+
+        return view('student.student_full_marksheet', ['grades' => $grades, 'student' => $student]);
     }
 }

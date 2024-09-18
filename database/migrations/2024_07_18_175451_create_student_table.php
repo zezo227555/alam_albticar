@@ -23,6 +23,8 @@ return new class extends Migration
             $table->integer('student_semester')->default(1);
             $table->foreignId('section_id')->constrained('section');
             $table->string('attendance_type', 10);
+            $table->boolean('active')->default(true);
+            $table->boolean('graduated')->default(false);
             $table->timestamps();
         });
     }

@@ -30,6 +30,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->role);
         $request->validate([
             'name' => 'required',
             'username' => 'required',
@@ -37,13 +38,13 @@ class UserController extends Controller
             'role' => 'required',
             'password' => 'required|min:8',
         ], [
-            'name.required'=> 'الاسم مطلوب',
-            'username.required'=> 'اسم المستخدم مطلوب',
-            'role.required'=> 'الصلاحية مطلوبة',
-            'phone.required'=> 'رقم الهاتف مطلوب',
+            'name.required' => 'الاسم مطلوب',
+            'username.required' => 'اسم المستخدم مطلوب',
+            'role.required' => 'الصلاحية مطلوبة',
+            'phone.required' => 'رقم الهاتف مطلوب',
             'phone.regex' => 'يجب على رقم الهاتف ان يكون بالصيغة التالية (09X-XXXXXXX)',
-            'password.required'=> 'كلمة المرور مطلوب',
-            'password.min'=> 'كلمة المرور يجب ان تكون 8 احرف',
+            'password.required' => 'كلمة المرور مطلوب',
+            'password.min' => 'كلمة المرور يجب ان تكون 8 احرف',
         ]);
 
         User::create([

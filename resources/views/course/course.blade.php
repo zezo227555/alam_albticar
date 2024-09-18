@@ -49,29 +49,6 @@
 
 @endsection
 
-@section('costome_section_scripts')
-    <script>
-        $('button[type="submit"]').on('click', function(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'هل انت متأكد من أنك ترغب في حذف المستخدم ؟',
-            text: 'لا يمكن التراجع عن حذف المستخدم',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم قم بالحذف',
-            cancelButtonText: 'الغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).closest('form').submit();
-                }
-            });
-        });
-    </script>
-@endsection
-
-
 @section('section_modals')
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -98,17 +75,33 @@
                                     <p class="text-danger">{{ $message }}</p>
                                 @enderror
                                 <input name="name" type="text" class="form-control" placeholder="ادخل الاسم" value="{{ old('name') }}">
-                                <div class="form-group mt-2">
-                                    <label>اختر الفصل الدراسي</label>
-                                    <select class="form-control" name="semester">
-                                      <option value="1">الفصل 1</option>
-                                      <option value="2">الفصل 2</option>
-                                      <option value="3">الفصل 3</option>
-                                      <option value="4">الفصل 4</option>
-                                      <option value="5">الفصل 5</option>
-                                      <option value="6">الفصل 6</option>
-                                    </select>
-                                </div>
+                                @if ($section->level == 'بكالوريس')
+                                    <div class="form-group mt-2">
+                                        <label>اختر الفصل الدراسي</label>
+                                        <select class="form-control" name="semester">
+                                        <option value="1">الفصل 1</option>
+                                        <option value="2">الفصل 2</option>
+                                        <option value="3">الفصل 3</option>
+                                        <option value="4">الفصل 4</option>
+                                        <option value="5">الفصل 5</option>
+                                        <option value="6">الفصل 6</option>
+                                        <option value="7">الفصل 7</option>
+                                        <option value="8">الفصل 8</option>
+                                        </select>
+                                    </div>
+                                @else
+                                    <div class="form-group mt-2">
+                                        <label>اختر الفصل الدراسي</label>
+                                        <select class="form-control" name="semester">
+                                        <option value="1">الفصل 1</option>
+                                        <option value="2">الفصل 2</option>
+                                        <option value="3">الفصل 3</option>
+                                        <option value="4">الفصل 4</option>
+                                        <option value="5">الفصل 5</option>
+                                        <option value="6">الفصل 6</option>
+                                        </select>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                 </div>

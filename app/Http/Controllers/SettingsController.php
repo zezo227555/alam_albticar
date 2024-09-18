@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
 use App\Models\Season;
 use App\Models\Student;
 use Carbon\Carbon;
@@ -52,6 +53,22 @@ class SettingsController extends Controller
             'active' => true,
         ]);
 
+        $students = Student::all();
+
+        foreach ($students as $student) {
+            if($student->student_semester > 6 && ($student->section->level == 'متوسط' || $student->section->level == 'عالي')) {
+                $student->update([
+                    'graduated' => true,
+                ]);
+            }
+
+            if ($student->student_semester > 8 && $student->section->level == 'بكالوريس') {
+                $student->update([
+                    'graduated' => true,
+                ]);
+            }
+        }
+
         return redirect()->back()->with('success', 'تم الحفظ بنجاح');
     }
 
@@ -84,6 +101,18 @@ class SettingsController extends Controller
 
                     $semester = 0;
                 }
+
+                if($student->student_semester > 3 && ($student->section->level == 'متوسط' || $student->section->level == 'عالي')) {
+                    $student->update([
+                        'graduated' => true,
+                    ]);
+                }
+
+                if ($student->student_semester > 8 && $student->section->level == 'بكالوريس') {
+                    $student->update([
+                        'graduated' => true,
+                    ]);
+                }
             }
         }
 
@@ -97,6 +126,42 @@ class SettingsController extends Controller
             'end_date' => Carbon::now(),
         ]);
 
+        $gardes = Grade::where('active', '=', 1)->get();
+
+        foreach($gardes as $grade) {
+            $grade->update([
+                'show_grades' => false,
+            ]);
+        }
+
+
+
         return redirect()->back()->with('success', 'تم الحفظ بنجاح');
+    }
+
+    public function haid_resault()
+    {
+        $gardes = Grade::where('active', '=', 1)->get();
+
+        foreach($gardes as $grade) {
+            $grade->update([
+                'show_grades' => true,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'تم الحجب بنجاح');
+    }
+
+    public function see_resault()
+    {
+        $gardes = Grade::where('active', '=', 1)->get();
+
+        foreach($gardes as $grade) {
+            $grade->update([
+                'show_grades' => false,
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'تم الغاء الحجب بنجاح');
     }
 }

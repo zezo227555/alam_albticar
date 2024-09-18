@@ -21,6 +21,7 @@
           <th>رقم الهاتف</th>
           <th>الفصل الدراسي</th>
           <th>صفة القيد</th>
+          <th>الحالة</th>
           <th>اجراء</th>
         </tr>
         </thead>
@@ -33,8 +34,16 @@
                     <td>{{ $student->section->name }}</td>
                     <td>{{ $student->attendance_type }}</td>
                     <td>
-                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-info">تعديل</a>
+                        @if ($student->graduated == 1)
+                            خريج
+                        @else
+                            مستمر
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-warning">تعديل</a>
                         <a href="{{ route('student.show', $student->id) }}" class="btn btn-secondary">عرض</a>
+                        <a href="{{ route('student.student_full_marksheet', $student->id) }}" class="btn btn-info">المواد المنجزة</a>
                     </td>
                 </tr>
             @endforeach

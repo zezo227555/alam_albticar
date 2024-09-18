@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('type');
             $table->float('salary');
+            $table->string('phone')->unique();
             $table->foreignId('section_id')->constrained('section')->nullable();
             $table->timestamps();
         });

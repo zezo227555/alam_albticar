@@ -12,7 +12,8 @@ class Grade extends Model
 
     protected $table = 'grade';
     protected $fillable = [
-        'student_id', 'section_id', 'season_id', 'course_id', 'semester_work', 'final', 'active',
+        'student_id', 'section_id', 'season_id', 'course_id', 'semester_work',
+        'final', 'active', 'show_grades', 'total',
     ];
 
     public function student() : BelongsTo {

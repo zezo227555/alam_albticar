@@ -25,7 +25,7 @@
           <th>رقم الهاتف</th>
           <th>القسم</th>
           <th>صفة القيد</th>
-          <th>اجراء</th>
+          <th>تاريخ التسجيل</th>
         </tr>
         </thead>
         <tbody>
@@ -35,15 +35,7 @@
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->section->name }}</td>
                     <td>{{ $student->attendance_type }}</td>
-                    <td>
-                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-info">تعديل</a>
-                        <form action="{{ route('student.destroy', $student->id) }}" method="post" class="d-inline form_delete">
-                            @csrf
-                            @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
-                        </form>
-                        <a href="{{ route('grade', $student->id) }}" class="btn btn-warning">رصد درجات الطالب</a>
-                    </td>
+                    <td>{{ $student->created_at->format('Y-m-d | h:m A') }}</td>
                 </tr>
             @endforeach
         </tbody>
@@ -52,26 +44,3 @@
   </div>
 
 @endsection
-
-@section('costome_section_scripts')
-    <script>
-        $('button[type="submit"]').on('click', function(e) {
-        e.preventDefault();
-        Swal.fire({
-            title: 'هل انت متأكد من أنك ترغب في حذف المستخدم ؟',
-            text: 'لا يمكن التراجع عن حذف المستخدم',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'نعم قم بالحذف',
-            cancelButtonText: 'الغاء'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $(this).closest('form').submit();
-                }
-            });
-        });
-    </script>
-@endsection
-

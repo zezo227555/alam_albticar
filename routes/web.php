@@ -13,9 +13,16 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // الصلاحيات
+Route::get("student_login_form", [AuthController::class, "student_login_form"])->name('student_login_form');
 Route::get("login", [AuthController::class, "loginForm"])->name('loginForm');
+
+Route::post("student_login", [AuthController::class,"student_login"])->name('student_login');
 Route::post("loging", [AuthController::class,"login"])->name('loging');
+
 Route::get("logout", [AuthController::class,"logout"])->name('logout');
+Route::get("student_logout", [AuthController::class,"student_logout"])->name('student_logout');
+
+Route::get('student_dashboard', [AuthController::class,'student_main'])->name('student_main');
 Route::get('dashboard', [AuthController::class,'main'])->name('main');
 
 // موارد النظام
@@ -24,10 +31,12 @@ Route::resource('section', SectionController::class);
 Route::resource('treasury', TreasuryController::class);
 
 // الاعدادات
-Route::resource('settings', SettingsController::class);
+Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
 Route::get('settings/season/new', [SettingsController::class, 'new_season_form'])->name('settings_new_season_form');
 Route::post('settings/season/close', [SettingsController::class, 'season_close'])->name('settings_season_close');
 Route::post('settings/season/new', [SettingsController::class, 'new_season'])->name('settings_season_new');
+Route::get('settings/haid_resault', [SettingsController::class, 'haid_resault'])->name('settings.haid_resault');
+Route::get('settings/see_resault', [SettingsController::class, 'see_resault'])->name('settings.see_resault');
 
 // الاقسام الدارسية
 Route::get('course/section/{section_id}', [CourseController::class,'index'])->name('course.index');
@@ -38,7 +47,7 @@ Route::delete('course/{course_id}', [CourseController::class, 'destroy'])->name(
 
 // الدرجات
 Route::get('grade/student/{student_id}/', [GradeController::class, 'index'])->name('grade');
-Route::get('grade/student/{student_id}/create_grade_sheet', [GradeController::class, 'create_grade_sheet'])->name('grade.create_grade_sheet');
+Route::get('grade/create_grade_sheet', [GradeController::class, 'create_grade_sheet'])->name('grade.create_grade_sheet');
 Route::post('grade/update_grade_sheet', [GradeController::class, 'update_grade_sheet'])->name('grade.update_grade_sheet');
 Route::get('grade/old_grade_sheet', [GradeController::class, 'old_grade_sheet'])->name('grade.old_grade_sheet');
 Route::get('grade/old_grade_sheet_form', [GradeController::class, 'old_grade_sheet_form'])->name('grade.old_grade_sheet_form');
@@ -64,7 +73,18 @@ Route::get('reports/student_payments_form', [ReportController::class, 'student_p
 Route::get('reports/student_payments', [ReportController::class, 'student_payments'])->name('reports.student_payments');
 Route::get('reports/season_resault_search/form', [ReportController::class, 'season_resault_search_form'])->name('reports.season_resault_search_form');
 Route::get('reports/season_resault_search', [ReportController::class, 'season_resault_search'])->name('reports.season_resault_search');
+Route::get('reports/employee_season_salary/form', [ReportController::class, 'employee_season_salary_form'])->name('reports.employee_season_salary_form');
+Route::get('reports/employee_season_salary', [ReportController::class, 'employee_season_salary'])->name('reports.employee_season_salary');
+Route::get('reports/account_statement/form', [ReportController::class, 'account_statement_form'])->name('reports.account_statement_form');
+Route::get('reports/account_statement', [ReportController::class, 'account_statement'])->name('reports.account_statement');
+
 
 // شؤون الطلبة
 Route::resource('student', StudentController::class);
 Route::get('student/select_section/form', [StudentController::class, 'select_section'])->name('student.select_section');
+Route::get('student/get_student_season_resault/form', [StudentController::class, 'get_student_season_resault_form'])->name('student.get_student_season_resault_form');
+Route::get('student/get_student_season/resault', [StudentController::class, 'get_student_season_resault'])->name('student.get_student_season_resault');
+Route::post('student/deactivate_student', [StudentController::class, 'deactivate_student'])->name('student.deactivate_student');
+Route::post('student/deactivate_multiple_student', [StudentController::class, 'deactivate_multiple_student'])->name('student.deactivate_multiple_student');
+Route::post('student/activate_student', [StudentController::class, 'activate_student'])->name('student.activate_student');
+Route::get('student/{student_id}/student_full_marksheet', [StudentController::class, 'student_full_marksheet'])->name('student.student_full_marksheet');

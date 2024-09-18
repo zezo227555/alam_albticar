@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('treasury', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->foreignId('season_id')->nullable()->constrained('season');
+            $table->float('value');
+            $table->foreignId('season_id')->constrained('season');
+            $table->foreignId('section_id')->nullable()->constrained('section');
             $table->foreignId('student_id')->nullable()->constrained('student');
             $table->foreignId('employee_id')->nullable()->constrained('employee');
-            $table->float('value');
             $table->timestamps();
         });
     }
