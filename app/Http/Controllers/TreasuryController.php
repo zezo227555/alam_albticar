@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\Treasury;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TreasuryController extends Controller
 {
@@ -15,8 +16,9 @@ class TreasuryController extends Controller
      */
     public function index()
     {
-        $treasury = Treasury::paginate(25);
-        return view('treasury.treasury', ['treasury' => $treasury]);
+        $treasury = Treasury::orderBy('created_at')->paginate(50);
+        $treasury_all = Treasury::all();
+        return view('treasury.treasury', ['treasury' => $treasury, 'treasury_all' => $treasury_all]);
     }
 
     public function select_season_and_section()
@@ -29,7 +31,7 @@ class TreasuryController extends Controller
     public function student_enroll(Request $request)
     {
         $season = Season::find($request->season_id);
-        $students = Student::where('section_id', '=', $request->section_id)->with('treasury', function($query) use ($request){
+        $students = Student::where('graduated', '=', 0)->where('section_id', '=', $request->section_id)->with('treasury', function($query) use ($request){
             $query->where('season_id', '=', $request->season_id);
         })->get();
 
@@ -53,12 +55,14 @@ class TreasuryController extends Controller
                 'type' => $request->type,
                 'season_id' => $season->id,
                 'value' => -$request->value,
+                'user_id' => Auth::user()->id,
             ]);
         }else{
             Treasury::create([
                 'type' => $request->type,
                 'season_id' => $season->id,
                 'value' => $request->value,
+                'user_id' => Auth::user()->id,
             ]);
         }
 
@@ -73,7 +77,8 @@ class TreasuryController extends Controller
             'season_id' => $request->season_id,
             'section_id' => $request->section_id,
             'student_id' => $request->student_id,
-            'value' => $request->value
+            'value' => $request->value,
+            'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->back()->with('success', 'تمت الاضافة بنجاح');
@@ -85,7 +90,8 @@ class TreasuryController extends Controller
         $student_treasury = Treasury::find($request->student_treasury_id);
 
         $student_treasury->update([
-            'value' => $request->value
+            'value' => $request->value,
+            'user_id' => Auth::user()->id,
         ]);
 
         return redirect()->back()->with('success', 'تمت التعديل بنجاح');

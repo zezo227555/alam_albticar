@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('section_id')->nullable()->constrained('section');
             $table->foreignId('student_id')->nullable()->constrained('student');
             $table->foreignId('employee_id')->nullable()->constrained('employee');
+            $table->foreignId('user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Grade;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -22,7 +24,7 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
-        $students = Student::where('section_id', '=', $request->section_id)->get();
+        $students = Student::where('graduated', '=', 0)->where('section_id', '=', $request->section_id)->get();
         $section = Section::find($request->section_id);
         return view("student.student", ["students"=> $students, 'section' => $section]);
     }
@@ -43,17 +45,34 @@ class StudentController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'nationla_id' => 'required|unique:student,nationla_id',
-            'phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
-            'preant_phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
+            'st_id' => 'required',
+            'nationla_id' => 'required|unique:student,nationla_id|min:12|max:12',
+            'phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
+            'perant_phone' => 'required|unique:student,perant_phone|regex:/^09[0-5]-[0-9]{7}/',
             'gender' => 'required',
             'nationality' => 'required',
             'section_id' => 'required',
             'attendance_type' => 'required',
-            'student_semester' => 'required'
         ]);
 
-        Student::create($request->all());
+        $season = Season::where('active', '=', 1)->first();
+
+        if(!isset($season->id)) {
+            return redirect()->back()->with('error', 'لا يوجد فصل دراسي');
+        }
+
+        Student::create([
+            'name' => $request->name,
+            'st_id' => $request->st_id,
+            'nationla_id' => $request->nationla_id,
+            'phone' => $request->phone,
+            'perant_phone' => $request->perant_phone,
+            'gender' => $request->gender,
+            'nationality' => $request->nationality,
+            'section_id' => $request->section_id,
+            'attendance_type' => $request->attendance_type,
+            'season_id' => $season->id,
+        ]);
 
         return redirect()->back()->with('success','تمت الاضافة بنجاح');
     }
@@ -82,15 +101,23 @@ class StudentController extends Controller
     {
         if($student->phone != $request->phone){
             $request->validate([
-                'phone' => 'required|unique:student,phone',
+                'phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
             ]);
             $student->update([
                 'phone' => $request->phone,
             ]);
         }
+        if($student->perant_phone != $request->perant_phone){
+            $request->validate([
+                'perant_phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
+            ]);
+            $student->update([
+                'perant_phone' => $request->perant_phone,
+            ]);
+        }
         if($student->nationla_id != $request->nationla_id){
             $request->validate([
-                'nationla_id' => 'required|unique:student,nationla_id',
+                'nationla_id' => 'required|unique:student,nationla_id|min:12|max:12',
             ]);
             $student->update([
                 'nationla_id' => $request->nationla_id,
@@ -131,12 +158,6 @@ class StudentController extends Controller
         return view('student.premot_student_form', ['sections' => $sections]);
     }
 
-    public function premot_student(Request $request)
-    {
-        $students = Student::where('section_id', '=', $request->section_id)->get();
-        return view('student.premot_student', ['students' => $students]);
-    }
-
     public function get_student_season_resault_form()
     {
         $seasons = Season::orderBy('created_at', 'desc')->get();
@@ -168,6 +189,9 @@ class StudentController extends Controller
 
     public function activate_student(Request $request)
     {
+        $request->validate([
+            'student_id' => 'required',
+        ]);
         $student = Student::find($request->student_id);
         $student->update([
             'active' => true,
@@ -195,5 +219,94 @@ class StudentController extends Controller
         ->where('total', '>=', 50)->orderBy('created_at', 'asc')->get();
 
         return view('student.student_full_marksheet', ['grades' => $grades, 'student' => $student]);
+    }
+
+    public function grade_equation_section_select_form()
+    {
+        $seasons = Season::orderBy('created_at', 'desc');
+        $sections = Section::all();
+        return view('student.grade_equation_section_select_form', ['seasons' => $seasons, 'sections' => $sections]);
+    }
+
+    public function grade_equation_form(Request $request)
+    {
+        $section = Section::find($request->section_id);
+        $students = Student::where('graduated', '=', 0)->where('section_id', '=', $request->section_id)->get();
+        return view('student.grade_equation_form', ['students' => $students, 'section' => $section]);
+    }
+
+    public function grade_equation(Request $request)
+    {
+        $student = Student::find($request->student_id);
+        $section = Section::find($request->section_id);
+        $courses = Course::where('section_id', '=', $section->id)->orderBy('semester')->get();
+
+        $grades = Grade::where('student_id', '=', $student->id)->get();
+
+        return view('student.grade_equation', [
+            'student' => $student,
+            'section' => $section,
+            'courses' => $courses,
+            'grades' => $grades,
+        ]);
+    }
+
+    public function grade_equation_create(Request $request)
+    {
+        $season = Season::latest()->first();
+        $student = Student::find($request->student_id);
+        $section = Section::find($request->section_id);
+
+        if(isset($request->semester_work)) {
+            foreach($request->semester_work as $key => $value) {
+                if(isset($value)) {
+                    $request->validate([
+                        "final.$key" => 'required',
+                    ]);
+
+                    Grade::create([
+                        'course_id' => $key,
+                        'student_id' => $student->id,
+                        'section_id' => $section->id,
+                        'season_id' => $season->id,
+                        'active' => false,
+                        'semester_work' => $value,
+                        'final' => $request->final[$key],
+                        'total' => $value + $request->final[$key],
+                        'user_id' => Auth::user()->id,
+                    ]);
+                }
+            }
+        }
+
+        if(isset($request->old_semester_work)) {
+            foreach($request->old_semester_work as $old_key => $old_value) {
+                if(isset($old_value)) {
+                    $request->validate([
+                        "old_final.$old_key" => 'required',
+                    ]);
+
+                    $grade = Grade::find($old_key);
+                    $grade->update([
+                        'semester_work' => $old_value,
+                        'final' => $request->old_final[$old_key],
+                    ]);
+                }
+            }
+        }
+
+        $student->update([
+            'student_semester' => $request->semester
+        ]);
+
+
+
+        return redirect()->back()->with('success', 'تم الاضافة بنجاح');
+    }
+
+    public function graduated_students()
+    {
+        $students = Student::where('graduated', '=', 1)->get();
+        return view('student.student', ['students' => $students]);
     }
 }

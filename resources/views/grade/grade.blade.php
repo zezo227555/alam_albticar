@@ -31,6 +31,7 @@
                   <th>النتيجة</th>
                   <th>المجموع</th>
                   <th>تاريخ اخر تعديل</th>
+                  <th>اخر تعديل بواسطة</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,7 @@
                                 @endif
                             </td>
                             <td>{{ $grade->updated_at->format('Y/m/d') }}</td>
+                            <td>{{ $grade->user->username }}</td>
                         </tr>
                     @endforeach
                 </tbody>

@@ -62,6 +62,11 @@
                     <p class="text-danger">{{ $message }}</p>
                 @enderror
                 <div class="form-group border rounded p-2">
+
+                    <label>ادارة المستخدمين</label> <br>
+                    <input type="checkbox" name="role[]" value="users_mangement" class="btn-check" id="btn-check-outlined20" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btn-check-outlined20">ادارة المستخدمين</label>
+                    <hr>
                     <label>الاقسام الدراسية</label> <br>
                     <input type="checkbox" name="role[]" value="add_sections_courses" class="btn-check" id="btn-check-outlined1" autocomplete="off">
                     <label class="btn btn-outline-primary" for="btn-check-outlined1">اضافة الاقسام و المواد</label>
@@ -75,6 +80,11 @@
                     <label class="btn btn-outline-primary" for="btn-check-outlined4">رصد نتائج الطلبة</label>
                     <input type="checkbox" name="role[]" value="student_marksheet_see" class="btn-check" id="btn-check-outlined5" autocomplete="off">
                     <label class="btn btn-outline-primary" for="btn-check-outlined5">سحب كشوفات نتائج الطلبة</label>
+                    <input type="checkbox" name="role[]" value="grade_equation" class="btn-check" id="btn-check-outlined18" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btn-check-outlined18">معادلة مواد</label>
+                    <input type="checkbox" name="role[]" value="show_graduated" class="btn-check" id="btn-check-outlined19" autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btn-check-outlined19">كشف الخريجين</label>
+
                     <hr>
                     <label>الشؤون الادارية</label> <br>
                     <input type="checkbox" name="role[]" value="add_employee" class="btn-check" id="btn-check-outlined6" autocomplete="off">

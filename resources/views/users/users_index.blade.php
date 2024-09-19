@@ -19,7 +19,7 @@
           <th>الاسم</th>
           <th>رقم الهاتف</th>
           <th>اسم المستخدم</th>
-          <th>الصلاحية</th>
+          <th>تاريخ الانشاء</th>
           <th>اجراء</th>
         </tr>
         </thead>
@@ -29,7 +29,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->username }}</td>
-                    <td>{{ $user->role }}</td>
+                    <td>{{ $user->created_at->format('Y-d-m | h:m A') }}</td>
                     <td>
                         <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">تعديل</a>
                         <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline form_delete">

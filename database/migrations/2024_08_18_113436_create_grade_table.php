@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float('final')->default(0);
             $table->float('semester_work')->default(0);
             $table->float('total')->default(0);
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

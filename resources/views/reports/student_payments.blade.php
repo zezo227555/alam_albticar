@@ -10,7 +10,11 @@
     @csrf
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">تجديد قيد طلبة قسم <b>{{ $section->name }} ({{ $section->level }})</b> للفصل <span class="btn btn-info">{{ $season->name }} {{ $season->created_at->format('Y') }}</span></h3>
+            <h3 class="card-title">تجديد قيد طلبة قسم <b>
+                @isset($section)
+                    {{ $section->name }} ({{ $section->level }})
+                @endisset
+            </b> للفصل <span class="btn btn-info">{{ $season->name }} {{ $season->created_at->format('Y') }}</span></h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">

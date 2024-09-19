@@ -13,8 +13,13 @@ class Treasury extends Model
     protected $table = 'treasury';
 
     protected $fillable = [
-        'type', 'value', 'section_id', 'season_id', 'student_id', 'employee_id',
+        'type', 'value', 'section_id', 'season_id', 'student_id', 'employee_id', 'user_id'
     ];
+
+    public function user() : BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function section() : BelongsTo
     {

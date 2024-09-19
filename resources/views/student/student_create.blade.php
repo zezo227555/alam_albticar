@@ -118,7 +118,10 @@
             <div class="col-sm-6">
                 <div class="form-group mt-2">
                     <label>رقم القيد</label>
-                    <input type="text" name="st_id" class="form-control">
+                    @error('st_id')
+                        <p class="text-danger">{{ $message }}</p>
+                    @enderror
+                    <input type="text" name="st_id" class="form-control" value="{{ old('st_id') }}">
                 </div>
             </div>
         </div>

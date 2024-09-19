@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -20,8 +21,11 @@ class User extends Authenticatable
         'name',
         'username',
         'phone',
-        'role',
         'password',
+        'add_sections_courses', 'add_students', 'stop_students', 'student_marksheet_create', 'student_marksheet_see', 'add_employee',
+        'employee_salary_create', 'treasury_main', 'users_mangement',
+        'student_inroll', 'new_students', 'student_inrollment', 'employee_salary_see', 'treasury_all_report', 'mark_sheet_hide',
+        'season_colse_open', 'grade_equation', 'show_graduated',
     ];
 
     /**
@@ -44,5 +48,15 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function grade() : HasMany
+    {
+        return $this->hasMany(Grade::class);
+    }
+
+    public function treasury() : HasMany
+    {
+        return $this->hasMany(Treasury::class);
     }
 }

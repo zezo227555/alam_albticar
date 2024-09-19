@@ -24,9 +24,6 @@ class SectionController extends Controller
         $request->validate([
             'name' => 'required',
             'level' => 'required'
-        ], [
-            'name.required' => 'الاسم مطلوب',
-            'level.required' => 'النوع مطلوب'
         ]);
 
         Section::create([
@@ -53,9 +50,6 @@ class SectionController extends Controller
         $request->validate([
             'name' => 'required',
             'level' => 'required'
-        ], [
-            'name.required' => 'الاسم مطلوب',
-            'level.required' => 'النوع مطلوب'
         ]);
 
         if($section->name != $request->name){

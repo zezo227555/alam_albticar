@@ -102,7 +102,7 @@ class SettingsController extends Controller
                     $semester = 0;
                 }
 
-                if($student->student_semester > 3 && ($student->section->level == 'متوسط' || $student->section->level == 'عالي')) {
+                if($student->student_semester > 6 && ($student->section->level == 'متوسط' || $student->section->level == 'عالي')) {
                     $student->update([
                         'graduated' => true,
                     ]);

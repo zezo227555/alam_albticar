@@ -7,6 +7,7 @@ use App\Models\Season;
 use App\Models\Section;
 use App\Models\Treasury;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
@@ -136,7 +137,8 @@ class EmployeeController extends Controller
             'type' => 'مرتبات',
             'season_id' => $request->season_id,
             'employee_id' => $request->employee_id,
-            'value' => $request->ammount
+            'value' => $request->ammount,
+            'user_id' => Auth::user()->id
         ]);
 
         return view('receipts.employee_salary', ['receipt' => $receipt]);

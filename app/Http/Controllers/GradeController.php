@@ -8,6 +8,7 @@ use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\assertNotTrue;
 
@@ -46,6 +47,7 @@ class GradeController extends Controller
                 'course_id' => $course->id,
                 'section_id' => $course->section->id,
                 'active' => true,
+                'user_id' => Auth::user()->id
             ]);
         }
 
@@ -58,10 +60,12 @@ class GradeController extends Controller
         {
             $grade = Grade::find($key);
             $grade->update([
-                'semester_work' => $semester_work
+                'semester_work' => $semester_work,
+                'user_id' => Auth::user()->id
             ]);
             $grade->update([
-                'total' => $grade->semester_work + $grade->final
+                'total' => $grade->semester_work + $grade->final,
+                'user_id' => Auth::user()->id
             ]);
         }
 
@@ -69,10 +73,12 @@ class GradeController extends Controller
         {
             $grade = Grade::find($key);
             $grade->update([
-                'final' => $final
+                'final' => $final,
+                'user_id' => Auth::user()->id
             ]);
             $grade->update([
-                'total' => $grade->semester_work + $grade->final
+                'total' => $grade->semester_work + $grade->final,
+                'user_id' => Auth::user()->id
             ]);
         }
 

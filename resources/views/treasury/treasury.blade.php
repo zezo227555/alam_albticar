@@ -11,7 +11,7 @@
     <button type="button" class="btn btn-success mx-3" data-toggle="modal" data-target="#exampleModal2">
         ايصال قبض
     </button>
-    <span class="btn btn-secondary float-right">قيمة الخزينة الحالية : {{ $treasury->sum('value') }} دل</span>
+    <span class="btn btn-secondary float-right">قيمة الخزينة الحالية : {{ $treasury_all->sum('value') }} دل</span>
 @endsection
 
 @section('content')
@@ -29,17 +29,19 @@
           <th>نوع الايصال</th>
           <th>القيمة</th>
           <th>تاريخ الانشاء</th>
+          <th>تم الانشاء بواسطة</th>
           <th>اجراء</th>
         </tr>
         </thead>
         <tbody>
-            @foreach ($treasury as $treasury)
+            @foreach ($treasury as $t)
                 <tr>
-                    <td>{{ $treasury->type }}</td>
-                    <td>{{ $treasury->value }}</td>
-                    <td>{{ $treasury->created_at->format('Y-m-d | h:i A') }}</td>
+                    <td>{{ $t->type }}</td>
+                    <td>{{ $t->value }}</td>
+                    <td>{{ $t->created_at->format('Y-m-d | h:i A') }}</td>
+                    <td>{{ $t->user->username }}</td>
                     <td>
-                        <form action="{{ route('treasury.destroy', $treasury->id) }}" method="post" class="d-inline form_delete">
+                        <form action="{{ route('treasury.destroy', $t->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')
                             <input type="submit" value="حذف" class="btn btn-danger delete_button">
@@ -49,6 +51,9 @@
             @endforeach
         </tbody>
       </table>
+    </div>
+    <div class="card-footer">
+        {{ $treasury->links() }}
     </div>
   </div>
 

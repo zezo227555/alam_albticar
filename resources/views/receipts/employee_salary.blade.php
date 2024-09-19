@@ -38,7 +38,7 @@
                                <h2 class="mb-1 text-muted">معهد عالم الابتكار للمهن الشاملة</h2>
                             </div>
                             <div class="text-muted">
-                                <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                                <p><i class="uil uil-phone me-1"></i>094-2801398</p>
                             </div>
                         </div>
 
@@ -49,9 +49,7 @@
                                 <div class="text-muted">
                                     <h5 class="font-size-16 mb-3">ايصال صرف مرتبات عن الفصل الدراسي {{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }} للموظف/ة</h5>
                                     <h5 class="font-size-15 mb-2">{{ $receipt->employee->name }}</h5>
-                                    <p class="mb-1">4068 Post Avenue Newfolden, MN 56738</p>
-                                    <p class="mb-1">PrestonMiller@armyspy.com</p>
-                                    <p>001-234-5678</p>
+                                    <p class="mb-1">{{ $receipt->employee->phone }}</p>
                                 </div>
                             </div>
                             <!-- end col -->
@@ -94,8 +92,8 @@
                             </div><!-- end table responsive -->
                             <div class="d-print-none mt-4">
                                 <div class="float-end">
-                                    <a href="javascript:window.print()" class="btn btn-primary me-1 w-25">طباعة <i class="fa fa-print"></i></a>
-                                    <a href="{{ route('employee.index') }}" class="btn btn-secondary w-25 mx-3">رجوع</a>
+                                    <a href="javascript:window.print()" class="btn btn-primary me-1">طباعة <i class="fa fa-print"></i></a>
+                                    <a href="{{ route('employee.index') }}" class="btn btn-secondary mx-3">رجوع</a>
                                 </div>
                             </div>
                         </div>

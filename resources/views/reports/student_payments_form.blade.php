@@ -31,7 +31,6 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                             <select name="section_id" class="mySelect form-control select2" style="width: 100%;">
-                                <option value="all">الكل</option>
                                 @foreach ($sections as $section)
                                     <option value="{{ $section->id }}">{{ $section->name }} ({{ $section->level }})</option>
                                 @endforeach

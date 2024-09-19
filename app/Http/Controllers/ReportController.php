@@ -29,9 +29,9 @@ class ReportController extends Controller
         $section = Season::find($request->section_id);
 
         if($request->section_id == 'all'){
-            $students = Student::where('season_id', '=', $request->season_id)->get();
+            $students = Student::where('graduated', '=', 0)->where('season_id', '=', $request->season_id)->get();
         }else{
-            $students = Student::where('season_id', '=', $request->season_id)->where('section_id', '=', $request->section_id)->get();
+            $students = Student::where('graduated', '=', 0)->where('season_id', '=', $request->season_id)->where('section_id', '=', $request->section_id)->get();
         }
 
         return view('reports.students_inroll', ['season' => $season, 'students' => $students, 'section' => $section]);

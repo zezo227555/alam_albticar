@@ -26,9 +26,6 @@ class CourseController extends Controller
         $request->validate([
             'name' => 'required',
             'semester' => 'required'
-        ], [
-            'name.required' => 'اسم المادة مطلوب',
-            'semester.required' => 'الفصل الدراسي مطلوب'
         ]);
 
         Course::create([
@@ -55,8 +52,6 @@ class CourseController extends Controller
     {
         $request->validate([
             'name' => 'required',
-        ], [
-            'name.required' => 'الاسم مطلوب',
         ]);
 
         $course_id->update([

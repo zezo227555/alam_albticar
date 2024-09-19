@@ -42,7 +42,7 @@
             search: "بحث:",
         },
         paging: true,
-        pageLength: 20
+        pageLength: 50
     });
 </script>
 

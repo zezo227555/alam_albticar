@@ -9,7 +9,11 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">قائمة الطلبة بقسم <b>{{ $section->name }} ({{ $section->level }})</b></h3>
+        @if (isset($section))
+            <h3 class="card-title">قائمة الطلبة بقسم <b>{{ $section->name }} ({{ $section->level }})</b></h3>
+        @else
+            <h3 class="card-title">قائمة الخريجين</h3>
+        @endif
     </div>
     <!-- /.card-header -->
     <div class="card-body">

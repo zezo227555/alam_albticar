@@ -49,9 +49,8 @@
                                 <div class="text-muted">
                                     <h5 class="font-size-16 mb-3">ايصال تجديد قيد للطالب/ة</h5>
                                     <h5 class="font-size-15 mb-2">{{ $receipt->student->name }}</h5>
-                                    <p class="mb-1">4068 Post Avenue Newfolden, MN 56738</p>
-                                    <p class="mb-1">PrestonMiller@armyspy.com</p>
-                                    <p>001-234-5678</p>
+                                    <p class="mb-1">{{ $receipt->student->st_id }}</p>
+                                    <p>{{ $receipt->student->phone }}</p>
                                 </div>
                             </div>
                             <!-- end col -->
@@ -81,6 +80,7 @@
                                             <th>الفصل الدراسي</th>
                                             <th>القيمة المدفوعة</th>
                                             <th>المتبقي</th>
+                                            <th>الموظف</th>
                                         </tr>
                                     </thead><!-- end thead -->
                                     <tbody>
@@ -88,13 +88,14 @@
                                             <td>{{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }}</td>
                                             <td><span class="btn btn-success">{{ $receipt->value }} دل</span></td>
                                             <td><span class="btn btn-danger">{{ 650 - $receipt->value }} دل</span></td>
+                                            <td>{{ $receipt->user->name }}</td>
                                         </tr>
                                     </tbody><!-- end tbody -->
                                 </table><!-- end table -->
                             </div><!-- end table responsive -->
                             <div class="d-print-none mt-4">
                                 <div class="float-end">
-                                    <a href="javascript:window.print()" class="btn btn-primary me-1 w-25">طباعة <i class="fa fa-print"></i></a>
+                                    <a href="javascript:window.print()" class="btn btn-primary me-1 w-100">طباعة <i class="fa fa-print"></i></a>
                                 </div>
                             </div>
                         </div>

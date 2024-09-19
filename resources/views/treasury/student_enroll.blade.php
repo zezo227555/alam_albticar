@@ -56,10 +56,10 @@
                             <span class="btn btn-danger">لا يوجد ايصال</span>
                         @else
                             @foreach ($student->treasury as $treasury)
-                            <form action="{{ route('treasury.student_enroll_receipt') }}">
-                                <input type="text" name="receipt_id" value="{{ $treasury->id }}" hidden>
-                                <input type="submit" value="ايصال تجديد القيد" class="btn btn-success">
-                            </form>
+                                <form action="{{ route('treasury.student_enroll_receipt') }}">
+                                    <input type="text" name="receipt_id" value="{{ $treasury->id }}" hidden>
+                                    <input type="submit" value="ايصال تجديد القيد" class="btn btn-success">
+                                </form>
                             @endforeach
                         @endif
                     </td>

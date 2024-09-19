@@ -13,8 +13,12 @@ class Grade extends Model
     protected $table = 'grade';
     protected $fillable = [
         'student_id', 'section_id', 'season_id', 'course_id', 'semester_work',
-        'final', 'active', 'show_grades', 'total',
+        'final', 'active', 'show_grades', 'total', 'user_id',
     ];
+
+    public function user() : BelongsTo {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function student() : BelongsTo {
         return $this->belongsTo(Student::class);

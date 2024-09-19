@@ -54,20 +54,21 @@
                         <b>تاريخ الانشاء فالنظام</b> <a class="float-right">{{ $student->created_at->format('Y-m-d') }}</a>
                     </li>
                   </ul>
-                  @if ($student->active == 1)
-                    <form action="{{ route('student.deactivate_student') }}" method="POST">
-                        @csrf
-                        <input type="text" name="student_id" value="{{ $student->id }}" hidden>
-                        <input type="submit" value="ايقاف الطالب" class="btn btn-danger w-100">
-                    </form>
-                  @else
-                  <form action="{{ route('student.activate_student') }}" method="POST">
-                    @csrf
-                    <input type="text" name="student_id" value="{{ $student->id }}" hidden>
-                    <input type="submit" value="تفعيل الطالب" class="btn btn-success w-100">
-                  </form>
-                  @endif
-
+                @if (auth()->user()->stop_students)
+                    @if ($student->active == 1)
+                        <form action="{{ route('student.deactivate_student') }}" method="POST">
+                            @csrf
+                            <input type="text" name="student_id" value="{{ $student->id }}" hidden>
+                            <input type="submit" value="ايقاف الطالب" class="btn btn-danger w-100">
+                        </form>
+                    @else
+                        <form action="{{ route('student.activate_student') }}" method="POST">
+                            @csrf
+                            <input type="text" name="student_id" value="{{ $student->id }}" hidden>
+                            <input type="submit" value="تفعيل الطالب" class="btn btn-success w-100">
+                        </form>
+                    @endif
+                @endif
                 </div>
             </div>
         </div>
