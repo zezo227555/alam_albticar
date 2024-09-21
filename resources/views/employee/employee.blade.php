@@ -62,6 +62,11 @@
                         @endif
                         <a href="{{ route('employee.edit', $employee->id) }}" class="btn btn-info">تعديل</a>
                         <a href="{{ route('employee.show', $employee->id) }}" class="btn btn-secondary">عرض</a>
+                        <form action="{{ route('employee.destroy', $employee->id) }}" method="post" class="d-inline form_delete">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                        </form>
                     </td>
                 </tr>
                 @php

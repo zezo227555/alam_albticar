@@ -9,9 +9,9 @@
 </head>
 
 <body class="hold-transition login-page">
-    <div class="login-box">
+    <div class="login-box text-center">
       <div class="login-logo">
-        عالم <b>الابتكار</b>
+        <img src="{{ asset('images/logo_hige.svg') }}" alt="LOGO" width="100" height="100">
       </div>
       <!-- /.login-logo -->
       <div class="card">

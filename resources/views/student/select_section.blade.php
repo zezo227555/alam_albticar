@@ -7,7 +7,7 @@
 @section('content')
     <form action="{{ route('student.index') }}" method="GET">
         @csrf
-        <div class="card card-primary w-50">
+        <div class="card card-primary">
             <div class="card-header">اختيار القسم الدراسي</div>
             <div class="card-body">
                 <div class="form-group">

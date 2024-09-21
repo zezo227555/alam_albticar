@@ -27,7 +27,7 @@
             @if (auth()->user()->users_mangement == 1)
             <li class="nav-item has-treeview {{ request()->is('users*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('users*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-user"></i>
                   <p>
                     المستخدمين
                     <i class="right fas fa-angle-left"></i>
@@ -52,7 +52,7 @@
             @if (auth()->user()->add_sections_courses == 1)
             <li class="nav-item has-treeview {{ request()->is('section*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('section*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-door-open"></i>
                   <p>
                     الاقسام الدراسية
                     <i class="right fas fa-angle-left"></i>
@@ -72,7 +72,7 @@
             @if (auth()->user()->add_students == 1 || auth()->user()->stop_students == 1 || auth()->user()->student_marksheet_create == 1 || auth()->user()->student_marksheet_see == 1)
             <li class="nav-item has-treeview {{ request()->is('student*') || request()->is('grade*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('student*') || request()->is('grade*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-graduation-cap"></i>
                   <p>
                     شؤون الطلبة
                     <i class="right fas fa-angle-left"></i>
@@ -123,7 +123,7 @@
             @if (auth()->user()->add_employee == 1 || auth()->user()->employee_salary_create == 1)
             <li class="nav-item has-treeview {{ request()->is('employee*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('employee*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-user-tie"></i>
                   <p>
                     الشئون الادارية
                     <i class="right fas fa-angle-left"></i>
@@ -151,7 +151,7 @@
             @if (auth()->user()->treasury_main == 1 || auth()->user()->student_inroll == 1)
             <li class="nav-item has-treeview {{ request()->is('treasury*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('treasury*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-money-bill"></i>
                   <p>
                     الشئون المالية
                     <i class="right fas fa-angle-left"></i>
@@ -181,7 +181,7 @@
             @if (auth()->user()->new_students == 1 || auth()->user()->student_inrollment == 1 || auth()->user()->employee_salary_see == 1 || auth()->user()->treasury_all_report == 1)
             <li class="nav-item has-treeview {{ request()->is('reports*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('reports*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-list"></i>
                   <p>
                     تقارير
                     <i class="right fas fa-angle-left"></i>
@@ -235,7 +235,7 @@
             @if (auth()->user()->mark_sheet_hide || auth()->user()->season_colse_open)
             <li class="nav-item has-treeview {{ request()->is('settings*') ? 'menu-open' : '' }}">
                 <a href="#" class="nav-link {{ request()->is('settings*') ? 'active' : '' }}">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <i class="nav-icon fa-solid fa-gear"></i>
                   <p>
                     الاعدادات
                     <i class="right fas fa-angle-left"></i>

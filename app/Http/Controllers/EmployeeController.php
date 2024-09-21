@@ -39,7 +39,7 @@ class EmployeeController extends Controller
         $request->validate([
             'name' => 'required',
             'type' => 'required',
-            'phone' => 'required|regex:/^09[0-5]-[0-9]{7}/',
+            'phone' => 'required',
             'salary' => 'required|min:0',
             'section_id' => 'required',
         ]);

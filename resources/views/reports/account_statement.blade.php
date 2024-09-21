@@ -18,8 +18,10 @@
         <tr>
           <th>نوع الايصال</th>
           <th>القيمة</th>
+          <th>المستخدم</th>
           <th>القسم</th>
           <th>تاريخ الانشاء</th>
+          <th>تم الانشاء بواسطة</th>
         </tr>
         </thead>
         <tbody>
@@ -34,13 +36,32 @@
                         @endif
                     </td>
                     <td>
+                        @if ($receipt->type == 'مرتبات')
+                            @if (isset($receipt->employee_id))
+                                {{ $receipt->employee->name }}
+                            @else
+                                <span class="btn btn-warning">تم حذف الموظف</span>
+                            @endif
+                        @elseif($receipt->type == 'تجديد قيد')
+                            @if (isset($receipt->student_id))
+                                {{ $receipt->student->name }}
+                            @else
+                                <span class="btn btn-warning">تم حذف الطالب</span>
+                            @endif
+
+                        @else
+                            الادارة
+                        @endif
+                    </td>
+                    <td>
                         @if (isset($receipt->section->name))
                             {{ $receipt->section->name }}
                         @else
-                            الادارة العامة
+                            الادارة
                         @endif
                     </td>
                     <td>{{ $receipt->created_at->format('Y-m-d | h:i A') }}</td>
+                    <td>{{ $receipt->user->username }}</td>
                 </tr>
             @endforeach
         </tbody>

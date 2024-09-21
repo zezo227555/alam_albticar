@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-6 pt-5">
                 <h1>دولة ليبيا</h1>
-                <h1>معهد دنيا الابتكار</h1>
+                <h1>معهد {{ $student->section->level == 'متوسط' ? 'دنيا' : 'عالم' }} الابتكار</h1>
                 <h5>للمهن الشاملة - سبها</h5>
             </div>
             <div class="col-6 text-right">

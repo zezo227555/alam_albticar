@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('grade', function (Blueprint $table) {
             $table->id();
             $table->foreignId('course_id')->constrained('course');
-            $table->foreignId('student_id')->constrained('student');
+            $table->foreignId('student_id')->constrained('student')->cascadeOnDelete();
             $table->foreignId('section_id')->constrained('section');
             $table->foreignId('season_id')->constrained('season');
             $table->boolean('active');

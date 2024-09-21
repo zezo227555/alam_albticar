@@ -83,9 +83,6 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
 
     // شؤون الطلبة
     Route::resource('student', StudentController::class);
-    Route::get('student/select_section/form', [StudentController::class, 'select_section'])->name('student.select_section');
-    Route::get('student/get_student_season_resault/form', [StudentController::class, 'get_student_season_resault_form'])->name('student.get_student_season_resault_form');
-    Route::get('student/get_student_season/resault', [StudentController::class, 'get_student_season_resault'])->name('student.get_student_season_resault');
     Route::post('student/deactivate_student', [StudentController::class, 'deactivate_student'])->name('student.deactivate_student');
     Route::post('student/deactivate_multiple_student', [StudentController::class, 'deactivate_multiple_student'])->name('student.deactivate_multiple_student');
     Route::post('student/activate_student', [StudentController::class, 'activate_student'])->name('student.activate_student');
@@ -96,3 +93,7 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::post('student/grade_equation_create', [StudentController::class, 'grade_equation_create'])->name('student.grade_equation_create');
     Route::get('student/graduated/students', [StudentController::class, 'graduated_students'])->name('student.graduated_students');
 });
+
+    Route::get('student/select_section/form', [StudentController::class, 'select_section'])->name('student.select_section');
+    Route::get('student/get_student_season_resault/form', [StudentController::class, 'get_student_season_resault_form'])->name('student.get_student_season_resault_form');
+    Route::get('student/get_student_season/resault', [StudentController::class, 'get_student_season_resault'])->name('student.get_student_season_resault');

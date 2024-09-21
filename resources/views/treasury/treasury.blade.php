@@ -28,6 +28,7 @@
         <tr>
           <th>نوع الايصال</th>
           <th>القيمة</th>
+          <th>المستخدم</th>
           <th>تاريخ الانشاء</th>
           <th>تم الانشاء بواسطة</th>
           <th>اجراء</th>
@@ -38,6 +39,24 @@
                 <tr>
                     <td>{{ $t->type }}</td>
                     <td>{{ $t->value }}</td>
+                    <td>
+                        @if ($t->type == 'مرتبات')
+                            @if (isset($t->employee_id))
+                                {{ $t->employee->name }}
+                            @else
+                                <span class="btn btn-warning">تم حذف الموظف</span>
+                            @endif
+                        @elseif($t->type == 'تجديد قيد')
+                            @if (isset($t->student_id))
+                                {{ $t->student->name }}
+                            @else
+                                <span class="btn btn-warning">تم حذف الطالب</span>
+                            @endif
+
+                        @else
+                            الادارة
+                        @endif
+                    </td>
                     <td>{{ $t->created_at->format('Y-m-d | h:i A') }}</td>
                     <td>{{ $t->user->username }}</td>
                     <td>

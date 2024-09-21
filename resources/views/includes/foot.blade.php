@@ -20,6 +20,8 @@
 {{-- select 2 --}}
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
+<script src="{{ asset('dist/js/fa.all.min.js') }}"></script>
+
 <script>
     $(function () {
       //Initialize Select2 Elements

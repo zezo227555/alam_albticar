@@ -76,7 +76,7 @@
                     @error('phone')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <input name="phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ old('phone') }}">
+                    <input name="phone" type="text" class="form-control" placeholder="09XXXXXXXX" value="{{ old('phone') }}">
                 </div>
             </div>
         </div>

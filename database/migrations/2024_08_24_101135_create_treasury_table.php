@@ -17,8 +17,8 @@ return new class extends Migration
             $table->float('value');
             $table->foreignId('season_id')->constrained('season');
             $table->foreignId('section_id')->nullable()->constrained('section');
-            $table->foreignId('student_id')->nullable()->constrained('student');
-            $table->foreignId('employee_id')->nullable()->constrained('employee');
+            $table->foreignId('student_id')->nullable()->constrained('student')->nullOnDelete();
+            $table->foreignId('employee_id')->nullable()->constrained('employee')->nullOnDelete();;
             $table->foreignId('user_id')->nullable()->constrained('users');
             $table->timestamps();
         });

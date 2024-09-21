@@ -25,7 +25,6 @@
           <th>رقم الهاتف</th>
           <th>الفصل الدراسي</th>
           <th>صفة القيد</th>
-          <th>الحالة</th>
           <th>اجراء</th>
         </tr>
         </thead>
@@ -35,19 +34,17 @@
                     <td>{{ $student->st_id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->phone }}</td>
-                    <td>{{ $student->section->name }}</td>
+                    <td>الفصل {{ $student->student_semester }}</td>
                     <td>{{ $student->attendance_type }}</td>
-                    <td>
-                        @if ($student->graduated == 1)
-                            خريج
-                        @else
-                            مستمر
-                        @endif
-                    </td>
                     <td>
                         <a href="{{ route('student.edit', $student->id) }}" class="btn btn-warning">تعديل</a>
                         <a href="{{ route('student.show', $student->id) }}" class="btn btn-secondary">عرض</a>
                         <a href="{{ route('student.student_full_marksheet', $student->id) }}" class="btn btn-info">المواد المنجزة</a>
+                        <form action="{{ route('student.destroy', $student->id) }}" method="post" class="d-inline form_delete">
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                        </form>
                     </td>
                 </tr>
             @endforeach

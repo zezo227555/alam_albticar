@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         <form action="{{ route('student.grade_equation_form') }}" method="GET">
             @csrf
             <div class="card">

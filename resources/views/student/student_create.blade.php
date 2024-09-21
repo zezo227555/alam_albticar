@@ -65,16 +65,16 @@
                     @error('phone')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <input name="phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ old('phone') }}">
+                    <input name="phone" type="text" class="form-control" placeholder="09XXXXXXXX" value="{{ old('phone') }}">
                 </div>
             </div>
             <div class="col-6">
                 <div class="form-group">
-                    <label>الرقم الوطني</label>
+                    <label>الرقم الوطني او الاداري</label>
                     @error('nationla_id')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <input name="nationla_id" type="text" class="myTextField form-control" value="{{ old('nationla_id') }}">
+                    <input name="nationla_id" type="text" class="form-control" value="{{ old('nationla_id') }}">
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
                     @enderror
                     <select name="section_id" class="form-control select2" style="width: 100%;">
                         @foreach ($sections as $section)
-                            <option value="{{ $section->id }}">{{ $section->name }}</option>
+                            <option value="{{ $section->id }}">{{ $section->name }} ({{ $section->level }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -132,7 +132,7 @@
                     @error('perant_phone')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <input name="perant_phone" type="text" class="form-control" placeholder="09X-XXXXXXX" value="{{ old('perant_phone') }}">
+                    <input name="perant_phone" type="text" class="form-control" placeholder="09XXXXXXXX" value="{{ old('perant_phone') }}">
                 </div>
             </div>
         </div>
@@ -145,16 +145,4 @@
     </form>
   </div>
 
-@endsection
-
-
-@section('costome_section_scripts')
-<script>
-    $(document).ready(function() {
-      $(".mySelect").change(function() {
-        const selectedValue = $(this).val();
-        $(".myTextField").prop("disabled", selectedValue !== "ليبي");
-      });
-    });
-    </script>
 @endsection

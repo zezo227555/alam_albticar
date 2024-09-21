@@ -46,9 +46,9 @@ class StudentController extends Controller
         $request->validate([
             'name' => 'required',
             'st_id' => 'required',
-            'nationla_id' => 'required|unique:student,nationla_id|min:12|max:12',
-            'phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
-            'perant_phone' => 'required|unique:student,perant_phone|regex:/^09[0-5]-[0-9]{7}/',
+            'nationla_id' => 'required|unique:student,nationla_id',
+            'phone' => 'required|unique:student,phone',
+            'perant_phone' => 'unique:student,perant_phone',
             'gender' => 'required',
             'nationality' => 'required',
             'section_id' => 'required',

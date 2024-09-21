@@ -42,6 +42,9 @@
                       <b>الرقم الدراسي</b> <a class="float-right">{{ $student->st_id }}</a>
                     </li>
                     <li class="list-group-item">
+                        <b>الفصل الدراسي</b> <a class="float-right">الفصل {{ $student->student_semester }}</a>
+                      </li>
+                    <li class="list-group-item">
                       <b>القسم الدراسي</b> <a class="float-right">{{ $student->section->name }}</a>
                     </li>
                     <li class="list-group-item">

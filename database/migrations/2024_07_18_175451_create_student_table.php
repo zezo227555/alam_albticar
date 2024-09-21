@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('nationla_id', 20)->unique();
             $table->string('phone', 20);
-            $table->string('perant_phone', 20);
+            $table->string('perant_phone', 20)->nullable();
             $table->string('nationality', 20);
             $table->string('gender', 15);
             $table->integer('student_semester')->default(1);
