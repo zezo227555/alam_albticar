@@ -15,7 +15,7 @@ class Student extends Model
 
     protected $fillable = [
         'name', 'nationla_id', 'phone', 'nationality', 'section_id', 'attendance_type', 'gender', 'student_semester'
-        ,'season_id', 'st_id', 'perant_phone', 'active', 'graduated',
+        ,'season_id', 'st_id', 'perant_phone', 'active', 'graduated', 'fees',
     ];
 
     public function section() : BelongsTo

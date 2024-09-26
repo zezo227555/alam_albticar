@@ -139,6 +139,21 @@
                     <input name="st_id" type="text" class="form-control" value="{{ $student->st_id }}">
                 </div>
             </div>
+            <div class="col-sm-6">
+                <label>القيمة عن كل فصل</label>
+                @error('name')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" min="0" class="form-control" name="fees" value="{{ $student->fees }}">
+                    <div class="input-group-append">
+                      <span class="input-group-text">.00</span>
+                    </div>
+                </div>
+            </div>
         </div>
       </div>
       <!-- /.card-body -->

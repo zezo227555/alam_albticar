@@ -19,7 +19,8 @@ class StudentController extends Controller
     public function select_section()
     {
         $sections = Section::all();
-        return view('student.select_section', ['sections' => $sections]);
+        $courses = Course::all();
+        return view('student.select_section', ['sections' => $sections, 'courses' => $courses]);
     }
 
     public function index(Request $request)
@@ -27,6 +28,35 @@ class StudentController extends Controller
         $students = Student::where('graduated', '=', 0)->where('section_id', '=', $request->section_id)->get();
         $section = Section::find($request->section_id);
         return view("student.student", ["students"=> $students, 'section' => $section]);
+    }
+
+    public function get_students_by_course(Request $request)
+    {
+        $courses = Course::where('name', '=', $request->course_name)->get();
+        $all_students = [];
+        foreach($courses as $course) {
+            $grades = Grade::where('course_id', '=', $course->id)->where('active', '=', 1)->get();
+            array_push($all_students, $grades);
+        }
+
+        return view("student.get_students_by_course", ["all_students"=> $all_students, 'course' => $course]);
+    }
+
+    public function get_students_by_level(Request $request)
+    {
+        $sections = [];
+
+        if ($request->level == 'متوسط') {
+            $sections = Section::where('level', '=', 'متوسط')->get();
+        }
+        if ($request->level == 'عالي') {
+            $sections = Section::where('level', '=', 'عالي')->get();
+        }
+        if ($request->level == 'بكالوريس') {
+            $sections = Section::where('level', '=', 'بكالوريس')->get();
+        }
+
+        return view("student.get_students_by_level", ['sections' => $sections, 'level' => $request->level]);
     }
 
     /**
@@ -47,7 +77,7 @@ class StudentController extends Controller
             'name' => 'required',
             'st_id' => 'required',
             'nationla_id' => 'required|unique:student,nationla_id',
-            'phone' => 'required|unique:student,phone',
+            'phone' => 'unique:student,phone',
             'perant_phone' => 'unique:student,perant_phone',
             'gender' => 'required',
             'nationality' => 'required',
@@ -72,6 +102,8 @@ class StudentController extends Controller
             'section_id' => $request->section_id,
             'attendance_type' => $request->attendance_type,
             'season_id' => $season->id,
+            'fees' => $request->fees,
+            'student_semester' => $request->semester,
         ]);
 
         return redirect()->back()->with('success','تمت الاضافة بنجاح');
@@ -101,7 +133,7 @@ class StudentController extends Controller
     {
         if($student->phone != $request->phone){
             $request->validate([
-                'phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
+                'phone' => 'unique:student,phone',
             ]);
             $student->update([
                 'phone' => $request->phone,
@@ -109,7 +141,7 @@ class StudentController extends Controller
         }
         if($student->perant_phone != $request->perant_phone){
             $request->validate([
-                'perant_phone' => 'required|unique:student,phone|regex:/^09[0-5]-[0-9]{7}/',
+                'perant_phone' => 'unique:student,phone',
             ]);
             $student->update([
                 'perant_phone' => $request->perant_phone,
@@ -138,6 +170,7 @@ class StudentController extends Controller
             'nationality' => $request->nationality,
             'section_id' => $request->section_id,
             'attendance_type' => $request->attendance_type,
+            'fees' => $request->fees,
         ]);
 
         return redirect()->back()->with('success','تم التعديل بنجاح');
@@ -299,7 +332,17 @@ class StudentController extends Controller
             'student_semester' => $request->semester
         ]);
 
+        if($student->student_semester > 6 && ($student->section->level == 'متوسط' || $student->section->level == 'عالي')) {
+            $student->update([
+                'graduated' => true,
+            ]);
+        }
 
+        if ($student->student_semester > 8 && $student->section->level == 'بكالوريس') {
+            $student->update([
+                'graduated' => true,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'تم الاضافة بنجاح');
     }

@@ -34,17 +34,16 @@
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
                     <select name="section_id" class="mySelect form-control select2" style="width: 100%;">
-                        <option>اختر القسم</option>
                         @foreach ($sections as $section)
-                            <option value="{{ $section->id }}">{{ $section->name }}</option>
+                            <option value="{{ $section->id }}">{{ $section->name }} ({{ $section->level }})</option>
                         @endforeach
                     </select>
                 </div>
             </div>
         </div>
       </div>
-      <div class="card-footer">
-        <input type="submit" value="بحث" class="btn btn-primary w-25">
+      <div class="card-footer text-center">
+        <input type="submit" value="بحث" class="btn btn-primary w-50">
       </div>
     </div>
 </form>

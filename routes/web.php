@@ -92,6 +92,8 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::get('student/grade/equation', [StudentController::class, 'grade_equation'])->name('student.grade_equation');
     Route::post('student/grade_equation_create', [StudentController::class, 'grade_equation_create'])->name('student.grade_equation_create');
     Route::get('student/graduated/students', [StudentController::class, 'graduated_students'])->name('student.graduated_students');
+    Route::get('student/get_students/course', [StudentController::class, 'get_students_by_course'])->name('student.get_students_by_course');
+    Route::get('student/get_students/level', [StudentController::class, 'get_students_by_level'])->name('student.get_students_by_level');
 });
 
     Route::get('student/select_section/form', [StudentController::class, 'select_section'])->name('student.select_section');

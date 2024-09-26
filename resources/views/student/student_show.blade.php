@@ -29,6 +29,9 @@
                     <li class="list-group-item">
                         <b>رقم هاتف ولي الامر</b> <a class="float-right">{{ $student->name }}</a>
                     </li>
+                    <li class="list-group-item">
+                        <b>القيمة عن كل فصل</b> <a class="float-right">{{ $student->fees }}</a>
+                    </li>
                   </ul>
                 </div>
             </div>

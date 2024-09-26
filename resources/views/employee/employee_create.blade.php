@@ -1,14 +1,14 @@
 @extends('layouts.body_structer')
 
 @section('content_header')
-    اضافة طالب
+    اضافة موظف
 @endsection
 
 @section('content')
 
 <div class="card card-primary">
     <div class="card-header">
-      <h3 class="card-title">بيانات الطالب</h3>
+      <h3 class="card-title">بيانات الموظف</h3>
     </div>
     <!-- /.card-header -->
     <!-- form start -->

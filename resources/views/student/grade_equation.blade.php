@@ -12,26 +12,26 @@
                                     <div class="form-group mt-2 w-25">
                                         <label>اختر الفصل الدراسي</label>
                                         <select class="form-control" name="semester">
-                                        <option value="1">الفصل 1</option>
-                                        <option value="2">الفصل 2</option>
-                                        <option value="3">الفصل 3</option>
-                                        <option value="4">الفصل 4</option>
-                                        <option value="5">الفصل 5</option>
-                                        <option value="6">الفصل 6</option>
-                                        <option value="7">الفصل 7</option>
-                                        <option value="8">الفصل 8</option>
+                                        <option value="1" @selected($student->student_semester == 1)>الفصل 1</option>
+                                        <option value="2" @selected($student->student_semester == 2)>الفصل 2</option>
+                                        <option value="3" @selected($student->student_semester == 3)>الفصل 3</option>
+                                        <option value="4" @selected($student->student_semester == 4)>الفصل 4</option>
+                                        <option value="5" @selected($student->student_semester == 5)>الفصل 5</option>
+                                        <option value="6" @selected($student->student_semester == 6)>الفصل 6</option>
+                                        <option value="7" @selected($student->student_semester == 7)>الفصل 7</option>
+                                        <option value="8" @selected($student->student_semester == 8)>الفصل 8</option>
                                         </select>
                                     </div>
                                 @else
                                     <div class="form-group mt-2 w-25">
                                         <label>اختر الفصل الدراسي</label>
                                         <select class="form-control" name="semester">
-                                        <option value="1">الفصل 1</option>
-                                        <option value="2">الفصل 2</option>
-                                        <option value="3">الفصل 3</option>
-                                        <option value="4">الفصل 4</option>
-                                        <option value="5">الفصل 5</option>
-                                        <option value="6">الفصل 6</option>
+                                        <option value="1" @selected($student->student_semester == 1)>الفصل 1</option>
+                                        <option value="2" @selected($student->student_semester == 2)>الفصل 2</option>
+                                        <option value="3" @selected($student->student_semester == 3)>الفصل 3</option>
+                                        <option value="4" @selected($student->student_semester == 4)>الفصل 4</option>
+                                        <option value="5" @selected($student->student_semester == 5)>الفصل 5</option>
+                                        <option value="6" @selected($student->student_semester == 6)>الفصل 6</option>
                                         </select>
                                     </div>
     @endif

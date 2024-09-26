@@ -70,17 +70,13 @@ class DatabaseSeeder extends Seeder
             'level' => 'عالي',
         ]);
 
-        Course::create([
-            'name' => 'اساسيات برمجة',
-            'semester' => 1,
-            'section_id' => 1,
-        ]);
-
-        Course::create([
-            'name' => 'رياضيات',
-            'semester' => 1,
-            'section_id' => 1,
-        ]);
+        for($i = 1; $i <= 6; $i++) {
+            Course::create([
+                'name' => "CS $i",
+                'semester' => $i,
+                'section_id' => 1,
+            ]);
+        }
 
         Employee::create([
             'name' => 'employee',

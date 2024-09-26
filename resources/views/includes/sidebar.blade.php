@@ -13,7 +13,7 @@
           <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div> --}}
         <div class="info">
-          <span class="d-block text-white">{{ auth()->user()->name }}</span>
+          <span class="d-block text-white">أهلا {{ auth()->user()->name }}</span>
         </div>
       </div>
 
@@ -170,7 +170,7 @@
                     <li class="nav-item">
                         <a href="{{ route('treasury.select_season_and_section') }}" class="nav-link {{ request()->is('treasury/select/season_and_section') || request()->is('treasury/season_and_section/student_enroll*') ? 'active' : '' }}">
                           <i class="far fa-circle nav-icon"></i>
-                          <p>تجديد قيد الطلبة</p>
+                          <p>الاقساط الدراسية</p>
                         </a>
                       </li>
                     @endif

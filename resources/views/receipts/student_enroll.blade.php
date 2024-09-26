@@ -38,7 +38,8 @@
                                <h2 class="mb-1 text-muted">معهد عالم الابتكار للمهن الشاملة</h2>
                             </div>
                             <div class="text-muted">
-                                <p><i class="uil uil-phone me-1"></i> 012-345-6789</p>
+                                <p><i class="fa fa-phone"></i> 094-2801398</p>
+                                <p><i class="fa fa-phone"></i> 091-0084847</p>
                             </div>
                         </div>
 
@@ -87,7 +88,7 @@
                                         <tr>
                                             <td>{{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }}</td>
                                             <td><span class="btn btn-success">{{ $receipt->value }} دل</span></td>
-                                            <td><span class="btn btn-danger">{{ 650 - $receipt->value }} دل</span></td>
+                                            <td><span class="btn btn-danger">{{ $receipt->student->fees - $receipt->value }} دل</span></td>
                                             <td>{{ $receipt->user->name }}</td>
                                         </tr>
                                     </tbody><!-- end tbody -->

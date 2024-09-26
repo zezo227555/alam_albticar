@@ -16,7 +16,6 @@ class GradeController extends Controller
 {
     public function index($student_id)
     {
-        dd($student_id);
         $student = Student::find($student_id);
         $season = Season::where('active', '=', 1)->first();
         $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
@@ -96,7 +95,7 @@ class GradeController extends Controller
 
     public function old_grade_sheet(Request $request)
     {
-        $students = Student::where('section_id', '=', $request->section_id)->get();
+        $students = Student::where('section_id', '=', $request->section_id)->where('graduated', '=', 0)->get();
         $season = Season::find($request->season_id);
         return view('grade.old_grade_sheet', ['students' => $students, 'season' => $season]);
     }

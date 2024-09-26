@@ -38,7 +38,8 @@
                                <h2 class="mb-1 text-muted">معهد عالم الابتكار للمهن الشاملة</h2>
                             </div>
                             <div class="text-muted">
-                                <p><i class="uil uil-phone me-1"></i>094-2801398</p>
+                                <p><i class="fa fa-phone"></i> 094-2801398</p>
+                                <p><i class="fa fa-phone"></i> 091-0084847</p>
                             </div>
                         </div>
 

@@ -40,8 +40,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <input type="submit" value="بحث" class="btn btn-primary w-25">
+            <div class="card-footer text-center">
+                <input type="submit" value="بحث" class="btn btn-primary w-50">
             </div>
         </div>
     </form>

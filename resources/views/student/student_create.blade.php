@@ -135,7 +135,41 @@
                     <input name="perant_phone" type="text" class="form-control" placeholder="09XXXXXXXX" value="{{ old('perant_phone') }}">
                 </div>
             </div>
+            <div class="col-sm-6">
+                <label>القيمة عن كل فصل</label>
+                @error('name')
+                    <p class="text-danger">{{ $message }}</p>
+                @enderror
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">$</span>
+                    </div>
+                    <input type="number" min="0" class="form-control" name="fees" value="650">
+                    <div class="input-group-append">
+                      <span class="input-group-text">.00</span>
+                    </div>
+                </div>
+            </div>
         </div>
+        @if (auth()->user()->grade_equation == 1)
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group mt-2">
+                        <label>اختر الفصل الدراسي</label>
+                        <select class="form-control" name="semester">
+                        <option value="1">الفصل 1</option>
+                        <option value="2">الفصل 2</option>
+                        <option value="3">الفصل 3</option>
+                        <option value="4">الفصل 4</option>
+                        <option value="5">الفصل 5</option>
+                        <option value="6">الفصل 6</option>
+                        <option value="7">الفصل 7</option>
+                        <option value="8">الفصل 8</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        @endif
       </div>
       <!-- /.card-body -->
 
