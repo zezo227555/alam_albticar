@@ -16,9 +16,14 @@ class TreasuryController extends Controller
      */
     public function index()
     {
-        $treasury = Treasury::orderBy('created_at')->paginate(50);
+        $treasury = Treasury::orderBy('created_at', 'desc')->paginate(50);
         $treasury_all = Treasury::all();
         return view('treasury.treasury', ['treasury' => $treasury, 'treasury_all' => $treasury_all]);
+    }
+
+    public function show(Treasury $treasury)
+    {
+        return view('treasury.treasury_show', ['treasury' => $treasury]);
     }
 
     public function select_season_and_section()
@@ -55,6 +60,7 @@ class TreasuryController extends Controller
                 'type' => $request->type,
                 'season_id' => $season->id,
                 'value' => -$request->value,
+                'discreption' => $request->discreption,
                 'user_id' => Auth::user()->id,
             ]);
         }else{
@@ -62,6 +68,7 @@ class TreasuryController extends Controller
                 'type' => $request->type,
                 'season_id' => $season->id,
                 'value' => $request->value,
+                'discreption' => $request->discreption,
                 'user_id' => Auth::user()->id,
             ]);
         }

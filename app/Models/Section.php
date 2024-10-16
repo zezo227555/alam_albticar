@@ -23,8 +23,8 @@ class Section extends Model
         return $this->hasMany(Course::class);
     }
 
-    public function employee() : HasMany
+    public function teacherCourses() : HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(TeacherCourses::class);
     }
 }

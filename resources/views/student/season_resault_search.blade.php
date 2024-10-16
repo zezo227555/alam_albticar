@@ -24,6 +24,7 @@
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>رقم القيد</th>
           <th>الاسم</th>
           <th>القسم</th>
@@ -39,8 +40,10 @@
                     $conter = 0;
                     $final_grade = 0;
                     $precent = 0;
+                    $co = 1;
                 @endphp
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $student->st_id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->section->name }}</td>
@@ -80,6 +83,9 @@
                         @endif
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>

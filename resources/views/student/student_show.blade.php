@@ -65,13 +65,13 @@
                         <form action="{{ route('student.deactivate_student') }}" method="POST">
                             @csrf
                             <input type="text" name="student_id" value="{{ $student->id }}" hidden>
-                            <input type="submit" value="ايقاف الطالب" class="btn btn-danger w-100">
+                            <button role="submit" class="btn btn-danger w-100">ايقاف الطالب <i class="fa-solid fa-ban"></i></button>
                         </form>
                     @else
                         <form action="{{ route('student.activate_student') }}" method="POST">
                             @csrf
                             <input type="text" name="student_id" value="{{ $student->id }}" hidden>
-                            <input type="submit" value="تفعيل الطالب" class="btn btn-success w-100">
+                            <button role="submit" class="btn btn-success w-100">تفعيل الطالب <i class="fa-solid fa-check"></i></button>
                         </form>
                     @endif
                 @endif

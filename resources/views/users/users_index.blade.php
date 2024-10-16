@@ -16,6 +16,7 @@
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>الاسم</th>
           <th>رقم الهاتف</th>
           <th>اسم المستخدم</th>
@@ -24,21 +25,28 @@
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($users as $user)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->phone }}</td>
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->created_at->format('Y-d-m | h:m A') }}</td>
                     <td>
-                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">تعديل</a>
+                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info"><i class="fa-solid fa-user-pen"></i></a>
                         <form action="{{ route('users.destroy', $user->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                            <button role="submit" class="btn btn-danger delete_button"><i class="fa-solid fa-delete-left"></i></button>
                         </form>
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>

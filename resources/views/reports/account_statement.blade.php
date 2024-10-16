@@ -16,6 +16,7 @@
       <table class="table table-bordered table-striped w-100 text-center" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>نوع الايصال</th>
           <th>القيمة</th>
           <th>المستخدم</th>
@@ -25,8 +26,12 @@
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($receipts as $receipt)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $receipt->type }}</td>
                     <td>
                         @if ($receipt->value > 0)
@@ -62,6 +67,9 @@
                     </td>
                     <td>{{ $receipt->created_at->format('Y-m-d | h:i A') }}</td>
                     <td>{{ $receipt->user->username }}</td>
+                    @php
+                        $co ++;
+                    @endphp
                 </tr>
             @endforeach
         </tbody>

@@ -48,6 +48,8 @@
     });
 </script>
 
+@yield('data_tabel_altered')
+
 <script>
     $('.delete_button').on('click', function(e) {
     e.preventDefault();
@@ -74,6 +76,18 @@
             position: "center",
             icon: "success",
             title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+@endif
+
+@if (session()->has('info'))
+    <script>
+        Swal.fire({
+            position: "center",
+            icon: "question",
+            title: "{{ session('info') }}",
             showConfirmButton: false,
             timer: 1500
         });

@@ -44,7 +44,7 @@
     </div>
     <div class="card-footer">
         <input type="text" name="employee_id" value="{{ $employee->id }}" hidden>
-        <input type="submit" value="حفظ" class="btn btn-primary w-25">
+        <button role="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
     </div>
     </div>
 </form>

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\Employee;
+use App\Models\Mangement;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
@@ -70,6 +71,10 @@ class DatabaseSeeder extends Seeder
             'level' => 'عالي',
         ]);
 
+        Mangement::create([
+            'name' => 'الادارة العامة',
+        ]);
+
         for($i = 1; $i <= 6; $i++) {
             Course::create([
                 'name' => "CS $i",
@@ -79,35 +84,10 @@ class DatabaseSeeder extends Seeder
         }
 
         Employee::create([
-            'name' => 'employee',
-            'type' => 'موظف اداري',
+            'name' => "employee $i",
             'salary' => '3000',
             'phone' => '092-1',
-            'section_id' => 1,
-        ]);
-
-        Employee::create([
-            'name' => 'teatcher',
-            'type' => 'عضو هيئة تدريس',
-            'salary' => '2500',
-            'phone' => '092-0',
-            'section_id' => 1,
-        ]);
-
-        Employee::create([
-            'name' => 'employee',
-            'type' => 'موظف اداري',
-            'salary' => '3000',
-            'phone' => '092-3',
-            'section_id' => 2,
-        ]);
-
-        Employee::create([
-            'name' => 'teatcher',
-            'type' => 'عضو هيئة تدريس',
-            'salary' => '2500',
-            'phone' => '092-4',
-            'section_id' => 2,
+            'mangement_id' => 1,
         ]);
 
         for($i = 0; $i <= 300; $i++){

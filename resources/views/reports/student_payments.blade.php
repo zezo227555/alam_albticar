@@ -21,34 +21,61 @@
         <table class="table table-bordered table-striped w-100 text-center" id="datatable">
             <thead>
             <tr>
-            <td class="text-center">رقم القيد</td>
-            <td>الاسم</td>
-            <td>صفة القيد</td>
-            <td>رقم الهاتف</td>
-            <td>ايصال</td>
+                <th>ر.م</th>
+                <th class="text-center">رقم القيد</th>
+                <th>الاسم</th>
+                <th>المدفوع</th>
+                <th>المتبقي</th>
+                <th>ايصال</th>
             </tr>
             </thead>
             <tbody>
+                @php
+                    $co = 1;
+                    $value = 0;
+                @endphp
                 @foreach ($students as $student)
                     <tr>
+                        <td>{{ $co }}</td>
                         <td class="text-center">{{ $student->st_id }}</td>
                         <td>{{ $student->name }}</td>
-                        <td>{{ $student->attendance_type }}</td>
-                        <td>{{ $student->phone }}</td>
                         <td>
                             @if ($student->treasury->isEmpty())
-                                <input name="stop_st_id[]" type="checkbox" value="{{ $student->id }}" checked="">
-                                <label class="text-muted">لا يوجد ايصال</label>
+                                0
+                            @else
+                                @foreach ($student->treasury as $treasury)
+                                    {{ $treasury->value }}
+                                    @php
+                                        $value = $treasury->value;
+                                    @endphp
+                                @endforeach
+                            @endif
+                        </td>
+                        <td>
+                            @if ($student->treasury->isEmpty())
+                                {{ $student->fees }}
+                            @else
+                                {{ $student->fees - $value }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($student->treasury->isEmpty())
+                                <input type="checkbox" name="stop_st_id[]" value="{{ $student->id }}" class="btn-check" id="btn-check-outlined{{ $co }}" autocomplete="off" checked="">
+                                <label class="btn btn-outline-danger" for="btn-check-outlined{{ $co }}"><i class="fa-solid fa-ban"></i></label>
                             @else
                                 @foreach ($student->treasury as $treasury)
                                 <form action="{{ route('treasury.student_enroll_receipt') }}">
                                     <input type="text" name="receipt_id" value="{{ $treasury->id }}" hidden>
-                                    <input type="submit" value="ايصال تجديد القيد" class="btn btn-success">
+                                    <button role="submit" class="btn btn-success"><i class="fa-solid fa-receipt"></i></button>
                                 </form>
                                 @endforeach
                             @endif
                         </td>
                     </tr>
+                    @php
+                        $co ++;
+                        $value = 0;
+                    @endphp
                 @endforeach
             </tbody>
         </table>

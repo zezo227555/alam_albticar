@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="حفظ" class="btn btn-primary w-25">
+                    <button role="submit" class="btn btn-primary w-25"><i class="fa-solid fa-floppy-disk"></i></button>
                 </div>
             </form>
         </div>

@@ -20,6 +20,7 @@
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>رقم القيد</th>
           <th>الاسم</th>
           <th>رقم الهاتف</th>
@@ -29,24 +30,31 @@
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($students as $student)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $student->st_id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>الفصل {{ $student->student_semester }}</td>
                     <td>{{ $student->attendance_type }}</td>
                     <td>
-                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-warning">تعديل</a>
-                        <a href="{{ route('student.show', $student->id) }}" class="btn btn-secondary">عرض</a>
-                        <a href="{{ route('student.student_full_marksheet', $student->id) }}" class="btn btn-info">المواد المنجزة</a>
+                        <a href="{{ route('student.edit', $student->id) }}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="{{ route('student.show', $student->id) }}" class="btn btn-secondary"><i class="fa-solid fa-eye"></i></a>
+                        <a href="{{ route('student.student_full_marksheet', $student->id) }}" class="btn btn-info"><i class="fa-solid fa-book"></i></a>
                         <form action="{{ route('student.destroy', $student->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                            <button role="submit" class="btn btn-danger delete_button"><i class="fa-solid fa-delete-left"></i></button>
                         </form>
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>

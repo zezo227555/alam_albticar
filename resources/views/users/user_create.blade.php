@@ -88,9 +88,9 @@
                     <hr>
                     <label>الشؤون الادارية</label> <br>
                     <input type="checkbox" name="role[]" value="add_employee" class="btn-check" id="btn-check-outlined6" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-check-outlined6">تسجيل موظف</label>
+                    <label class="btn btn-outline-primary" for="btn-check-outlined6">تسجيل موظف - مدرس</label>
                     <input type="checkbox" name="role[]" value="employee_salary_create" class="btn-check" id="btn-check-outlined7" autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btn-check-outlined7">صرف مرتبات الموظفين</label>
+                    <label class="btn btn-outline-primary" for="btn-check-outlined7">صرف مرتبات الموظفين - المدرسين</label>
                     <hr>
                     <label>الشؤون المالية</label> <br>
                     <input type="checkbox" name="role[]" value="treasury_main" class="btn-check" id="btn-check-outlined10" autocomplete="off">
@@ -120,7 +120,7 @@
       <!-- /.card-body -->
 
       <div class="card-footer">
-        <button type="submit" class="btn btn-primary w-25">حفظ</button>
+        <button type="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
       </div>
     </form>
   </div>

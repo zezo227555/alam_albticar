@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="بحث" class="btn btn-primary w-50">
+                    <button role="submit" class="btn btn-primary w-50">بحث <i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
         </form>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="بحث" class="btn btn-primary w-50">
+                    <button role="submit" class="btn btn-primary w-50">بحث <i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
         </form>
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <input type="submit" value="بحث" class="btn btn-primary w-50">
+                    <button role="submit" class="btn btn-primary w-50">بحث <i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </div>
         </form>

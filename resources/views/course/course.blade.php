@@ -6,7 +6,7 @@
 
 @section('content_action')
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        اضافة مادة
+        اضافة مادة <i class="fa-solid fa-plus"></i>
     </button>
 @endsection
 
@@ -15,32 +15,40 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">مستخدمو النظام</h3>
+        <h3 class="card-title">قائمة المواد</h3>
     </div>
     <!-- /.card-header -->
     <div class="card-body">
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>الاسم</th>
           <th>الفصل الدراسي</th>
           <th>اجراء</th>
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($course as $course)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $course->name }}</td>
                     <td>الفصل {{ $course->semester }}</td>
                     <td>
-                        <a href="{{ route('course.edit', $course->id) }}" class="btn btn-info">تعديل</a>
+                        <a href="{{ route('course.edit', $course->id) }}" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
                         <form action="{{ route('course.destroy', $course->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                            <button role="submit" class="btn btn-danger delete_button"><i class="fa-solid fa-delete-left"></i></button>
                         </form>
                     </td>
                 </tr>
+                @php
+                    $co++ ;
+                @endphp
             @endforeach
         </tbody>
       </table>
@@ -107,8 +115,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-                <input type="submit" value="حفظ" class="btn btn-primary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق <i class="fa-solid fa-xmark"></i></button>
+                <button role="submit" class="btn btn-primary">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
             </form>
             </div>
         </div>

@@ -45,11 +45,11 @@
         <table class="table table-bordered table-striped text-center w-100" id="datatable">
             <thead>
             <tr>
-            <th>الاسم</th>
-            <th>الفصل الدراسي</th>
-            <th>النصفي</th>
-            <th>النهائي</th>
-            <th>المجموع</th>
+                <th>المادة</th>
+                <th>الفصل الدراسي</th>
+                <th>النصفي</th>
+                <th>النهائي</th>
+                <th>المجموع</th>
             </tr>
             </thead>
             <tbody>
@@ -76,20 +76,20 @@
                         @endforeach
                         @if ($found)
                             <td>
-                                <input type="number" name="old_semester_work[{{ $grade_id }}]" value="{{ $semester_work }}" min="0" max="40">
+                                <input type="number" class="form-control w-50 d-inline" name="old_semester_work[{{ $grade_id }}]" value="{{ $semester_work }}" min="0" max="40">
                             </td>
                             <td>
-                                <input type="number" name="old_final[{{ $grade_id }}]" value="{{ $final }}" min="0" max="60">
+                                <input type="number" class="form-control w-50 d-inline" name="old_final[{{ $grade_id }}]" value="{{ $final }}" min="0" max="60">
                             </td>
                             <td>
                                 {{ $semester_work + $final }}
                             </td>
                         @else
                             <td>
-                                <input type="number" name="semester_work[{{ $course->id }}]" min="0" max="40">
+                                <input type="number" class="form-control w-50 d-inline" name="semester_work[{{ $course->id }}]" min="0" max="40">
                             </td>
                             <td>
-                                <input type="number" name="final[{{ $course->id }}]" min="0" max="60">
+                                <input type="number" class="form-control w-50 d-inline" name="final[{{ $course->id }}]" min="0" max="60">
                             </td>
                             <td>0</td>
                         @endif
@@ -102,7 +102,7 @@
         <div class="card-footer">
             <input type="text" name="student_id" value="{{ $student->id }}" hidden>
             <input type="text" name="section_id" value="{{ $section->id }}" hidden>
-            <input type="submit" value="حفظ" class="btn btn-primary w-25">
+            <button role="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
         </div>
     </div>
 </form>

@@ -43,7 +43,8 @@
 
         </div>
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary w-25">حفظ</button>
+            <button type="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
+
         </div>
     </form>
 </div>

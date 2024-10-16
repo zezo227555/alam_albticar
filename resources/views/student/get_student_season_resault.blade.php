@@ -20,18 +20,25 @@
                 <table class="table table-bordered table-striped text-center w-100" id="datatable">
                     <thead>
                     <tr>
-                    <th>المادة</th>
-                    <th>اعمال السنة</th>
-                    <th>النهائي</th>
-                    <th>النتيجة</th>
+                        <th>ر.م</th>
+                        <th>المادة</th>
+                        <th>اعمال السنة</th>
+                        <th>النهائي</th>
+                        <th>المجموع</th>
+                        <th>النتيجة</th>
                     </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $co = 1;
+                        @endphp
                         @foreach ($grades as $grade)
                             <tr>
+                                <td>{{ $co }}</td>
                                 <td>{{ $grade->course->name }}</td>
                                 <td>{{ $grade->semester_work }}</td>
                                 <td>{{ $grade->final }}</td>
+                                <td>{{ $grade->semester_work + $grade->final }}</td>
                                 <td>
                                     @if ($grade->semester_work + $grade->final >= 50)
                                         <span class="btn btn-success">ناجح</span>
@@ -44,6 +51,9 @@
                                     $final_grade += $grade->final;
                                 @endphp
                             </tr>
+                            @php
+                                $co ++;
+                            @endphp
                         @endforeach
                         @php
                             $percentage = ($final_grade * 100) / (count($grades) * 100);

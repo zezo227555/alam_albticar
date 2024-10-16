@@ -50,11 +50,11 @@
               </li>
             @endif
             @if (auth()->user()->add_sections_courses == 1)
-            <li class="nav-item has-treeview {{ request()->is('section*') ? 'menu-open' : '' }}">
-                <a href="#" class="nav-link {{ request()->is('section*') ? 'active' : '' }}">
+            <li class="nav-item has-treeview {{ request()->is('section*') || request()->is('mangement*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->is('section*') || request()->is('mangement*') ? 'active' : '' }}">
                   <i class="nav-icon fa-solid fa-door-open"></i>
                   <p>
-                    الاقسام الدراسية
+                    الاقسام و التخصصات
                     <i class="right fas fa-angle-left"></i>
                   </p>
                 </a>
@@ -62,7 +62,13 @@
                   <li class="nav-item">
                     <a href="{{ route('section.index') }}" class="nav-link {{ request()->is('section') ? 'active' : '' }}">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>قائمة الاقسام</p>
+                      <p>الاقسام الدراسية</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ route('mangement.index') }}" class="nav-link {{ request()->is('mangement') ? 'active' : '' }}">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>الاقسام الادارية</p>
                     </a>
                   </li>
                 </ul>
@@ -121,8 +127,8 @@
               </li>
             @endif
             @if (auth()->user()->add_employee == 1 || auth()->user()->employee_salary_create == 1)
-            <li class="nav-item has-treeview {{ request()->is('employee*') ? 'menu-open' : '' }}">
-                <a href="#" class="nav-link {{ request()->is('employee*') ? 'active' : '' }}">
+            <li class="nav-item has-treeview {{ request()->is('employee*') || request()->is('teacher*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->is('employee*') || request()->is('teacher*') ? 'active' : '' }}">
                   <i class="nav-icon fa-solid fa-user-tie"></i>
                   <p>
                     الشئون الادارية
@@ -130,19 +136,19 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="{{ route('employee.index') }}" class="nav-link {{ request()->is('employee') || request()->is('employee/salary_create*') || request()->is('employee/*/edit') ? 'active' : '' }}">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>القائمة الرئيسية</p>
-                    </a>
-                  </li>
-                  @if (auth()->user()->add_employee == 1)
-                    <li class="nav-item">
-                        <a href="{{ route('employee.create') }}" class="nav-link {{ request()->is('employee/create') ? 'active' : '' }}">
-                          <i class="far fa-circle nav-icon"></i>
-                          <p>اضافة موظف - مدرس</p>
-                        </a>
-                      </li>
+                    @if (auth()->user()->add_employee == 1)
+                        <li class="nav-item">
+                            <a href="{{ route('employee.index') }}" class="nav-link {{ request()->is('employee') || request()->is('employee/salary_create*') || request()->is('employee/*/edit') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>الموظفين</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('teacher.index') }}" class="nav-link {{ request()->is('teacher') ? 'active' : '' }}">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>المدرسين</p>
+                            </a>
+                        </li>
                     @endif
                 </ul>
               </li>

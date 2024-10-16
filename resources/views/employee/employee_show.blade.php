@@ -27,10 +27,7 @@
                   <h3 class="profile-username text-center">البيانات الوظيفية</h3>
                   <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                      <b>النوع</b> <a class="float-right">{{ $employee->type }}</a>
-                    </li>
-                    <li class="list-group-item">
-                      <b>القسم الدراسي</b> <a class="float-right">{{ $employee->section->name }}</a>
+                      <b>القسم الدراسي</b> <a class="float-right">{{ $employee->mangement->name }}</a>
                     </li>
                     <li class="list-group-item">
                         <b>المرتب</b> <a class="float-right">{{ $employee->salary }}</a>

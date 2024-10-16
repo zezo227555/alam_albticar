@@ -18,6 +18,7 @@
                                 <p class="text-danger">{{ $message }}</p>
                             @enderror
                             <select name="season_id" class="mySelect form-control select2" style="width: 100%;">
+                                <option value="all">الكل</option>
                                 @foreach ($seasons as $season)
                                     <option value="{{ $season->id }}">{{ $season->name }} {{ $season->created_at->format('Y') }} {{ $season->active == 1 ? '(الفصل الحالي)' : '' }}</option>
                                 @endforeach
@@ -41,7 +42,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                <input type="submit" value="بحث" class="btn btn-primary w-25">
+                <button role="submit" class="btn btn-primary w-25">بحث <i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
         </div>
     </form>

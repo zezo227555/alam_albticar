@@ -27,4 +27,9 @@ class Course extends Model
     {
         return $this->hasMany(Grade::class);
     }
+
+    public function teacherCourses() : HasMany
+    {
+        return $this->hasMany(TeacherCourses::class);
+    }
 }

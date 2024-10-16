@@ -20,7 +20,8 @@ class StudentController extends Controller
     {
         $sections = Section::all();
         $courses = Course::all();
-        return view('student.select_section', ['sections' => $sections, 'courses' => $courses]);
+        $seasons = Season::all();
+        return view('student.select_section', ['sections' => $sections, 'courses' => $courses, 'seasons' => $seasons]);
     }
 
     public function index(Request $request)

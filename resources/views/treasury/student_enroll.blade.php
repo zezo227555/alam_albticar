@@ -16,16 +16,23 @@
       <table class="table table-bordered table-striped w-100 text-center" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <td>الاسم</td>
+          <td>الهاتف</td>
           <td>القسم</td>
           <td>تجديد القيد</td>
           <td>ايصال</td>
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($students as $student)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $student->name }}</td>
+                    <td>{{ $student->phone }}</td>
                     <td>{{ $student->section->name }}</td>
                     <td>
                         @if ($student->treasury->isEmpty())
@@ -35,8 +42,8 @@
                                 <input type="text" name="season_id" value="{{ $season->id }}" hidden>
                                 <input type="text" name="section_id" value="{{ $student->section->id }}" hidden>
 
-                                <input type="number" name="value" min="0" value="{{ $student->fees }}">
-                                <input type="submit" value="حفظ" class="btn btn-warning mx-2">
+                                <input type="number" name="value" min="0" value="{{ $student->fees }}" class="form-control d-inline w-25">
+                                <button role="submit" class="btn btn-warning mx-2"><i class="fa-solid fa-floppy-disk"></i></button>
                             </form>
                         @else
                             <form action="{{ route('tresury.update_student_inroll') }}" method="POST">
@@ -44,26 +51,29 @@
 
                                 @foreach ($student->treasury as $treasury)
                                     <input type="text" name="student_treasury_id" value="{{ $treasury->id }}" hidden>
-                                    <input type="number" name="value" value="{{ $treasury->value }}" min="0">
+                                    <input type="number" name="value" value="{{ $treasury->value }}" min="0" class="form-control d-inline w-25">
                                 @endforeach
 
-                                <input type="submit" value="تعديل" class="btn btn-secondary mx-2">
+                                <button role="submit" class="btn btn-secondary mx-2"><i class="fa-solid fa-pen-to-square"></i></button>
                             </form>
                         @endif
                     </td>
                     <td>
                         @if ($student->treasury->isEmpty())
-                            <span class="btn btn-danger">لا يوجد ايصال</span>
+                            <span class="btn btn-danger">لايوجد <i class="fa-solid fa-ban"></i></span>
                         @else
                             @foreach ($student->treasury as $treasury)
                                 <form action="{{ route('treasury.student_enroll_receipt') }}">
                                     <input type="text" name="receipt_id" value="{{ $treasury->id }}" hidden>
-                                    <input type="submit" value="ايصال تجديد القيد" class="btn btn-success">
+                                    <button role="submit" class="btn btn-success">الايصال <i class="fa-solid fa-receipt"></i></button>
                                 </form>
                             @endforeach
                         @endif
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>

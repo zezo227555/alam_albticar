@@ -13,12 +13,12 @@ class Employee extends Model
     protected $table = 'employee';
 
     protected $fillable = [
-        'name', 'type', 'salary', 'section_id', 'phone'
+        'name', 'type', 'salary', 'mangement_id', 'phone'
     ];
 
-    public function section() : BelongsTo
+    public function mangement() : BelongsTo
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Mangement::class);
     }
 
     public function treasury() : HasMany

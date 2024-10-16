@@ -6,7 +6,7 @@
 
 @section('content_action')
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        اضافة قسم
+        اضافة قسم <i class="fa-solid fa-plus"></i>
     </button>
 @endsection
 
@@ -22,6 +22,7 @@
       <table class="table table-bordered table-striped w-100 text-center" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>الاسم</th>
           <th>النوع</th>
           <th>تاريخ الانشاء</th>
@@ -29,16 +30,23 @@
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($section as $section)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $section->name }}</td>
                     <td>{{ $section->level }}</td>
                     <td>{{ $section->created_at->format('Y-m-d | h:m A') }}</td>
                     <td>
-                        <a href="{{ route('course.index', $section->id) }}" class="btn btn-secondary">قائمة المواد</a>
-                        <a href="{{ route('section.edit', $section->id) }}" class="btn btn-info">تعديل</a>
+                        <a href="{{ route('course.index', $section->id) }}" class="btn btn-secondary"><i class="fa-solid fa-book"></i></a>
+                        <a href="{{ route('section.edit', $section->id) }}" class="btn btn-info"><i class="fa-solid fa-pen-to-square"></i></a>
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>
@@ -112,8 +120,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-                <input type="submit" value="حفظ" class="btn btn-primary">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق <i class="fa-solid fa-xmark"></i></button>
+                <button role="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> حفظ</button>
             </form>
             </div>
         </div>

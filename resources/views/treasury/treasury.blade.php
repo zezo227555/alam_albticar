@@ -6,12 +6,12 @@
 
 @section('content_action')
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
-        ايصال صرف
+        ايصال صرف <i class="fa-solid fa-money-bill"></i>
     </button>
     <button type="button" class="btn btn-success mx-3" data-toggle="modal" data-target="#exampleModal2">
-        ايصال قبض
+        ايصال قبض <i class="fa-solid fa-money-bill"></i>
     </button>
-    <span class="btn btn-secondary float-right">قيمة الخزينة الحالية : {{ $treasury_all->sum('value') }} دل</span>
+    <span class="btn btn-secondary float-right">قيمة الخزينة الحالية : {{ $treasury_all->sum('value') }} دل <i class="fa-solid fa-sack-dollar"></i></span>
 @endsection
 
 @section('content')
@@ -26,6 +26,7 @@
       <table class="table table-bordered table-striped w-100 text-center" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>نوع الايصال</th>
           <th>القيمة</th>
           <th>المستخدم</th>
@@ -35,14 +36,20 @@
         </tr>
         </thead>
         <tbody>
+            @php
+                $co = 1;
+            @endphp
             @foreach ($treasury as $t)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $t->type }}</td>
                     <td>{{ $t->value }}</td>
                     <td>
                         @if ($t->type == 'مرتبات')
                             @if (isset($t->employee_id))
                                 {{ $t->employee->name }}
+                            @elseif (isset($t->teacher_id))
+                                {{ $t->teacher->name }}
                             @else
                                 <span class="btn btn-warning">تم حذف الموظف</span>
                             @endif
@@ -60,13 +67,17 @@
                     <td>{{ $t->created_at->format('Y-m-d | h:i A') }}</td>
                     <td>{{ $t->user->username }}</td>
                     <td>
+                        <a href="{{ route('treasury.show', $t->id) }}" class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
                         <form action="{{ route('treasury.destroy', $t->id) }}" method="post" class="d-inline form_delete">
                             @csrf
                             @method('DELETE')
-                            <input type="submit" value="حذف" class="btn btn-danger delete_button">
+                            <button role="submit" class="btn btn-danger delete_button"><i class="fa-solid fa-delete-left"></i></button>
                         </form>
                     </td>
                 </tr>
+                @php
+                    $co++ ;
+                @endphp
             @endforeach
         </tbody>
       </table>
@@ -137,8 +148,14 @@
                             <div class="form-group mt-2">
                                 <label>نوع الايصال</label>
                                 <select class="form-control" name="type">
+                                  <option value="مصروفات اخرى">صيانة</option>
+                                  <option value="مصروفات اخرى">سداد فواتير</option>
                                   <option value="مصروفات اخرى">مصروفات اخرى</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>الوصف</label>
+                                <textarea name="discreption" class="form-control" rows="3" placeholder="أكتب وصفا للأيصال"></textarea>
                             </div>
                             <input type="text" hidden value="صرف" name="value_type">
                         </div>
@@ -146,7 +163,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-                <input type="submit" value="حفظ" class="btn btn-primary">
+                <button role="submit" class="btn btn-primary">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
             </form>
             </div>
         </div>
@@ -189,7 +206,13 @@
                                 <label>نوع الايصال</label>
                                 <select class="form-control" name="type">
                                   <option value="ايداع قيمة">ايداع قيمة</option>
+                                  <option value="ايداع قيمة">حوالة نقدية</option>
+                                  <option value="ايداع قيمة">اخرى</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>الوصف</label>
+                                <textarea name="discreption" class="form-control" rows="3" placeholder="أكتب وصفا للأيصال"></textarea>
                             </div>
                             <input type="text" hidden value="قبض" name="value_type">
                         </div>
@@ -197,7 +220,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-                <input type="submit" value="حفظ" class="btn btn-primary">
+                <button role="submit" class="btn btn-primary">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
             </form>
             </div>
         </div>
@@ -205,3 +228,22 @@
     </div>
 @endsection
 
+@section('data_tabel_altered')
+    <script>
+        $('#datatable').DataTable().destroy();
+        $('#datatable').DataTable({
+            dom: '<"row mb-2"<"col-sm-6"f><"col-sm-6 text-right"B>>' +
+            't'+
+            "<'row mt-2'<'col-sm-7'p>>",
+            buttons: [
+                'excel',
+                'print',
+            ],
+            language: {
+                search: "بحث:",
+            },
+            paging: false,
+            pageLength: 50
+        });
+    </script>
+@endsection

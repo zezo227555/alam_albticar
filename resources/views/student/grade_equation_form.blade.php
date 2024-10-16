@@ -45,7 +45,7 @@
                             @csrf
                             <input type="text" name="student_id" value="{{ $student->id }}" hidden>
                             <input type="text" name="section_id" value="{{ $section->id }}" hidden>
-                            <input type="submit" value="معادلة" class="btn btn-primary">
+                            <button role="submit" class="btn btn-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                         </form>
                     </td>
                 </tr>

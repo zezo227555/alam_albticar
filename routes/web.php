@@ -4,14 +4,17 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\MangementController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TreasuryController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\IsStudentLogged;
 use App\Http\Middleware\IsUserLogedIn;
+use App\Models\Mangement;
 use Illuminate\Support\Facades\Route;
 
 // الصلاحيات
@@ -32,6 +35,8 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::resource('users', UserController::class);
     Route::resource('section', SectionController::class);
     Route::resource('treasury', TreasuryController::class);
+    Route::resource('mangement', MangementController::class);
+    Route::resource('teacher', TeacherController::class);
 
     // الاعدادات
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
@@ -68,6 +73,13 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::get('employee/salary_create/{employee_id}', [EmployeeController::class, 'salary_create'])->name('employee.salary_create');
     Route::post('employee/salary_store', [EmployeeController::class, 'salary_store'])->name('employee.salary_store');
     Route::post('employee/salary_update', [EmployeeController::class, 'salary_update'])->name('employee.salary_update');
+
+    // المدرسين
+    Route::get('teacher/{teacher_id}/courses', [TeacherController::class, 'courses'])->name('teacher.courses');
+    Route::post('teacher/courses/create', [TeacherController::class, 'teacherCoursesCreate'])->name('teacher.teacherCoursesCreate');
+    Route::post('teacher/courses/destroy', [TeacherController::class, 'teacherCoursesDestroy'])->name('teacher.teacherCoursesDestroy');
+    Route::get('teacher/{teacher_id}/salary', [TeacherController::class, 'teacherSalary'])->name('teacher.teacherSalary');
+    Route::post('teacher/salary', [TeacherController::class, 'teacherSalaryCreate'])->name('teacher.teacherSalaryCreate');
 
     // التقارير
     Route::get('reports/students_inroll_form', [ReportController::class, 'students_inroll_form'])->name('reports.students_inroll_form');

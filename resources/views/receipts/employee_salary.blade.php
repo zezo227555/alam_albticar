@@ -86,7 +86,7 @@
                                         <tr>
                                             <td>{{ $receipt->season->name }} {{ $receipt->season->created_at->format('Y') }}</td>
                                             <td><span class="btn btn-success">{{ $receipt->value }} دل</span></td>
-                                            <td><span class="btn btn-danger">{{ $receipt->employee->salary - $receipt->value }} دل</span></td>
+                                            <td><span class="btn btn-danger">{{ $receipt->employee->salary + $receipt->value }} دل</span></td>
                                         </tr>
                                     </tbody><!-- end tbody -->
                                 </table><!-- end table -->

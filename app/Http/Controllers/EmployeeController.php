@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Mangement;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Treasury;
@@ -17,9 +18,10 @@ class EmployeeController extends Controller
     public function index()
     {
         $employee = Employee::all();
+        $mangements = Mangement::all();
         $season = Season::where('active', '=', 1)->first();
         $receipts = Treasury::where('type', '=', 'مرتبات')->where('season_id', '=', $season->id)->get();
-        return view('employee.employee', ['employee' => $employee, 'receipts' => $receipts]);
+        return view('employee.employee', ['employee' => $employee, 'mangements' => $mangements, 'receipts' => $receipts]);
     }
 
     /**
@@ -27,8 +29,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $sections = Section::all();
-        return view('employee.employee_create', ['sections' => $sections]);
+        $mangements = Mangement::all();
+        return view('employee.employee_create', ['mangements' => $mangements]);
     }
 
     /**
@@ -38,18 +40,16 @@ class EmployeeController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'type' => 'required',
             'phone' => 'required',
             'salary' => 'required|min:0',
-            'section_id' => 'required',
+            'mangement_id' => 'required',
         ]);
 
         Employee::create([
             'name' => $request->name,
-            'type' => $request->type,
             'salary' => $request->salary,
             'phone' => $request->phone,
-            'section_id' => $request->section_id,
+            'mangement_id' => $request->mangement_id,
         ]);
 
         return redirect()->back()->with('success','تمت الاضافة بنجاح');
@@ -65,8 +65,8 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $sections = Section::all();
-        return view('employee.employee_edit', ['employee' => $employee, 'sections' => $sections]);
+        $mangements = Mangement::all();
+        return view('employee.employee_edit', ['employee' => $employee, 'mangements' => $mangements]);
     }
 
     /**
@@ -98,12 +98,12 @@ class EmployeeController extends Controller
                 'salary' => $request->salary
             ]);
         }
-        if($employee->section_id != $request->section_id){
+        if($employee->mangement_id != $request->mangement_id){
             $request->validate([
-                'section_id' => 'required'
+                'mangement_id' => 'required'
             ]);
             $employee->update([
-                'section_id' => $request->section_id
+                'mangement_id' => $request->mangement_id
             ]);
         }
             return redirect()->back()->with('success','تمت التعديل بنجاح');
@@ -137,7 +137,7 @@ class EmployeeController extends Controller
             'type' => 'مرتبات',
             'season_id' => $request->season_id,
             'employee_id' => $request->employee_id,
-            'value' => $request->ammount,
+            'value' => -$request->ammount,
             'user_id' => Auth::user()->id
         ]);
 

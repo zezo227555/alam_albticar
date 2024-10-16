@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,12 +75,10 @@ class AuthController extends Controller
     }
 
     public function main(){
-        $students = Student::where('graduated', '=', 0)->get();
         $sections = Section::all();
-        $teachers = Employee::where('type', '=', 'عضو هيئة تدريس')->get();
+        $teachers = Teacher::all();
         $season = Season::where('active', '=', 1)->first();
         return view('dashboard', [
-            'students' => $students,
             'sections' => $sections,
             'teachers' => $teachers,
             'season' => $season,

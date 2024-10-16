@@ -8,6 +8,7 @@
 
 @php
     $total = 0;
+    $co = 1;
 @endphp
 
 
@@ -20,6 +21,7 @@
       <table class="table table-bordered table-striped text-center w-100" id="datatable">
         <thead>
         <tr>
+            <th>ر.م</th>
           <th>الاسم</th>
           <th>النوع</th>
           <th>القسم</th>
@@ -29,6 +31,7 @@
         <tbody>
             @foreach ($employees as $employee)
                 <tr>
+                    <td>{{ $co }}</td>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->type }}</td>
                     <td>{{ $employee->section->name }}</td>
@@ -45,6 +48,9 @@
                         @endif
                     </td>
                 </tr>
+                @php
+                    $co ++;
+                @endphp
             @endforeach
         </tbody>
       </table>
