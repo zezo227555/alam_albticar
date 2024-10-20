@@ -32,7 +32,7 @@
                     @error('nationality')
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
-                    <select name="nationality" class="mySelect form-control select2 select2-hidden-accessible" style="width: 100%;">
+                    <select name="nationality" class="nationalty mySelect form-control select2 select2-hidden-accessible" style="width: 100%;">
                         <option>اختر الجنسية</option>
                         <option {{ $student->nationality == 'ليبي' ? 'selected' : '' }} value="ليبي">ليبي</option>
                         <option {{ $student->nationality == 'البحرين' ? 'selected' : '' }} value="البحرين">بحريني</option>
@@ -89,9 +89,8 @@
                         <p class="text-danger">{{ $message }}</p>
                     @enderror
                     <select name="section_id" class="mySelect form-control select2" style="width: 100%;">
-                        <option>اختر القسم</option>
                         @foreach ($sections as $section)
-                            <option value="{{ $section->id }}" {{ $section->id == $student->section_id ? 'selected' : '' }}>{{ $section->name }}</option>
+                            <option value="{{ $section->id }}" {{ $section->id == $student->section_id ? 'selected' : '' }}>{{ $section->name }} ({{ $section->level }})</option>
                         @endforeach
                     </select>
                 </div>
@@ -170,7 +169,7 @@
 @section('costome_section_scripts')
 <script>
     $(document).ready(function() {
-      $(".mySelect").change(function() {
+      $(".nationalty").change(function() {
         const selectedValue = $(this).val();
         $(".myTextField").prop("disabled", selectedValue !== "ليبي");
       });
