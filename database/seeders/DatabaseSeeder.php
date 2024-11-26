@@ -8,6 +8,7 @@ use App\Models\Mangement;
 use App\Models\Season;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Treasury;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -117,6 +118,15 @@ class DatabaseSeeder extends Seeder
                 'section_id' => 2,
                 'season_id' => 1,
                 'attendance_type' => 'نظامي',
+            ]);
+        }
+
+        for($i = 0; $i < 10000; $i++) {
+            Treasury::create([
+                'type' => 'قبض',
+                'value' => 1,
+                'season_id' => 1,
+                'user_id' => 1,
             ]);
         }
     }
