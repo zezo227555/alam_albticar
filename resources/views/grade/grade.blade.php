@@ -44,10 +44,10 @@
                             <td>{{ $co }}</td>
                             <td>{{ $grade->course->name }}</td>
                             <td>
-                                <input type="number" name="semester_work[{{ $grade->id }}]" value="{{ $grade->semester_work }}" min="0" max="40">
+                                <input class="form-control d-inline" type="number" name="semester_work[{{ $grade->id }}]" value="{{ $grade->semester_work }}" min="0" max="40">
                             </td>
                             <td>
-                                <input type="number" name="final[{{ $grade->id }}]" value="{{ $grade->final }}" min="0" max="60">
+                                <input class="form-control d-inline" type="number" name="final[{{ $grade->id }}]" value="{{ $grade->final }}" min="0" max="60">
                             </td>
                             <td>{{ $grade->total }}</td>
                             <td>

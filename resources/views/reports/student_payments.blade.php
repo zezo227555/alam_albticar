@@ -24,6 +24,8 @@
                 <th>ر.م</th>
                 <th class="text-center">رقم القيد</th>
                 <th>الاسم</th>
+                <th>الرقم الوطني</th>
+                <th>رقم الهاتف</th>
                 <th>المدفوع</th>
                 <th>المتبقي</th>
                 <th>ايصال</th>
@@ -39,6 +41,8 @@
                         <td>{{ $co }}</td>
                         <td class="text-center">{{ $student->st_id }}</td>
                         <td>{{ $student->name }}</td>
+                        <td>{{ $student->nationla_id }}</td>
+                        <td>{{ $student->phone }}</td>
                         <td>
                             @if ($student->treasury->isEmpty())
                                 0

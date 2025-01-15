@@ -77,7 +77,7 @@
                                     $total_percent = ($total_conter * 100) / (count($grades) * 100);
                                 @endphp
                             @endif
-                            {{ $total_percent }}
+                            {{ number_format($total_percent, 2) }}
                         </td>
                     </tr>
                     <tr>

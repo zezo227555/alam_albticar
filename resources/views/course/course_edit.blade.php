@@ -5,38 +5,36 @@
 @endsection
 
 @section('content')
-
-
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">تعديل بيانات المادة</h3>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body">
-        <div class="card card-primary">
-            <div class="card-header">
-            <h3 class="card-title">بيانات المادة</h3>
-            </div>
-            <!-- /.card-header -->
-            <!-- form start -->
-            <form role="form" action="{{ route('course.update', $course->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="card-body">
-                    <div class="form-group">
-                        <label>اسم المادة</label>
-                        @error('name')
-                            <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                        <input name="name" type="text" class="form-control" placeholder="ادخل الاسم" value="{{ $course->name }}">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">تعديل بيانات المادة</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">بيانات المادة</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form role="form" action="{{ route('course.update', $course->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>اسم المادة</label>
+                            @error('name')
+                                <p class="text-danger">{{ $message }}</p>
+                            @enderror
+                            <input name="name" type="text" class="form-control" placeholder="ادخل الاسم"
+                                value="{{ $course->name }}">
+                        </div>
                     </div>
-                </div>
-                <div class="card-footer">
-                    <button role="submit" class="btn btn-primary w-25"><i class="fa-solid fa-floppy-disk"></i></button>
-                </div>
-            </form>
+                    <div class="card-footer">
+                        <button role="submit" class="btn btn-primary w-25"><i class="fa-solid fa-floppy-disk"></i></button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-  </div>
-
 @endsection

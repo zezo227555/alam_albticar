@@ -1,1540 +1,715 @@
 /*!
- * AdminLTE v3.0.0-rc.1 (https://adminlte.io)
- * Copyright 2014-2019 Colorlib <http://colorlib.com>
- * Licensed under MIT (https://github.com/almasaeed2010/AdminLTE/blob/master/LICENSE)
+ * AdminLTE v4.0.0-beta2 (https://adminlte.io)
+ * Copyright 2014-2024 Colorlib <https://colorlib.com>
+ * Licensed under MIT (https://github.com/ColorlibHQ/AdminLTE/blob/master/LICENSE)
  */
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-  typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (global = global || self, factory(global.adminlte = {}));
-}(this, function (exports) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.adminlte = {}));
+})(this, (function (exports) { 'use strict';
 
-  /**
-   * --------------------------------------------
-   * AdminLTE ControlSidebar.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var ControlSidebar = function ($) {
+    const domContentLoadedCallbacks = [];
+    const onDOMContentLoaded = (callback) => {
+        if (document.readyState === 'loading') {
+            // add listener on the first call when the document is in loading state
+            if (!domContentLoadedCallbacks.length) {
+                document.addEventListener('DOMContentLoaded', () => {
+                    for (const callback of domContentLoadedCallbacks) {
+                        callback();
+                    }
+                });
+            }
+            domContentLoadedCallbacks.push(callback);
+        }
+        else {
+            callback();
+        }
+    };
+    /* SLIDE UP */
+    const slideUp = (target, duration = 500) => {
+        target.style.transitionProperty = 'height, margin, padding';
+        target.style.transitionDuration = `${duration}ms`;
+        target.style.boxSizing = 'border-box';
+        target.style.height = `${target.offsetHeight}px`;
+        target.style.overflow = 'hidden';
+        window.setTimeout(() => {
+            target.style.height = '0';
+            target.style.paddingTop = '0';
+            target.style.paddingBottom = '0';
+            target.style.marginTop = '0';
+            target.style.marginBottom = '0';
+        }, 1);
+        window.setTimeout(() => {
+            target.style.display = 'none';
+            target.style.removeProperty('height');
+            target.style.removeProperty('padding-top');
+            target.style.removeProperty('padding-bottom');
+            target.style.removeProperty('margin-top');
+            target.style.removeProperty('margin-bottom');
+            target.style.removeProperty('overflow');
+            target.style.removeProperty('transition-duration');
+            target.style.removeProperty('transition-property');
+        }, duration);
+    };
+    /* SLIDE DOWN */
+    const slideDown = (target, duration = 500) => {
+        target.style.removeProperty('display');
+        let { display } = window.getComputedStyle(target);
+        if (display === 'none') {
+            display = 'block';
+        }
+        target.style.display = display;
+        const height = target.offsetHeight;
+        target.style.overflow = 'hidden';
+        target.style.height = '0';
+        target.style.paddingTop = '0';
+        target.style.paddingBottom = '0';
+        target.style.marginTop = '0';
+        target.style.marginBottom = '0';
+        window.setTimeout(() => {
+            target.style.boxSizing = 'border-box';
+            target.style.transitionProperty = 'height, margin, padding';
+            target.style.transitionDuration = `${duration}ms`;
+            target.style.height = `${height}px`;
+            target.style.removeProperty('padding-top');
+            target.style.removeProperty('padding-bottom');
+            target.style.removeProperty('margin-top');
+            target.style.removeProperty('margin-bottom');
+        }, 1);
+        window.setTimeout(() => {
+            target.style.removeProperty('height');
+            target.style.removeProperty('overflow');
+            target.style.removeProperty('transition-duration');
+            target.style.removeProperty('transition-property');
+        }, duration);
+    };
+
     /**
+     * --------------------------------------------
+     * @file AdminLTE layout.ts
+     * @description Layout for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
+     */
+    /**
+     * ------------------------------------------------------------------------
      * Constants
+     * ------------------------------------------------------------------------
+     */
+    const CLASS_NAME_HOLD_TRANSITIONS = 'hold-transition';
+    const CLASS_NAME_APP_LOADED = 'app-loaded';
+    /**
+     * Class Definition
      * ====================================================
      */
-    var NAME = 'ControlSidebar';
-    var DATA_KEY = 'lte.controlsidebar';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      COLLAPSED: "collapsed" + EVENT_KEY,
-      EXPANDED: "expanded" + EVENT_KEY
-    };
-    var Selector = {
-      CONTROL_SIDEBAR: '.control-sidebar',
-      CONTROL_SIDEBAR_CONTENT: '.control-sidebar-content',
-      DATA_TOGGLE: '[data-widget="control-sidebar"]',
-      CONTENT: '.content-wrapper',
-      HEADER: '.main-header',
-      FOOTER: '.main-footer'
-    };
-    var ClassName = {
-      CONTROL_SIDEBAR_ANIMATE: 'control-sidebar-animate',
-      CONTROL_SIDEBAR_OPEN: 'control-sidebar-open',
-      CONTROL_SIDEBAR_SLIDE: 'control-sidebar-slide-open',
-      LAYOUT_FIXED: 'layout-fixed',
-      NAVBAR_FIXED: 'layout-navbar-fixed',
-      NAVBAR_SM_FIXED: 'layout-sm-navbar-fixed',
-      NAVBAR_MD_FIXED: 'layout-md-navbar-fixed',
-      NAVBAR_LG_FIXED: 'layout-lg-navbar-fixed',
-      NAVBAR_XL_FIXED: 'layout-xl-navbar-fixed',
-      FOOTER_FIXED: 'layout-footer-fixed',
-      FOOTER_SM_FIXED: 'layout-sm-footer-fixed',
-      FOOTER_MD_FIXED: 'layout-md-footer-fixed',
-      FOOTER_LG_FIXED: 'layout-lg-footer-fixed',
-      FOOTER_XL_FIXED: 'layout-xl-footer-fixed'
-    };
-
-    var ControlSidebar =
-    /*#__PURE__*/
-    function () {
-      function ControlSidebar(element, config) {
-        this._element = element;
-        this._config = config;
-
-        this._init();
-      } // Public
-
-
-      var _proto = ControlSidebar.prototype;
-
-      _proto.show = function show() {
-        // Show the control sidebar
-        if (this._config.controlsidebarSlide) {
-          $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-          $('body').removeClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
-            $(Selector.CONTROL_SIDEBAR).hide();
-            $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-            $(this).dequeue();
-          });
-        } else {
-          $('body').removeClass(ClassName.CONTROL_SIDEBAR_OPEN);
+    class Layout {
+        constructor(element) {
+            this._element = element;
         }
-
-        var expandedEvent = $.Event(Event.EXPANDED);
-        $(this._element).trigger(expandedEvent);
-      };
-
-      _proto.collapse = function collapse() {
-        // Collapse the control sidebar
-        if (this._config.controlsidebarSlide) {
-          $('html').addClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-          $(Selector.CONTROL_SIDEBAR).show().delay(10).queue(function () {
-            $('body').addClass(ClassName.CONTROL_SIDEBAR_SLIDE).delay(300).queue(function () {
-              $('html').removeClass(ClassName.CONTROL_SIDEBAR_ANIMATE);
-              $(this).dequeue();
+        holdTransition() {
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                document.body.classList.add(CLASS_NAME_HOLD_TRANSITIONS);
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    document.body.classList.remove(CLASS_NAME_HOLD_TRANSITIONS);
+                }, 400);
             });
-            $(this).dequeue();
-          });
-        } else {
-          $('body').addClass(ClassName.CONTROL_SIDEBAR_OPEN);
         }
-
-        var collapsedEvent = $.Event(Event.COLLAPSED);
-        $(this._element).trigger(collapsedEvent);
-      };
-
-      _proto.toggle = function toggle() {
-        var shouldOpen = $('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE);
-
-        if (shouldOpen) {
-          // Open the control sidebar
-          this.show();
-        } else {
-          // Close the control sidebar
-          this.collapse();
-        }
-      } // Private
-      ;
-
-      _proto._init = function _init() {
-        var _this = this;
-
-        this._fixHeight();
-
-        this._fixScrollHeight();
-
-        $(window).resize(function () {
-          _this._fixHeight();
-
-          _this._fixScrollHeight();
-        });
-        $(window).scroll(function () {
-          if ($('body').hasClass(ClassName.CONTROL_SIDEBAR_OPEN) || $('body').hasClass(ClassName.CONTROL_SIDEBAR_SLIDE)) {
-            _this._fixScrollHeight();
-          }
-        });
-      };
-
-      _proto._fixScrollHeight = function _fixScrollHeight() {
-        var heights = {
-          scroll: $(document).height(),
-          window: $(window).height(),
-          header: $(Selector.HEADER).outerHeight(),
-          footer: $(Selector.FOOTER).outerHeight()
-        };
-        var positions = {
-          bottom: Math.abs(heights.window + $(window).scrollTop() - heights.scroll),
-          top: $(window).scrollTop()
-        };
-        var navbarFixed = false;
-        var footerFixed = false;
-
-        if ($('body').hasClass(ClassName.LAYOUT_FIXED)) {
-          if ($('body').hasClass(ClassName.NAVBAR_FIXED) || $('body').hasClass(ClassName.NAVBAR_SM_FIXED) || $('body').hasClass(ClassName.NAVBAR_MD_FIXED) || $('body').hasClass(ClassName.NAVBAR_LG_FIXED) || $('body').hasClass(ClassName.NAVBAR_XL_FIXED)) {
-            if ($(Selector.HEADER).css("position") === "fixed") {
-              navbarFixed = true;
-            }
-          }
-
-          if ($('body').hasClass(ClassName.FOOTER_FIXED) || $('body').hasClass(ClassName.FOOTER_SM_FIXED) || $('body').hasClass(ClassName.FOOTER_MD_FIXED) || $('body').hasClass(ClassName.FOOTER_LG_FIXED) || $('body').hasClass(ClassName.FOOTER_XL_FIXED)) {
-            if ($(Selector.FOOTER).css("position") === "fixed") {
-              footerFixed = true;
-            }
-          }
-
-          if (positions.top === 0 && positions.bottom === 0) {
-            $(Selector.CONTROL_SIDEBAR).css('bottom', heights.footer);
-            $(Selector.CONTROL_SIDEBAR).css('top', heights.header);
-            $(Selector.CONTROL_SIDEBAR + ', ' + Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).css('height', heights.window - (heights.header + heights.footer));
-          } else if (positions.bottom <= heights.footer) {
-            if (footerFixed === false) {
-              $(Selector.CONTROL_SIDEBAR).css('bottom', heights.footer - positions.bottom);
-              $(Selector.CONTROL_SIDEBAR + ', ' + Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).css('height', heights.window - (heights.footer - positions.bottom));
-            } else {
-              $(Selector.CONTROL_SIDEBAR).css('bottom', heights.footer);
-            }
-          } else if (positions.top <= heights.header) {
-            if (navbarFixed === false) {
-              $(Selector.CONTROL_SIDEBAR).css('top', heights.header - positions.top);
-              $(Selector.CONTROL_SIDEBAR + ', ' + Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).css('height', heights.window - (heights.header - positions.top));
-            } else {
-              $(Selector.CONTROL_SIDEBAR).css('top', heights.header);
-            }
-          } else {
-            if (navbarFixed === false) {
-              $(Selector.CONTROL_SIDEBAR).css('top', 0);
-              $(Selector.CONTROL_SIDEBAR + ', ' + Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).css('height', heights.window);
-            } else {
-              $(Selector.CONTROL_SIDEBAR).css('top', heights.header);
-            }
-          }
-        }
-      };
-
-      _proto._fixHeight = function _fixHeight() {
-        var heights = {
-          window: $(window).height(),
-          header: $(Selector.HEADER).outerHeight(),
-          footer: $(Selector.FOOTER).outerHeight()
-        };
-
-        if ($('body').hasClass(ClassName.LAYOUT_FIXED)) {
-          var sidebarHeight = heights.window - heights.header;
-
-          if ($('body').hasClass(ClassName.FOOTER_FIXED) || $('body').hasClass(ClassName.FOOTER_SM_FIXED) || $('body').hasClass(ClassName.FOOTER_MD_FIXED) || $('body').hasClass(ClassName.FOOTER_LG_FIXED) || $('body').hasClass(ClassName.FOOTER_XL_FIXED)) {
-            if ($(Selector.FOOTER).css("position") === "fixed") {
-              sidebarHeight = heights.window - heights.header - heights.footer;
-            }
-          }
-
-          $(Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).css('height', sidebarHeight);
-
-          if (typeof $.fn.overlayScrollbars !== 'undefined') {
-            $(Selector.CONTROL_SIDEBAR + ' ' + Selector.CONTROL_SIDEBAR_CONTENT).overlayScrollbars({
-              className: this._config.scrollbarTheme,
-              sizeAutoCapable: true,
-              scrollbars: {
-                autoHide: this._config.scrollbarAutoHide,
-                clickScrolling: true
-              }
-            });
-          }
-        }
-      } // Static
-      ;
-
-      ControlSidebar._jQueryInterface = function _jQueryInterface(operation) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          if (!data) {
-            data = new ControlSidebar(this, $(this).data());
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (data[operation] === 'undefined') {
-            throw new Error(operation + " is not a function");
-          }
-
-          data[operation]();
-        });
-      };
-
-      return ControlSidebar;
-    }();
-    /**
-     *
-     * Data Api implementation
-     * ====================================================
-     */
-
-
-    $(document).on('click', Selector.DATA_TOGGLE, function (event) {
-      event.preventDefault();
-
-      ControlSidebar._jQueryInterface.call($(this), 'toggle');
+    }
+    onDOMContentLoaded(() => {
+        const data = new Layout(document.body);
+        data.holdTransition();
+        setTimeout(() => {
+            document.body.classList.add(CLASS_NAME_APP_LOADED);
+        }, 400);
     });
+
     /**
-     * jQuery API
-     * ====================================================
+     * --------------------------------------------
+     * @file AdminLTE push-menu.ts
+     * @description Push menu for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
      */
-
-    $.fn[NAME] = ControlSidebar._jQueryInterface;
-    $.fn[NAME].Constructor = ControlSidebar;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return ControlSidebar._jQueryInterface;
-    };
-
-    return ControlSidebar;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE Layout.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var Layout = function ($) {
     /**
+     * ------------------------------------------------------------------------
      * Constants
-     * ====================================================
+     * ------------------------------------------------------------------------
      */
-    var NAME = 'Layout';
-    var DATA_KEY = 'lte.layout';
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Selector = {
-      HEADER: '.main-header',
-      MAIN_SIDEBAR: '.main-sidebar',
-      SIDEBAR: '.main-sidebar .sidebar',
-      CONTENT: '.content-wrapper',
-      BRAND: '.brand-link',
-      CONTENT_HEADER: '.content-header',
-      WRAPPER: '.wrapper',
-      CONTROL_SIDEBAR: '.control-sidebar',
-      LAYOUT_FIXED: '.layout-fixed',
-      FOOTER: '.main-footer'
-    };
-    var ClassName = {
-      HOLD: 'hold-transition',
-      SIDEBAR: 'main-sidebar',
-      CONTENT_FIXED: 'content-fixed',
-      SIDEBAR_FOCUSED: 'sidebar-focused',
-      LAYOUT_FIXED: 'layout-fixed',
-      NAVBAR_FIXED: 'layout-navbar-fixed',
-      FOOTER_FIXED: 'layout-footer-fixed'
-    };
-    var Default = {
-      scrollbarTheme: 'os-theme-light',
-      scrollbarAutoHide: 'l'
-      /**
-       * Class Definition
-       * ====================================================
-       */
-
-    };
-
-    var Layout =
-    /*#__PURE__*/
-    function () {
-      function Layout(element, config) {
-        this._config = config;
-        this._element = element;
-
-        this._init();
-      } // Public
-
-
-      var _proto = Layout.prototype;
-
-      _proto.fixLayoutHeight = function fixLayoutHeight() {
-        var heights = {
-          window: $(window).height(),
-          header: $(Selector.HEADER).outerHeight(),
-          footer: $(Selector.FOOTER).outerHeight(),
-          sidebar: $(Selector.SIDEBAR).height()
-        };
-
-        var max = this._max(heights);
-
-        if ($('body').hasClass(ClassName.LAYOUT_FIXED)) {
-          $(Selector.CONTENT).css('min-height', max - heights.header - heights.footer); // $(Selector.SIDEBAR).css('min-height', max - heights.header)
-
-          if (typeof $.fn.overlayScrollbars !== 'undefined') {
-            $(Selector.SIDEBAR).overlayScrollbars({
-              className: this._config.scrollbarTheme,
-              sizeAutoCapable: true,
-              scrollbars: {
-                autoHide: this._config.scrollbarAutoHide,
-                clickScrolling: true
-              }
-            });
-          }
-        } else {
-          if (heights.window > heights.sidebar) {
-            $(Selector.CONTENT).css('min-height', heights.window - heights.header - heights.footer);
-          } else {
-            $(Selector.CONTENT).css('min-height', heights.sidebar - heights.header);
-          }
-        }
-      } // Private
-      ;
-
-      _proto._init = function _init() {
-        var _this = this;
-
-        // Enable transitions
-        $('body').removeClass(ClassName.HOLD); // Activate layout height watcher
-
-        this.fixLayoutHeight();
-        $(Selector.SIDEBAR).on('collapsed.lte.treeview expanded.lte.treeview collapsed.lte.pushmenu expanded.lte.pushmenu', function () {
-          _this.fixLayoutHeight();
-        });
-        $(window).resize(function () {
-          _this.fixLayoutHeight();
-        });
-        $('body, html').css('height', 'auto');
-      };
-
-      _proto._max = function _max(numbers) {
-        // Calculate the maximum number in a list
-        var max = 0;
-        Object.keys(numbers).forEach(function (key) {
-          if (numbers[key] > max) {
-            max = numbers[key];
-          }
-        });
-        return max;
-      } // Static
-      ;
-
-      Layout._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          var _config = $.extend({}, Default, $(this).data());
-
-          if (!data) {
-            data = new Layout($(this), _config);
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (config === 'init') {
-            data[config]();
-          }
-        });
-      };
-
-      return Layout;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(window).on('load', function () {
-      Layout._jQueryInterface.call($('body'));
-    });
-    $(Selector.SIDEBAR + ' a').on('focusin', function () {
-      $(Selector.MAIN_SIDEBAR).addClass(ClassName.SIDEBAR_FOCUSED);
-    });
-    $(Selector.SIDEBAR + ' a').on('focusout', function () {
-      $(Selector.MAIN_SIDEBAR).removeClass(ClassName.SIDEBAR_FOCUSED);
-    });
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = Layout._jQueryInterface;
-    $.fn[NAME].Constructor = Layout;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Layout._jQueryInterface;
-    };
-
-    return Layout;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE PushMenu.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var PushMenu = function ($) {
-    /**
-     * Constants
-     * ====================================================
-     */
-    var NAME = 'PushMenu';
-    var DATA_KEY = 'lte.pushmenu';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      COLLAPSED: "collapsed" + EVENT_KEY,
-      SHOWN: "shown" + EVENT_KEY
-    };
-    var Default = {
-      autoCollapseSize: false,
-      screenCollapseSize: 768,
-      enableRemember: false,
-      noTransitionAfterReload: true
-    };
-    var Selector = {
-      TOGGLE_BUTTON: '[data-widget="pushmenu"]',
-      SIDEBAR_MINI: '.sidebar-mini',
-      SIDEBAR_COLLAPSED: '.sidebar-collapse',
-      BODY: 'body',
-      OVERLAY: '#sidebar-overlay',
-      WRAPPER: '.wrapper'
-    };
-    var ClassName = {
-      SIDEBAR_OPEN: 'sidebar-open',
-      COLLAPSED: 'sidebar-collapse',
-      OPEN: 'sidebar-open',
-      SIDEBAR_MINI: 'sidebar-mini'
-      /**
-       * Class Definition
-       * ====================================================
-       */
-
-    };
-
-    var PushMenu =
-    /*#__PURE__*/
-    function () {
-      function PushMenu(element, options) {
-        this._element = element;
-        this._options = $.extend({}, Default, options);
-
-        this._init();
-
-        if (!$(Selector.OVERLAY).length) {
-          this._addOverlay();
-        }
-      } // Public
-
-
-      var _proto = PushMenu.prototype;
-
-      _proto.show = function show() {
-        $(Selector.BODY).addClass(ClassName.OPEN).removeClass(ClassName.COLLAPSED);
-
-        if (this._options.enableRemember) {
-          localStorage.setItem("remember" + EVENT_KEY, ClassName.OPEN);
-        }
-
-        var shownEvent = $.Event(Event.SHOWN);
-        $(this._element).trigger(shownEvent);
-      };
-
-      _proto.collapse = function collapse() {
-        $(Selector.BODY).removeClass(ClassName.OPEN).addClass(ClassName.COLLAPSED);
-
-        if (this._options.enableRemember) {
-          localStorage.setItem("remember" + EVENT_KEY, ClassName.COLLAPSED);
-        }
-
-        var collapsedEvent = $.Event(Event.COLLAPSED);
-        $(this._element).trigger(collapsedEvent);
-      };
-
-      _proto.isShown = function isShown() {
-        if ($(window).width() >= this._options.screenCollapseSize) {
-          return !$(Selector.BODY).hasClass(ClassName.COLLAPSED);
-        } else {
-          return $(Selector.BODY).hasClass(ClassName.OPEN);
-        }
-      };
-
-      _proto.toggle = function toggle() {
-        if (this.isShown()) {
-          this.collapse();
-        } else {
-          this.show();
-        }
-      };
-
-      _proto.autoCollapse = function autoCollapse() {
-        if (this._options.autoCollapseSize) {
-          if ($(window).width() <= this._options.autoCollapseSize) {
-            if (this.isShown()) {
-              this.toggle();
-            }
-          } else {
-            if (!this.isShown()) {
-              this.toggle();
-            }
-          }
-        }
-      };
-
-      _proto.remember = function remember() {
-        if (this._options.enableRemember) {
-          var toggleState = localStorage.getItem("remember" + EVENT_KEY);
-
-          if (toggleState == ClassName.COLLAPSED) {
-            if (this._options.noTransitionAfterReload) {
-              $("body").addClass('hold-transition').addClass(ClassName.COLLAPSED).delay(10).queue(function () {
-                $(this).removeClass('hold-transition');
-                $(this).dequeue();
-              });
-            } else {
-              $("body").addClass(ClassName.COLLAPSED);
-            }
-          }
-        }
-      } // Private
-      ;
-
-      _proto._init = function _init() {
-        var _this = this;
-
-        this.remember();
-        this.autoCollapse();
-        $(window).resize(function () {
-          _this.autoCollapse();
-        });
-      };
-
-      _proto._addOverlay = function _addOverlay() {
-        var _this2 = this;
-
-        var overlay = $('<div />', {
-          id: 'sidebar-overlay'
-        });
-        overlay.on('click', function () {
-          _this2.collapse();
-        });
-        $(Selector.WRAPPER).append(overlay);
-      } // Static
-      ;
-
-      PushMenu._jQueryInterface = function _jQueryInterface(operation) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          var _options = $.extend({}, Default, $(this).data());
-
-          if (!data) {
-            data = new PushMenu(this, _options);
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (operation === 'toggle') {
-            data[operation]();
-          }
-        });
-      };
-
-      return PushMenu;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(document).on('click', Selector.TOGGLE_BUTTON, function (event) {
-      event.preventDefault();
-      var button = event.currentTarget;
-
-      if ($(button).data('widget') !== 'pushmenu') {
-        button = $(button).closest(Selector.TOGGLE_BUTTON);
-      }
-
-      PushMenu._jQueryInterface.call($(button), 'toggle');
-    });
-    $(window).on('load', function () {
-      PushMenu._jQueryInterface.call($(Selector.TOGGLE_BUTTON));
-    });
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = PushMenu._jQueryInterface;
-    $.fn[NAME].Constructor = PushMenu;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return PushMenu._jQueryInterface;
-    };
-
-    return PushMenu;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE Treeview.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var Treeview = function ($) {
-    /**
-     * Constants
-     * ====================================================
-     */
-    var NAME = 'Treeview';
-    var DATA_KEY = 'lte.treeview';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      SELECTED: "selected" + EVENT_KEY,
-      EXPANDED: "expanded" + EVENT_KEY,
-      COLLAPSED: "collapsed" + EVENT_KEY,
-      LOAD_DATA_API: "load" + EVENT_KEY
-    };
-    var Selector = {
-      LI: '.nav-item',
-      LINK: '.nav-link',
-      TREEVIEW_MENU: '.nav-treeview',
-      OPEN: '.menu-open',
-      DATA_WIDGET: '[data-widget="treeview"]'
-    };
-    var ClassName = {
-      LI: 'nav-item',
-      LINK: 'nav-link',
-      TREEVIEW_MENU: 'nav-treeview',
-      OPEN: 'menu-open'
-    };
-    var Default = {
-      trigger: Selector.DATA_WIDGET + " " + Selector.LINK,
-      animationSpeed: 300,
-      accordion: true
-      /**
-       * Class Definition
-       * ====================================================
-       */
-
-    };
-
-    var Treeview =
-    /*#__PURE__*/
-    function () {
-      function Treeview(element, config) {
-        this._config = config;
-        this._element = element;
-      } // Public
-
-
-      var _proto = Treeview.prototype;
-
-      _proto.init = function init() {
-        this._setupListeners();
-      };
-
-      _proto.expand = function expand(treeviewMenu, parentLi) {
-        var _this = this;
-
-        var expandedEvent = $.Event(Event.EXPANDED);
-
-        if (this._config.accordion) {
-          var openMenuLi = parentLi.siblings(Selector.OPEN).first();
-          var openTreeview = openMenuLi.find(Selector.TREEVIEW_MENU).first();
-          this.collapse(openTreeview, openMenuLi);
-        }
-
-        treeviewMenu.stop().slideDown(this._config.animationSpeed, function () {
-          parentLi.addClass(ClassName.OPEN);
-          $(_this._element).trigger(expandedEvent);
-        });
-      };
-
-      _proto.collapse = function collapse(treeviewMenu, parentLi) {
-        var _this2 = this;
-
-        var collapsedEvent = $.Event(Event.COLLAPSED);
-        treeviewMenu.stop().slideUp(this._config.animationSpeed, function () {
-          parentLi.removeClass(ClassName.OPEN);
-          $(_this2._element).trigger(collapsedEvent);
-          treeviewMenu.find(Selector.OPEN + " > " + Selector.TREEVIEW_MENU).slideUp();
-          treeviewMenu.find(Selector.OPEN).removeClass(ClassName.OPEN);
-        });
-      };
-
-      _proto.toggle = function toggle(event) {
-        var $relativeTarget = $(event.currentTarget);
-        var treeviewMenu = $relativeTarget.next();
-
-        if (!treeviewMenu.is(Selector.TREEVIEW_MENU)) {
-          return;
-        }
-
-        event.preventDefault();
-        var parentLi = $relativeTarget.parents(Selector.LI).first();
-        var isOpen = parentLi.hasClass(ClassName.OPEN);
-
-        if (isOpen) {
-          this.collapse($(treeviewMenu), parentLi);
-        } else {
-          this.expand($(treeviewMenu), parentLi);
-        }
-      } // Private
-      ;
-
-      _proto._setupListeners = function _setupListeners() {
-        var _this3 = this;
-
-        $(document).on('click', this._config.trigger, function (event) {
-          _this3.toggle(event);
-        });
-      } // Static
-      ;
-
-      Treeview._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          var _config = $.extend({}, Default, $(this).data());
-
-          if (!data) {
-            data = new Treeview($(this), _config);
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (config === 'init') {
-            data[config]();
-          }
-        });
-      };
-
-      return Treeview;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(window).on(Event.LOAD_DATA_API, function () {
-      $(Selector.DATA_WIDGET).each(function () {
-        Treeview._jQueryInterface.call($(this), 'init');
-      });
-    });
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = Treeview._jQueryInterface;
-    $.fn[NAME].Constructor = Treeview;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Treeview._jQueryInterface;
-    };
-
-    return Treeview;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE DirectChat.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var DirectChat = function ($) {
-    /**
-     * Constants
-     * ====================================================
-     */
-    var NAME = 'DirectChat';
-    var DATA_KEY = 'lte.directchat';
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      TOGGLED: "toggled{EVENT_KEY}"
-    };
-    var Selector = {
-      DATA_TOGGLE: '[data-widget="chat-pane-toggle"]',
-      DIRECT_CHAT: '.direct-chat'
-    };
-    var ClassName = {
-      DIRECT_CHAT_OPEN: 'direct-chat-contacts-open'
+    const DATA_KEY$4 = 'lte.push-menu';
+    const EVENT_KEY$4 = `.${DATA_KEY$4}`;
+    const EVENT_OPEN = `open${EVENT_KEY$4}`;
+    const EVENT_COLLAPSE = `collapse${EVENT_KEY$4}`;
+    const CLASS_NAME_SIDEBAR_MINI = 'sidebar-mini';
+    const CLASS_NAME_SIDEBAR_COLLAPSE = 'sidebar-collapse';
+    const CLASS_NAME_SIDEBAR_OPEN = 'sidebar-open';
+    const CLASS_NAME_SIDEBAR_EXPAND = 'sidebar-expand';
+    const CLASS_NAME_SIDEBAR_OVERLAY = 'sidebar-overlay';
+    const CLASS_NAME_MENU_OPEN$1 = 'menu-open';
+    const SELECTOR_APP_SIDEBAR = '.app-sidebar';
+    const SELECTOR_SIDEBAR_MENU = '.sidebar-menu';
+    const SELECTOR_NAV_ITEM$1 = '.nav-item';
+    const SELECTOR_NAV_TREEVIEW = '.nav-treeview';
+    const SELECTOR_APP_WRAPPER = '.app-wrapper';
+    const SELECTOR_SIDEBAR_EXPAND = `[class*="${CLASS_NAME_SIDEBAR_EXPAND}"]`;
+    const SELECTOR_SIDEBAR_TOGGLE = '[data-lte-toggle="sidebar"]';
+    const Defaults = {
+        sidebarBreakpoint: 992
     };
     /**
      * Class Definition
      * ====================================================
      */
-
-    var DirectChat =
-    /*#__PURE__*/
-    function () {
-      function DirectChat(element, config) {
-        this._element = element;
-      }
-
-      var _proto = DirectChat.prototype;
-
-      _proto.toggle = function toggle() {
-        $(this._element).parents(Selector.DIRECT_CHAT).first().toggleClass(ClassName.DIRECT_CHAT_OPEN);
-        var toggledEvent = $.Event(Event.TOGGLED);
-        $(this._element).trigger(toggledEvent);
-      } // Static
-      ;
-
-      DirectChat._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          if (!data) {
-            data = new DirectChat($(this));
-            $(this).data(DATA_KEY, data);
-          }
-
-          data[config]();
+    class PushMenu {
+        constructor(element, config) {
+            this._element = element;
+            this._config = Object.assign(Object.assign({}, Defaults), config);
+        }
+        // TODO
+        menusClose() {
+            const navTreeview = document.querySelectorAll(SELECTOR_NAV_TREEVIEW);
+            navTreeview.forEach(navTree => {
+                navTree.style.removeProperty('display');
+                navTree.style.removeProperty('height');
+            });
+            const navSidebar = document.querySelector(SELECTOR_SIDEBAR_MENU);
+            const navItem = navSidebar === null || navSidebar === void 0 ? void 0 : navSidebar.querySelectorAll(SELECTOR_NAV_ITEM$1);
+            if (navItem) {
+                navItem.forEach(navI => {
+                    navI.classList.remove(CLASS_NAME_MENU_OPEN$1);
+                });
+            }
+        }
+        expand() {
+            const event = new Event(EVENT_OPEN);
+            document.body.classList.remove(CLASS_NAME_SIDEBAR_COLLAPSE);
+            document.body.classList.add(CLASS_NAME_SIDEBAR_OPEN);
+            this._element.dispatchEvent(event);
+        }
+        collapse() {
+            const event = new Event(EVENT_COLLAPSE);
+            document.body.classList.remove(CLASS_NAME_SIDEBAR_OPEN);
+            document.body.classList.add(CLASS_NAME_SIDEBAR_COLLAPSE);
+            this._element.dispatchEvent(event);
+        }
+        addSidebarBreakPoint() {
+            var _a, _b, _c;
+            const sidebarExpandList = (_b = (_a = document.querySelector(SELECTOR_SIDEBAR_EXPAND)) === null || _a === void 0 ? void 0 : _a.classList) !== null && _b !== void 0 ? _b : [];
+            const sidebarExpand = (_c = Array.from(sidebarExpandList).find(className => className.startsWith(CLASS_NAME_SIDEBAR_EXPAND))) !== null && _c !== void 0 ? _c : '';
+            const sidebar = document.getElementsByClassName(sidebarExpand)[0];
+            const sidebarContent = window.getComputedStyle(sidebar, '::before').getPropertyValue('content');
+            this._config = Object.assign(Object.assign({}, this._config), { sidebarBreakpoint: Number(sidebarContent.replace(/[^\d.-]/g, '')) });
+            if (window.innerWidth <= this._config.sidebarBreakpoint) {
+                this.collapse();
+            }
+            else {
+                if (!document.body.classList.contains(CLASS_NAME_SIDEBAR_MINI)) {
+                    this.expand();
+                }
+                if (document.body.classList.contains(CLASS_NAME_SIDEBAR_MINI) && document.body.classList.contains(CLASS_NAME_SIDEBAR_COLLAPSE)) {
+                    this.collapse();
+                }
+            }
+        }
+        toggle() {
+            if (document.body.classList.contains(CLASS_NAME_SIDEBAR_COLLAPSE)) {
+                this.expand();
+            }
+            else {
+                this.collapse();
+            }
+        }
+        init() {
+            this.addSidebarBreakPoint();
+        }
+    }
+    /**
+     * ------------------------------------------------------------------------
+     * Data Api implementation
+     * ------------------------------------------------------------------------
+     */
+    onDOMContentLoaded(() => {
+        var _a;
+        const sidebar = document === null || document === void 0 ? void 0 : document.querySelector(SELECTOR_APP_SIDEBAR);
+        if (sidebar) {
+            const data = new PushMenu(sidebar, Defaults);
+            data.init();
+            window.addEventListener('resize', () => {
+                data.init();
+            });
+        }
+        const sidebarOverlay = document.createElement('div');
+        sidebarOverlay.className = CLASS_NAME_SIDEBAR_OVERLAY;
+        (_a = document.querySelector(SELECTOR_APP_WRAPPER)) === null || _a === void 0 ? void 0 : _a.append(sidebarOverlay);
+        sidebarOverlay.addEventListener('touchstart', event => {
+            event.preventDefault();
+            const target = event.currentTarget;
+            const data = new PushMenu(target, Defaults);
+            data.collapse();
+        }, { passive: true });
+        sidebarOverlay.addEventListener('click', event => {
+            event.preventDefault();
+            const target = event.currentTarget;
+            const data = new PushMenu(target, Defaults);
+            data.collapse();
         });
-      };
+        const fullBtn = document.querySelectorAll(SELECTOR_SIDEBAR_TOGGLE);
+        fullBtn.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                let button = event.currentTarget;
+                if ((button === null || button === void 0 ? void 0 : button.dataset.lteToggle) !== 'sidebar') {
+                    button = button === null || button === void 0 ? void 0 : button.closest(SELECTOR_SIDEBAR_TOGGLE);
+                }
+                if (button) {
+                    event === null || event === void 0 ? void 0 : event.preventDefault();
+                    const data = new PushMenu(button, Defaults);
+                    data.toggle();
+                }
+            });
+        });
+    });
 
-      return DirectChat;
-    }();
+    /**
+     * --------------------------------------------
+     * @file AdminLTE treeview.ts
+     * @description Treeview plugin for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
+     */
+    /**
+     * ------------------------------------------------------------------------
+     * Constants
+     * ------------------------------------------------------------------------
+     */
+    // const NAME = 'Treeview'
+    const DATA_KEY$3 = 'lte.treeview';
+    const EVENT_KEY$3 = `.${DATA_KEY$3}`;
+    const EVENT_EXPANDED$2 = `expanded${EVENT_KEY$3}`;
+    const EVENT_COLLAPSED$2 = `collapsed${EVENT_KEY$3}`;
+    // const EVENT_LOAD_DATA_API = `load${EVENT_KEY}`
+    const CLASS_NAME_MENU_OPEN = 'menu-open';
+    const SELECTOR_NAV_ITEM = '.nav-item';
+    const SELECTOR_NAV_LINK = '.nav-link';
+    const SELECTOR_TREEVIEW_MENU = '.nav-treeview';
+    const SELECTOR_DATA_TOGGLE$1 = '[data-lte-toggle="treeview"]';
+    const Default$1 = {
+        animationSpeed: 300,
+        accordion: true
+    };
+    /**
+     * Class Definition
+     * ====================================================
+     */
+    class Treeview {
+        constructor(element, config) {
+            this._element = element;
+            this._config = Object.assign(Object.assign({}, Default$1), config);
+        }
+        open() {
+            var _a, _b;
+            const event = new Event(EVENT_EXPANDED$2);
+            if (this._config.accordion) {
+                const openMenuList = (_a = this._element.parentElement) === null || _a === void 0 ? void 0 : _a.querySelectorAll(`${SELECTOR_NAV_ITEM}.${CLASS_NAME_MENU_OPEN}`);
+                openMenuList === null || openMenuList === void 0 ? void 0 : openMenuList.forEach(openMenu => {
+                    if (openMenu !== this._element.parentElement) {
+                        openMenu.classList.remove(CLASS_NAME_MENU_OPEN);
+                        const childElement = openMenu === null || openMenu === void 0 ? void 0 : openMenu.querySelector(SELECTOR_TREEVIEW_MENU);
+                        if (childElement) {
+                            slideUp(childElement, this._config.animationSpeed);
+                        }
+                    }
+                });
+            }
+            this._element.classList.add(CLASS_NAME_MENU_OPEN);
+            const childElement = (_b = this._element) === null || _b === void 0 ? void 0 : _b.querySelector(SELECTOR_TREEVIEW_MENU);
+            if (childElement) {
+                slideDown(childElement, this._config.animationSpeed);
+            }
+            this._element.dispatchEvent(event);
+        }
+        close() {
+            var _a;
+            const event = new Event(EVENT_COLLAPSED$2);
+            this._element.classList.remove(CLASS_NAME_MENU_OPEN);
+            const childElement = (_a = this._element) === null || _a === void 0 ? void 0 : _a.querySelector(SELECTOR_TREEVIEW_MENU);
+            if (childElement) {
+                slideUp(childElement, this._config.animationSpeed);
+            }
+            this._element.dispatchEvent(event);
+        }
+        toggle() {
+            if (this._element.classList.contains(CLASS_NAME_MENU_OPEN)) {
+                this.close();
+            }
+            else {
+                this.open();
+            }
+        }
+    }
+    /**
+     * ------------------------------------------------------------------------
+     * Data Api implementation
+     * ------------------------------------------------------------------------
+     */
+    onDOMContentLoaded(() => {
+        const button = document.querySelectorAll(SELECTOR_DATA_TOGGLE$1);
+        button.forEach(btn => {
+            btn.addEventListener('click', event => {
+                const target = event.target;
+                const targetItem = target.closest(SELECTOR_NAV_ITEM);
+                const targetLink = target.closest(SELECTOR_NAV_LINK);
+                if ((target === null || target === void 0 ? void 0 : target.getAttribute('href')) === '#' || (targetLink === null || targetLink === void 0 ? void 0 : targetLink.getAttribute('href')) === '#') {
+                    event.preventDefault();
+                }
+                if (targetItem) {
+                    const data = new Treeview(targetItem, Default$1);
+                    data.toggle();
+                }
+            });
+        });
+    });
+
+    /**
+     * --------------------------------------------
+     * @file AdminLTE direct-chat.ts
+     * @description Direct chat for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
+     */
+    /**
+     * Constants
+     * ====================================================
+     */
+    const DATA_KEY$2 = 'lte.direct-chat';
+    const EVENT_KEY$2 = `.${DATA_KEY$2}`;
+    const EVENT_EXPANDED$1 = `expanded${EVENT_KEY$2}`;
+    const EVENT_COLLAPSED$1 = `collapsed${EVENT_KEY$2}`;
+    const SELECTOR_DATA_TOGGLE = '[data-lte-toggle="chat-pane"]';
+    const SELECTOR_DIRECT_CHAT = '.direct-chat';
+    const CLASS_NAME_DIRECT_CHAT_OPEN = 'direct-chat-contacts-open';
+    /**
+     * Class Definition
+     * ====================================================
+     */
+    class DirectChat {
+        constructor(element) {
+            this._element = element;
+        }
+        toggle() {
+            if (this._element.classList.contains(CLASS_NAME_DIRECT_CHAT_OPEN)) {
+                const event = new Event(EVENT_COLLAPSED$1);
+                this._element.classList.remove(CLASS_NAME_DIRECT_CHAT_OPEN);
+                this._element.dispatchEvent(event);
+            }
+            else {
+                const event = new Event(EVENT_EXPANDED$1);
+                this._element.classList.add(CLASS_NAME_DIRECT_CHAT_OPEN);
+                this._element.dispatchEvent(event);
+            }
+        }
+    }
     /**
      *
      * Data Api implementation
      * ====================================================
      */
-
-
-    $(document).on('click', Selector.DATA_TOGGLE, function (event) {
-      if (event) event.preventDefault();
-
-      DirectChat._jQueryInterface.call($(this), 'toggle');
+    onDOMContentLoaded(() => {
+        const button = document.querySelectorAll(SELECTOR_DATA_TOGGLE);
+        button.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target;
+                const chatPane = target.closest(SELECTOR_DIRECT_CHAT);
+                if (chatPane) {
+                    const data = new DirectChat(chatPane);
+                    data.toggle();
+                }
+            });
+        });
     });
+
     /**
-     * jQuery API
-     * ====================================================
+     * --------------------------------------------
+     * @file AdminLTE card-widget.ts
+     * @description Card widget for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
      */
-
-    $.fn[NAME] = DirectChat._jQueryInterface;
-    $.fn[NAME].Constructor = DirectChat;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return DirectChat._jQueryInterface;
-    };
-
-    return DirectChat;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE TodoList.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var TodoList = function ($) {
     /**
      * Constants
      * ====================================================
      */
-    var NAME = 'TodoList';
-    var DATA_KEY = 'lte.todolist';
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Selector = {
-      DATA_TOGGLE: '[data-widget="todo-list"]'
+    const DATA_KEY$1 = 'lte.card-widget';
+    const EVENT_KEY$1 = `.${DATA_KEY$1}`;
+    const EVENT_COLLAPSED = `collapsed${EVENT_KEY$1}`;
+    const EVENT_EXPANDED = `expanded${EVENT_KEY$1}`;
+    const EVENT_REMOVE = `remove${EVENT_KEY$1}`;
+    const EVENT_MAXIMIZED$1 = `maximized${EVENT_KEY$1}`;
+    const EVENT_MINIMIZED$1 = `minimized${EVENT_KEY$1}`;
+    const CLASS_NAME_CARD = 'card';
+    const CLASS_NAME_COLLAPSED = 'collapsed-card';
+    const CLASS_NAME_COLLAPSING = 'collapsing-card';
+    const CLASS_NAME_EXPANDING = 'expanding-card';
+    const CLASS_NAME_WAS_COLLAPSED = 'was-collapsed';
+    const CLASS_NAME_MAXIMIZED = 'maximized-card';
+    const SELECTOR_DATA_REMOVE = '[data-lte-toggle="card-remove"]';
+    const SELECTOR_DATA_COLLAPSE = '[data-lte-toggle="card-collapse"]';
+    const SELECTOR_DATA_MAXIMIZE = '[data-lte-toggle="card-maximize"]';
+    const SELECTOR_CARD = `.${CLASS_NAME_CARD}`;
+    const SELECTOR_CARD_BODY = '.card-body';
+    const SELECTOR_CARD_FOOTER = '.card-footer';
+    const Default = {
+        animationSpeed: 500,
+        collapseTrigger: SELECTOR_DATA_COLLAPSE,
+        removeTrigger: SELECTOR_DATA_REMOVE,
+        maximizeTrigger: SELECTOR_DATA_MAXIMIZE
     };
-    var ClassName = {
-      TODO_LIST_DONE: 'done'
-    };
-    var Default = {
-      onCheck: function onCheck(item) {
-        return item;
-      },
-      onUnCheck: function onUnCheck(item) {
-        return item;
-      }
-      /**
-       * Class Definition
-       * ====================================================
-       */
-
-    };
-
-    var TodoList =
-    /*#__PURE__*/
-    function () {
-      function TodoList(element, config) {
-        this._config = config;
-        this._element = element;
-
-        this._init();
-      } // Public
-
-
-      var _proto = TodoList.prototype;
-
-      _proto.toggle = function toggle(item) {
-        item.parents('li').toggleClass(ClassName.TODO_LIST_DONE);
-
-        if (!$(item).prop('checked')) {
-          this.unCheck($(item));
-          return;
-        }
-
-        this.check(item);
-      };
-
-      _proto.check = function check(item) {
-        this._config.onCheck.call(item);
-      };
-
-      _proto.unCheck = function unCheck(item) {
-        this._config.onUnCheck.call(item);
-      } // Private
-      ;
-
-      _proto._init = function _init() {
-        var that = this;
-        $(Selector.DATA_TOGGLE).find('input:checkbox:checked').parents('li').toggleClass(ClassName.TODO_LIST_DONE);
-        $(Selector.DATA_TOGGLE).on('change', 'input:checkbox', function (event) {
-          that.toggle($(event.target));
-        });
-      } // Static
-      ;
-
-      TodoList._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          var _config = $.extend({}, Default, $(this).data());
-
-          if (!data) {
-            data = new TodoList($(this), _config);
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (config === 'init') {
-            data[config]();
-          }
-        });
-      };
-
-      return TodoList;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(window).on('load', function () {
-      TodoList._jQueryInterface.call($(Selector.DATA_TOGGLE));
-    });
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = TodoList._jQueryInterface;
-    $.fn[NAME].Constructor = TodoList;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return TodoList._jQueryInterface;
-    };
-
-    return TodoList;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE CardWidget.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var CardWidget = function ($) {
-    /**
-     * Constants
-     * ====================================================
-     */
-    var NAME = 'CardWidget';
-    var DATA_KEY = 'lte.cardwidget';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      EXPANDED: "expanded" + EVENT_KEY,
-      COLLAPSED: "collapsed" + EVENT_KEY,
-      MAXIMIZED: "maximized" + EVENT_KEY,
-      MINIMIZED: "minimized" + EVENT_KEY,
-      REMOVED: "removed" + EVENT_KEY
-    };
-    var ClassName = {
-      CARD: 'card',
-      COLLAPSED: 'collapsed-card',
-      WAS_COLLAPSED: 'was-collapsed',
-      MAXIMIZED: 'maximized-card'
-    };
-    var Selector = {
-      DATA_REMOVE: '[data-card-widget="remove"]',
-      DATA_COLLAPSE: '[data-card-widget="collapse"]',
-      DATA_MAXIMIZE: '[data-card-widget="maximize"]',
-      CARD: "." + ClassName.CARD,
-      CARD_HEADER: '.card-header',
-      CARD_BODY: '.card-body',
-      CARD_FOOTER: '.card-footer',
-      COLLAPSED: "." + ClassName.COLLAPSED
-    };
-    var Default = {
-      animationSpeed: 'normal',
-      collapseTrigger: Selector.DATA_COLLAPSE,
-      removeTrigger: Selector.DATA_REMOVE,
-      maximizeTrigger: Selector.DATA_MAXIMIZE,
-      collapseIcon: 'fa-minus',
-      expandIcon: 'fa-plus',
-      maximizeIcon: 'fa-expand',
-      minimizeIcon: 'fa-compress'
-    };
-
-    var CardWidget =
-    /*#__PURE__*/
-    function () {
-      function CardWidget(element, settings) {
-        this._element = element;
-        this._parent = element.parents(Selector.CARD).first();
-
-        if (element.hasClass(ClassName.CARD)) {
-          this._parent = element;
-        }
-
-        this._settings = $.extend({}, Default, settings);
-      }
-
-      var _proto = CardWidget.prototype;
-
-      _proto.collapse = function collapse() {
-        var _this = this;
-
-        this._parent.children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideUp(this._settings.animationSpeed, function () {
-          _this._parent.addClass(ClassName.COLLAPSED);
-        });
-
-        this._parent.find(this._settings.collapseTrigger + ' .' + this._settings.collapseIcon).addClass(this._settings.expandIcon).removeClass(this._settings.collapseIcon);
-
-        var collapsed = $.Event(Event.COLLAPSED);
-
-        this._element.trigger(collapsed, this._parent);
-      };
-
-      _proto.expand = function expand() {
-        var _this2 = this;
-
-        this._parent.children(Selector.CARD_BODY + ", " + Selector.CARD_FOOTER).slideDown(this._settings.animationSpeed, function () {
-          _this2._parent.removeClass(ClassName.COLLAPSED);
-        });
-
-        this._parent.find(this._settings.collapseTrigger + ' .' + this._settings.expandIcon).addClass(this._settings.collapseIcon).removeClass(this._settings.expandIcon);
-
-        var expanded = $.Event(Event.EXPANDED);
-
-        this._element.trigger(expanded, this._parent);
-      };
-
-      _proto.remove = function remove() {
-        this._parent.slideUp();
-
-        var removed = $.Event(Event.REMOVED);
-
-        this._element.trigger(removed, this._parent);
-      };
-
-      _proto.toggle = function toggle() {
-        if (this._parent.hasClass(ClassName.COLLAPSED)) {
-          this.expand();
-          return;
-        }
-
-        this.collapse();
-      };
-
-      _proto.maximize = function maximize() {
-        this._parent.find(this._settings.maximizeTrigger + ' .' + this._settings.maximizeIcon).addClass(this._settings.minimizeIcon).removeClass(this._settings.maximizeIcon);
-
-        this._parent.css({
-          'height': this._parent.height(),
-          'width': this._parent.width(),
-          'transition': 'all .15s'
-        }).delay(150).queue(function () {
-          $(this).addClass(ClassName.MAXIMIZED);
-          $('html').addClass(ClassName.MAXIMIZED);
-
-          if ($(this).hasClass(ClassName.COLLAPSED)) {
-            $(this).addClass(ClassName.WAS_COLLAPSED);
-          }
-
-          $(this).dequeue();
-        });
-
-        var maximized = $.Event(Event.MAXIMIZED);
-
-        this._element.trigger(maximized, this._parent);
-      };
-
-      _proto.minimize = function minimize() {
-        this._parent.find(this._settings.maximizeTrigger + ' .' + this._settings.minimizeIcon).addClass(this._settings.maximizeIcon).removeClass(this._settings.minimizeIcon);
-
-        this._parent.css('cssText', 'height:' + this._parent[0].style.height + ' !important;' + 'width:' + this._parent[0].style.width + ' !important; transition: all .15s;').delay(10).queue(function () {
-          $(this).removeClass(ClassName.MAXIMIZED);
-          $('html').removeClass(ClassName.MAXIMIZED);
-          $(this).css({
-            'height': 'inherit',
-            'width': 'inherit'
-          });
-
-          if ($(this).hasClass(ClassName.WAS_COLLAPSED)) {
-            $(this).removeClass(ClassName.WAS_COLLAPSED);
-          }
-
-          $(this).dequeue();
-        });
-
-        var MINIMIZED = $.Event(Event.MINIMIZED);
-
-        this._element.trigger(MINIMIZED, this._parent);
-      };
-
-      _proto.toggleMaximize = function toggleMaximize() {
-        if (this._parent.hasClass(ClassName.MAXIMIZED)) {
-          this.minimize();
-          return;
-        }
-
-        this.maximize();
-      } // Private
-      ;
-
-      _proto._init = function _init(card) {
-        var _this3 = this;
-
-        this._parent = card;
-        $(this).find(this._settings.collapseTrigger).click(function () {
-          _this3.toggle();
-        });
-        $(this).find(this._settings.maximizeTrigger).click(function () {
-          _this3.toggleMaximize();
-        });
-        $(this).find(this._settings.removeTrigger).click(function () {
-          _this3.remove();
-        });
-      } // Static
-      ;
-
-      CardWidget._jQueryInterface = function _jQueryInterface(config) {
-        var data = $(this).data(DATA_KEY);
-
-        if (!data) {
-          data = new CardWidget($(this), data);
-          $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
-        }
-
-        if (typeof config === 'string' && config.match(/collapse|expand|remove|toggle|maximize|minimize|toggleMaximize/)) {
-          data[config]();
-        } else if (typeof config === 'object') {
-          data._init($(this));
-        }
-      };
-
-      return CardWidget;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(document).on('click', Selector.DATA_COLLAPSE, function (event) {
-      if (event) {
-        event.preventDefault();
-      }
-
-      CardWidget._jQueryInterface.call($(this), 'toggle');
-    });
-    $(document).on('click', Selector.DATA_REMOVE, function (event) {
-      if (event) {
-        event.preventDefault();
-      }
-
-      CardWidget._jQueryInterface.call($(this), 'remove');
-    });
-    $(document).on('click', Selector.DATA_MAXIMIZE, function (event) {
-      if (event) {
-        event.preventDefault();
-      }
-
-      CardWidget._jQueryInterface.call($(this), 'toggleMaximize');
-    });
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = CardWidget._jQueryInterface;
-    $.fn[NAME].Constructor = CardWidget;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return CardWidget._jQueryInterface;
-    };
-
-    return CardWidget;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE CardRefresh.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var CardRefresh = function ($) {
-    /**
-     * Constants
-     * ====================================================
-     */
-    var NAME = 'CardRefresh';
-    var DATA_KEY = 'lte.cardrefresh';
-    var EVENT_KEY = "." + DATA_KEY;
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Event = {
-      LOADED: "loaded" + EVENT_KEY,
-      OVERLAY_ADDED: "overlay.added" + EVENT_KEY,
-      OVERLAY_REMOVED: "overlay.removed" + EVENT_KEY
-    };
-    var ClassName = {
-      CARD: 'card'
-    };
-    var Selector = {
-      CARD: "." + ClassName.CARD,
-      DATA_REFRESH: '[data-card-widget="card-refresh"]'
-    };
-    var Default = {
-      source: '',
-      sourceSelector: '',
-      params: {},
-      trigger: Selector.DATA_REFRESH,
-      content: '.card-body',
-      loadInContent: true,
-      loadOnInit: true,
-      responseType: '',
-      overlayTemplate: '<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>',
-      onLoadStart: function onLoadStart() {},
-      onLoadDone: function onLoadDone(response) {
-        return response;
-      }
-    };
-
-    var CardRefresh =
-    /*#__PURE__*/
-    function () {
-      function CardRefresh(element, settings) {
-        this._element = element;
-        this._parent = element.parents(Selector.CARD).first();
-        this._settings = $.extend({}, Default, settings);
-        this._overlay = $(this._settings.overlayTemplate);
-
-        if (element.hasClass(ClassName.CARD)) {
-          this._parent = element;
-        }
-
-        if (this._settings.source === '') {
-          throw new Error('Source url was not defined. Please specify a url in your CardRefresh source option.');
-        }
-
-        this._init();
-
-        if (this._settings.loadOnInit) {
-          this.load();
-        }
-      }
-
-      var _proto = CardRefresh.prototype;
-
-      _proto.load = function load() {
-        this._addOverlay();
-
-        this._settings.onLoadStart.call($(this));
-
-        $.get(this._settings.source, this._settings.params, function (response) {
-          if (this._settings.loadInContent) {
-            if (this._settings.sourceSelector != '') {
-              response = $(response).find(this._settings.sourceSelector).html();
+    class CardWidget {
+        constructor(element, config) {
+            this._element = element;
+            this._parent = element.closest(SELECTOR_CARD);
+            if (element.classList.contains(CLASS_NAME_CARD)) {
+                this._parent = element;
             }
-
-            this._parent.find(this._settings.content).html(response);
-          }
-
-          this._settings.onLoadDone.call($(this), response);
-
-          this._removeOverlay();
-        }.bind(this), this._settings.responseType !== '' && this._settings.responseType);
-        var loadedEvent = $.Event(Event.LOADED);
-        $(this._element).trigger(loadedEvent);
-      };
-
-      _proto._addOverlay = function _addOverlay() {
-        this._parent.append(this._overlay);
-
-        var overlayAddedEvent = $.Event(Event.OVERLAY_ADDED);
-        $(this._element).trigger(overlayAddedEvent);
-      };
-
-      _proto._removeOverlay = function _removeOverlay() {
-        this._parent.find(this._overlay).remove();
-
-        var overlayRemovedEvent = $.Event(Event.OVERLAY_REMOVED);
-        $(this._element).trigger(overlayRemovedEvent);
-      };
-
-      // Private
-      _proto._init = function _init(card) {
-        var _this = this;
-
-        $(this).find(this._settings.trigger).on('click', function () {
-          _this.load();
+            this._config = Object.assign(Object.assign({}, Default), config);
+        }
+        collapse() {
+            var _a, _b;
+            const event = new Event(EVENT_COLLAPSED);
+            if (this._parent) {
+                this._parent.classList.add(CLASS_NAME_COLLAPSING);
+                const elm = (_a = this._parent) === null || _a === void 0 ? void 0 : _a.querySelectorAll(`${SELECTOR_CARD_BODY}, ${SELECTOR_CARD_FOOTER}`);
+                elm.forEach(el => {
+                    if (el instanceof HTMLElement) {
+                        slideUp(el, this._config.animationSpeed);
+                    }
+                });
+                setTimeout(() => {
+                    if (this._parent) {
+                        this._parent.classList.add(CLASS_NAME_COLLAPSED);
+                        this._parent.classList.remove(CLASS_NAME_COLLAPSING);
+                    }
+                }, this._config.animationSpeed);
+            }
+            (_b = this._element) === null || _b === void 0 ? void 0 : _b.dispatchEvent(event);
+        }
+        expand() {
+            var _a, _b;
+            const event = new Event(EVENT_EXPANDED);
+            if (this._parent) {
+                this._parent.classList.add(CLASS_NAME_EXPANDING);
+                const elm = (_a = this._parent) === null || _a === void 0 ? void 0 : _a.querySelectorAll(`${SELECTOR_CARD_BODY}, ${SELECTOR_CARD_FOOTER}`);
+                elm.forEach(el => {
+                    if (el instanceof HTMLElement) {
+                        slideDown(el, this._config.animationSpeed);
+                    }
+                });
+                setTimeout(() => {
+                    if (this._parent) {
+                        this._parent.classList.remove(CLASS_NAME_COLLAPSED);
+                        this._parent.classList.remove(CLASS_NAME_EXPANDING);
+                    }
+                }, this._config.animationSpeed);
+            }
+            (_b = this._element) === null || _b === void 0 ? void 0 : _b.dispatchEvent(event);
+        }
+        remove() {
+            var _a;
+            const event = new Event(EVENT_REMOVE);
+            if (this._parent) {
+                slideUp(this._parent, this._config.animationSpeed);
+            }
+            (_a = this._element) === null || _a === void 0 ? void 0 : _a.dispatchEvent(event);
+        }
+        toggle() {
+            var _a;
+            if ((_a = this._parent) === null || _a === void 0 ? void 0 : _a.classList.contains(CLASS_NAME_COLLAPSED)) {
+                this.expand();
+                return;
+            }
+            this.collapse();
+        }
+        maximize() {
+            var _a;
+            const event = new Event(EVENT_MAXIMIZED$1);
+            if (this._parent) {
+                this._parent.style.height = `${this._parent.offsetHeight}px`;
+                this._parent.style.width = `${this._parent.offsetWidth}px`;
+                this._parent.style.transition = 'all .15s';
+                setTimeout(() => {
+                    const htmlTag = document.querySelector('html');
+                    if (htmlTag) {
+                        htmlTag.classList.add(CLASS_NAME_MAXIMIZED);
+                    }
+                    if (this._parent) {
+                        this._parent.classList.add(CLASS_NAME_MAXIMIZED);
+                        if (this._parent.classList.contains(CLASS_NAME_COLLAPSED)) {
+                            this._parent.classList.add(CLASS_NAME_WAS_COLLAPSED);
+                        }
+                    }
+                }, 150);
+            }
+            (_a = this._element) === null || _a === void 0 ? void 0 : _a.dispatchEvent(event);
+        }
+        minimize() {
+            var _a;
+            const event = new Event(EVENT_MINIMIZED$1);
+            if (this._parent) {
+                this._parent.style.height = 'auto';
+                this._parent.style.width = 'auto';
+                this._parent.style.transition = 'all .15s';
+                setTimeout(() => {
+                    var _a;
+                    const htmlTag = document.querySelector('html');
+                    if (htmlTag) {
+                        htmlTag.classList.remove(CLASS_NAME_MAXIMIZED);
+                    }
+                    if (this._parent) {
+                        this._parent.classList.remove(CLASS_NAME_MAXIMIZED);
+                        if ((_a = this._parent) === null || _a === void 0 ? void 0 : _a.classList.contains(CLASS_NAME_WAS_COLLAPSED)) {
+                            this._parent.classList.remove(CLASS_NAME_WAS_COLLAPSED);
+                        }
+                    }
+                }, 10);
+            }
+            (_a = this._element) === null || _a === void 0 ? void 0 : _a.dispatchEvent(event);
+        }
+        toggleMaximize() {
+            var _a;
+            if ((_a = this._parent) === null || _a === void 0 ? void 0 : _a.classList.contains(CLASS_NAME_MAXIMIZED)) {
+                this.minimize();
+                return;
+            }
+            this.maximize();
+        }
+    }
+    /**
+     *
+     * Data Api implementation
+     * ====================================================
+     */
+    onDOMContentLoaded(() => {
+        const collapseBtn = document.querySelectorAll(SELECTOR_DATA_COLLAPSE);
+        collapseBtn.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target;
+                const data = new CardWidget(target, Default);
+                data.toggle();
+            });
         });
-      } // Static
-      ;
-
-      CardRefresh._jQueryInterface = function _jQueryInterface(config) {
-        var data = $(this).data(DATA_KEY);
-        var options = $(this).data();
-
-        if (!data) {
-          data = new CardRefresh($(this), options);
-          $(this).data(DATA_KEY, typeof config === 'string' ? data : config);
-        }
-
-        if (typeof config === 'string' && config.match(/load/)) {
-          data[config]();
-        } else if (typeof config === 'object') {
-          data._init($(this));
-        }
-      };
-
-      return CardRefresh;
-    }();
-    /**
-     * Data API
-     * ====================================================
-     */
-
-
-    $(document).on('click', Selector.DATA_REFRESH, function (event) {
-      if (event) {
-        event.preventDefault();
-      }
-
-      CardRefresh._jQueryInterface.call($(this), 'load');
+        const removeBtn = document.querySelectorAll(SELECTOR_DATA_REMOVE);
+        removeBtn.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target;
+                const data = new CardWidget(target, Default);
+                data.remove();
+            });
+        });
+        const maxBtn = document.querySelectorAll(SELECTOR_DATA_MAXIMIZE);
+        maxBtn.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target;
+                const data = new CardWidget(target, Default);
+                data.toggleMaximize();
+            });
+        });
     });
+
     /**
-     * jQuery API
-     * ====================================================
+     * --------------------------------------------
+     * @file AdminLTE fullscreen.ts
+     * @description Fullscreen plugin for AdminLTE.
+     * @license MIT
+     * --------------------------------------------
      */
-
-    $.fn[NAME] = CardRefresh._jQueryInterface;
-    $.fn[NAME].Constructor = CardRefresh;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return CardRefresh._jQueryInterface;
-    };
-
-    return CardRefresh;
-  }(jQuery);
-
-  /**
-   * --------------------------------------------
-   * AdminLTE Dropdown.js
-   * License MIT
-   * --------------------------------------------
-   */
-  var Dropdown = function ($) {
     /**
      * Constants
-     * ====================================================
+     * ============================================================================
      */
-    var NAME = 'Dropdown';
-    var DATA_KEY = 'lte.dropdown';
-    var JQUERY_NO_CONFLICT = $.fn[NAME];
-    var Selector = {
-      DROPDOWN_MENU: 'ul.dropdown-menu',
-      DROPDOWN_TOGGLE: '[data-toggle="dropdown"]'
-    };
-    var Default = {};
+    const DATA_KEY = 'lte.fullscreen';
+    const EVENT_KEY = `.${DATA_KEY}`;
+    const EVENT_MAXIMIZED = `maximized${EVENT_KEY}`;
+    const EVENT_MINIMIZED = `minimized${EVENT_KEY}`;
+    const SELECTOR_FULLSCREEN_TOGGLE = '[data-lte-toggle="fullscreen"]';
+    const SELECTOR_MAXIMIZE_ICON = '[data-lte-icon="maximize"]';
+    const SELECTOR_MINIMIZE_ICON = '[data-lte-icon="minimize"]';
     /**
-     * Class Definition
-     * ====================================================
+     * Class Definition.
+     * ============================================================================
      */
-
-    var Dropdown =
-    /*#__PURE__*/
-    function () {
-      function Dropdown(element, config) {
-        this._config = config;
-        this._element = element;
-      } // Public
-
-
-      var _proto = Dropdown.prototype;
-
-      _proto.toggleSubmenu = function toggleSubmenu() {
-        this._element.siblings().show().toggleClass("show");
-
-        if (!this._element.next().hasClass('show')) {
-          this._element.parents('.dropdown-menu').first().find('.show').removeClass("show").hide();
+    class FullScreen {
+        constructor(element, config) {
+            this._element = element;
+            this._config = config;
         }
-
-        this._element.parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
-          $('.dropdown-submenu .show').removeClass("show").hide();
-        });
-      } // Static
-      ;
-
-      Dropdown._jQueryInterface = function _jQueryInterface(config) {
-        return this.each(function () {
-          var data = $(this).data(DATA_KEY);
-
-          var _config = $.extend({}, Default, $(this).data());
-
-          if (!data) {
-            data = new Dropdown($(this), _config);
-            $(this).data(DATA_KEY, data);
-          }
-
-          if (config === 'toggleSubmenu') {
-            data[config]();
-          }
-        });
-      };
-
-      return Dropdown;
-    }();
+        inFullScreen() {
+            const event = new Event(EVENT_MAXIMIZED);
+            const iconMaximize = document.querySelector(SELECTOR_MAXIMIZE_ICON);
+            const iconMinimize = document.querySelector(SELECTOR_MINIMIZE_ICON);
+            void document.documentElement.requestFullscreen();
+            if (iconMaximize) {
+                iconMaximize.style.display = 'none';
+            }
+            if (iconMinimize) {
+                iconMinimize.style.display = 'block';
+            }
+            this._element.dispatchEvent(event);
+        }
+        outFullscreen() {
+            const event = new Event(EVENT_MINIMIZED);
+            const iconMaximize = document.querySelector(SELECTOR_MAXIMIZE_ICON);
+            const iconMinimize = document.querySelector(SELECTOR_MINIMIZE_ICON);
+            void document.exitFullscreen();
+            if (iconMaximize) {
+                iconMaximize.style.display = 'block';
+            }
+            if (iconMinimize) {
+                iconMinimize.style.display = 'none';
+            }
+            this._element.dispatchEvent(event);
+        }
+        toggleFullScreen() {
+            if (document.fullscreenEnabled) {
+                if (document.fullscreenElement) {
+                    this.outFullscreen();
+                }
+                else {
+                    this.inFullScreen();
+                }
+            }
+        }
+    }
     /**
-     * Data API
-     * ====================================================
+     * Data Api implementation
+     * ============================================================================
      */
+    onDOMContentLoaded(() => {
+        const buttons = document.querySelectorAll(SELECTOR_FULLSCREEN_TOGGLE);
+        buttons.forEach(btn => {
+            btn.addEventListener('click', event => {
+                event.preventDefault();
+                const target = event.target;
+                const button = target.closest(SELECTOR_FULLSCREEN_TOGGLE);
+                if (button) {
+                    const data = new FullScreen(button, undefined);
+                    data.toggleFullScreen();
+                }
+            });
+        });
+    });
 
-
-    $(Selector.DROPDOWN_MENU + ' ' + Selector.DROPDOWN_TOGGLE).on("click", function (event) {
-      event.preventDefault();
-      event.stopPropagation();
-
-      Dropdown._jQueryInterface.call($(this), 'toggleSubmenu');
-    }); // $(Selector.SIDEBAR + ' a').on('focusin', () => {
-    //   $(Selector.MAIN_SIDEBAR).addClass(ClassName.SIDEBAR_FOCUSED);
-    // })
-    // $(Selector.SIDEBAR + ' a').on('focusout', () => {
-    //   $(Selector.MAIN_SIDEBAR).removeClass(ClassName.SIDEBAR_FOCUSED);
-    // })
-
-    /**
-     * jQuery API
-     * ====================================================
-     */
-
-    $.fn[NAME] = Dropdown._jQueryInterface;
-    $.fn[NAME].Constructor = Dropdown;
-
-    $.fn[NAME].noConflict = function () {
-      $.fn[NAME] = JQUERY_NO_CONFLICT;
-      return Dropdown._jQueryInterface;
-    };
-
-    return Dropdown;
-  }(jQuery);
-
-  exports.CardRefresh = CardRefresh;
-  exports.CardWidget = CardWidget;
-  exports.ControlSidebar = ControlSidebar;
-  exports.DirectChat = DirectChat;
-  exports.Dropdown = Dropdown;
-  exports.Layout = Layout;
-  exports.PushMenu = PushMenu;
-  exports.TodoList = TodoList;
-  exports.Treeview = Treeview;
-
-  Object.defineProperty(exports, '__esModule', { value: true });
+    exports.CardWidget = CardWidget;
+    exports.DirectChat = DirectChat;
+    exports.FullScreen = FullScreen;
+    exports.Layout = Layout;
+    exports.PushMenu = PushMenu;
+    exports.Treeview = Treeview;
 
 }));
 //# sourceMappingURL=adminlte.js.map

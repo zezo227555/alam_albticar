@@ -10,14 +10,14 @@
 <div class="card">
     <div class="card-header">
         @if (!isset($season->name))
-            <h3 class="card-title">كشف الطلبة لكافة الفصول الدراسية</h3>
+            <h5 class="card-title">كشف الطلبة لكافة الفصول الدراسية</h5>
         @else
-            <h3 class="card-title">كشف الطلبة للفصل الدراسي {{ $season->name }} {{ $season->created_at->format('Y') }}</h3>
+            <h5 class="card-title">كشف الطلبة للفصل الدراسي {{ $season->name }} {{ $season->created_at->format('Y') }}</h5>
         @endif
         @if (!isset($section))
-            <h3>كافة الاقسام</h3>
+            <h5 class="card-title mx-1">(كافة الاقسام)</h5>
         @else
-            <h3>{{ $section->name }}</h3>
+            <h5 class="card-title mx-1">({{ $section->name }})</h5>
         @endif
     </div>
     <!-- /.card-header -->
@@ -27,6 +27,8 @@
         <tr>
             <th>ر.م</th>
           <th>الاسم</th>
+          <th>الرقم الوطني</th>
+          <th>الجنسية</th>
           <th>رقم الهاتف</th>
           <th>القسم</th>
           <th>صفة القيد</th>
@@ -41,6 +43,8 @@
                 <tr>
                     <td>{{ $co }}</td>
                     <td>{{ $student->name }}</td>
+                    <td>{{ $student->nationla_id }}</td>
+                    <td>{{ $student->nationality }}</td>
                     <td>{{ $student->phone }}</td>
                     <td>{{ $student->section->name }}</td>
                     <td>{{ $student->attendance_type }}</td>

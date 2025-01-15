@@ -34,7 +34,7 @@
                     <td>{{ $co }}</td>
                     <td>{{ $employee->name }}</td>
                     <td>{{ $employee->type }}</td>
-                    <td>{{ $employee->section->name }}</td>
+                    <td>{{ $employee->mangement->name }}</td>
                     <td>
                         @if ($employee->treasury->isEmpty())
                             <span class="btn btn-danger">لم يتم صرف مرتب</span>

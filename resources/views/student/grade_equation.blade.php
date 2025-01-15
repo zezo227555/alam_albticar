@@ -76,20 +76,20 @@
                         @endforeach
                         @if ($found)
                             <td>
-                                <input type="number" class="form-control w-50 d-inline" name="old_semester_work[{{ $grade_id }}]" value="{{ $semester_work }}" min="0" max="40">
+                                <input type="number" class="form-control d-inline" name="old_semester_work[{{ $grade_id }}]" value="{{ $semester_work }}" min="0" max="40">
                             </td>
                             <td>
-                                <input type="number" class="form-control w-50 d-inline" name="old_final[{{ $grade_id }}]" value="{{ $final }}" min="0" max="60">
+                                <input type="number" class="form-control d-inline" name="old_final[{{ $grade_id }}]" value="{{ $final }}" min="0" max="60">
                             </td>
                             <td>
                                 {{ $semester_work + $final }}
                             </td>
                         @else
                             <td>
-                                <input type="number" class="form-control w-50 d-inline" name="semester_work[{{ $course->id }}]" min="0" max="40">
+                                <input type="number" class="form-control d-inline" name="semester_work[{{ $course->id }}]" min="0" max="40">
                             </td>
                             <td>
-                                <input type="number" class="form-control w-50 d-inline" name="final[{{ $course->id }}]" min="0" max="60">
+                                <input type="number" class="form-control d-inline" name="final[{{ $course->id }}]" min="0" max="60">
                             </td>
                             <td>0</td>
                         @endif

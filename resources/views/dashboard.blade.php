@@ -1,45 +1,24 @@
 @extends('layouts.body_structer')
 
 @section('content')
-    <div class="row px-5">
-        <div class="col-sm-12">
-            <div class="card card-widget widget-user h-100">
-                <div class="widget-user-header bg-primary">
-                    <h3 class="widget-user-username">{{ Auth::user()->name }}</h3>
-                    <h5 class="widget-user-desc">مرحبا بك</h5>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>المستخدمين</h3>
                 </div>
-                <div class="widget-user-image">
-                    <img class="img-circle elevation-2 h-100" src="{{ asset('images/high.jpg') }}" alt="Logo">
+                <div class="card-body">
+                    <canvas id="myChartDonat" class="h-75 w-75"></canvas>
                 </div>
-                <div class="card-footer h-100">
-                    <div class="row">
-                        <div class="col-sm-4 border-right">
-                            <div class="description-block">
-                                <h5 class="description-header">{{ $season->name }} {{ $season->created_at->format('Y') }}
-                                </h5>
-                                <span class="description-text">الفصل الحالي</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-4 border-right">
-                            <div class="description-block">
-                                <h5 class="description-header">{{ count($sections) }}</h5>
-                                <span class="description-text">عدد الاقسام</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-4">
-                            <div class="description-block">
-                                <h5 class="description-header">{{ count($teachers) }}</h5>
-                                <span class="description-text">عدد المدرسين</span>
-                            </div>
-                            <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!-- /.row -->
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>طلبة الاقسام</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChartBar" class="h-100 w-100"></canvas>
                 </div>
             </div>
         </div>
@@ -47,6 +26,49 @@
 @endsection
 
 @section('costome_section_scripts')
-    <script src="{{ asset('plugins/daterangepiker/daterangepicker.js') }}"></script>
-    <script src="{{ asset('plugins/daterangepiker/moment.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const ctx = document.getElementById('myChartBar');
+        const donat = document.getElementById('myChartDonat');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    @foreach ($sections as $section)
+                        '{{ $section->name }}',
+                    @endforeach
+                ],
+                datasets: [{
+                    label: 'الطلبة',
+                    data: [
+                        @foreach ($sections as $section)
+                            '{{ $section->student_count }}',
+                        @endforeach
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        new Chart(donat, {
+            type: 'doughnut',
+            data: {
+                labels: ['المدرسين', 'الموظفين', 'مستخدمو النظام', ],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [{{ $teachers }}, {{ $employee }}, {{ $users }}, ],
+                    borderWidth: 1
+                }]
+            },
+        });
+    </script>
 @endsection

@@ -75,13 +75,19 @@ class AuthController extends Controller
     }
 
     public function main(){
-        $sections = Section::all();
-        $teachers = Teacher::all();
+        $sections = Section::withCount('student')->get();
+
+        $teachers = count(Teacher::all());
+        $employee = count(Employee::all());
+        $users = count(User::all());
+
         $season = Season::where('active', '=', 1)->first();
+
         return view('dashboard', [
-            'sections' => $sections,
             'teachers' => $teachers,
-            'season' => $season,
+            'employee' => $employee,
+            'users' => $users,
+            'sections' => $sections
         ]);
     }
 

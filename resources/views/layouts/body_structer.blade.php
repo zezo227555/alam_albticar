@@ -1,44 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="rtl">
+
+<head>
+
     @include('includes.head')
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
-<div class="wrapper">
 
-  <!-- Navbar -->
-  @include('includes.navbar')
-  <!-- /.navbar -->
+</head>
 
-  <!-- Main Sidebar Container -->
-  @include('includes.sidebar')
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    @include('components.content_header')
-    <!-- /.content-header -->
+    <div class="app-wrapper">
 
-    <!-- Main content -->
-    <section class="content">
-      @yield('content')
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  @include('includes.footer')
+        @include('includes.navbar')
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+        @include('includes.sidebar')
+
+        <main class="app-main p-3">
+            @include('components.content_header')
+
+            @yield('content')
+
+        </main>
+        @include('includes.footer')
+    </div>
 
     @yield('section_modals')
 
     @include('includes.foot')
 
     @yield('costome_section_scripts')
-
 </body>
+
 </html>

@@ -60,6 +60,7 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::get('grade/old_grade_sheet', [GradeController::class, 'old_grade_sheet'])->name('grade.old_grade_sheet');
     Route::get('grade/old_grade_sheet_form', [GradeController::class, 'old_grade_sheet_form'])->name('grade.old_grade_sheet_form');
     Route::get('grade/old_grade_sheet/student/{student_id}/section/{section_id}/season/{season_id}', [GradeController::class, 'old_grade_sheet_search'])->name('grade.old_grade_sheet_search');
+    Route::get('grade/old_grade_sheet_print/{student_id}/season/{season_id}', [GradeController::class, 'old_grade_sheet_print'])->name('grade.old_grade_sheet_print');
 
     // الخزينة و تجديد القيد
     Route::get('treasury/select/season_and_section', [TreasuryController::class, 'select_season_and_section'])->name('treasury.select_season_and_section');

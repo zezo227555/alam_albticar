@@ -18,9 +18,11 @@ class GradeController extends Controller
     {
         $student = Student::find($student_id);
         $season = Season::where('active', '=', 1)->first();
-        $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
+        $grades = Grade::where('student_id', '=', $student_id)
+            ->where('season_id', '=', $season->id)
+            ->get();
 
-        return view('grade.grade', ['grades' => $grades, 'student' => $student,]);
+        return view('grade.grade', ['grades' => $grades, 'student' => $student]);
     }
 
     public function create_grade_sheet(Request $request)
@@ -30,23 +32,25 @@ class GradeController extends Controller
         $student = Student::find($request->student_id);
 
         $grades = Grade::where('student_id', '=', $request->student_id)
-        ->where('season_id', '=', $season->id)->get();
+            ->where('season_id', '=', $season->id)
+            ->get();
 
         $courses = Course::where('section_id', '=', $student->section_id)
-        ->where('semester', '=', $student->student_semester)->get();
+            ->where('semester', '=', $student->student_semester)
+            ->get();
 
-        if($grades->isNotEmpty()) {
+        if ($grades->isNotEmpty()) {
             return redirect()->back()->with('error', 'يوجد كشف مسبقا للطالب');
         }
 
-        foreach($courses as $course){
+        foreach ($courses as $course) {
             Grade::create([
                 'student_id' => $request->student_id,
                 'season_id' => $season->id,
                 'course_id' => $course->id,
                 'section_id' => $course->section->id,
                 'active' => true,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
         }
 
@@ -55,29 +59,27 @@ class GradeController extends Controller
 
     public function update_grade_sheet(Request $request)
     {
-        foreach($request->semester_work as $key => $semester_work)
-        {
+        foreach ($request->semester_work as $key => $semester_work) {
             $grade = Grade::find($key);
             $grade->update([
                 'semester_work' => $semester_work,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
             $grade->update([
                 'total' => $grade->semester_work + $grade->final,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
         }
 
-        foreach($request->final as $key => $final)
-        {
+        foreach ($request->final as $key => $final) {
             $grade = Grade::find($key);
             $grade->update([
                 'final' => $final,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
             $grade->update([
                 'total' => $grade->semester_work + $grade->final,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ]);
         }
 
@@ -89,15 +91,25 @@ class GradeController extends Controller
         $seasons = Season::orderBy('created_at', 'desc')->get();
         $sections = Section::all();
         return view('grade.old_grade_sheet_form', [
-            'seasons' => $seasons, 'sections' => $sections
+            'seasons' => $seasons,
+            'sections' => $sections,
         ]);
     }
 
     public function old_grade_sheet(Request $request)
     {
-        $students = Student::where('section_id', '=', $request->section_id)->where('graduated', '=', 0)->get();
+        $students = Student::where('section_id', '=', $request->section_id)
+            ->where('graduated', '=', 0)
+            ->get();
         $season = Season::find($request->season_id);
         return view('grade.old_grade_sheet', ['students' => $students, 'season' => $season]);
+    }
+
+    public function old_grade_sheet_print($student_id, $season_id)
+    {
+        $student = Student::find($student_id);
+        $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season_id)->orderBy('created_at', 'asc')->get();
+        return view('student.student_full_marksheet', ['grades' => $grades, 'student' => $student]);
     }
 
     public function old_grade_sheet_search($student_id, $section_id, $season_id)

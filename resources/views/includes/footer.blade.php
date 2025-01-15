@@ -1,6 +1,6 @@
-<footer class="main-footer">
-    <span>{{ Carbon\Carbon::now()->format('h:i A') }}</span>
-    <div class="float-right d-none d-sm-inline-block">
-      {{ Carbon\Carbon::now()->format('d/m/Y') }}
-    </div>
+<footer class="app-footer">
+    <div class="float-end d-none d-sm-inline">{{ Carbon\Carbon::now()->format('h:i A') }}</div>
+    <strong>
+        <a href="#" class="text-decoration-none">{{ Carbon\Carbon::now()->format('d/m/Y') }}</a>
+    </strong>
 </footer>
