@@ -53,9 +53,11 @@
         td {
             text-align: center !important;
         }
+
         label {
             margin-bottom: .4rem !important;
         }
+
         .form-group {
             margin-bottom: .8rem !important;
         }

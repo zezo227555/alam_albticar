@@ -33,10 +33,9 @@
             <img src="{{ asset('images/logo_hige.svg') }}" alt="LOGO" width="100" height="100">
         </div>
         <div class="card card-outline card-primary">
-            <div class="card-header"> <a href="#"
-                    class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"> <b>عالم</b> الابتكار</h1>
-                </a> </div>
+            <div class="card-header text-center">
+                <h1 class="mb-1">عالم الابتكار</h1>
+            </div>
             <div class="card-body login-card-body">
                 <p class="login-box-msg">سجل دخولك لتبدأ</p>
                 @if (Session::has('login_error'))
@@ -45,7 +44,7 @@
                 <form action="{{ route('loging') }}" method="post">
                     @csrf
                     @error('username')
-                        <p class="text-danger">{{ $message }}</p>
+                        <p class="text-danger rtl">{{ $message }}</p>
                     @enderror
                     <div class="input-group mb-2">
                         <div class="input-group-text">
@@ -58,7 +57,7 @@
                         </div>
                     </div>
                     @error('password')
-                        <p class="text-danger">{{ $message }}</p>
+                        <p class="text-danger rtl">{{ $message }}</p>
                     @enderror
                     <div class="input-group">
                         <div class="input-group-text">

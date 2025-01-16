@@ -114,8 +114,6 @@
     })();
 </script>
 
-<!-- jQuery -->
-<script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 {{-- data table 2 --}}
 <script src="{{ asset('plugins/data_table_exporting/jquery.js') }}"></script>
 <script src="{{ asset('plugins/data_table_exporting/data_table.js') }}"></script>
@@ -123,21 +121,21 @@
 <script src="{{ asset('plugins/data_table_exporting/data_table_buttons_html5.js') }}"></script>
 <script src="{{ asset('plugins/data_table_exporting/data_table_buttons_print.js') }}"></script>
 <script src="{{ asset('plugins/data_table_exporting/Stuk-jszip-2ceb998/dist/jszip.min.js') }}"></script>
+<script src="{{ asset('plugins/data_table_exporting/colVis.js') }}"></script>
+
 {{-- sweet alert 2 --}}
 <script src="{{ asset('plugins/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
 {{-- select 2 --}}
 <script src="{{ asset('plugins/select2/js/select2.full.min.js') }}"></script>
 
+{{-- Icons --}}
 <script src="{{ asset('dist/js/fa.all.min.js') }}"></script>
 
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
 
 <script>
     $(function() {
-        //Initialize Select2 Elements
         $('.select2').select2({
             theme: 'bootstrap4',
-            containerCssClass: 'form-control',
             language: {
                 noResults: function() {
                     return 'لا يوجد';

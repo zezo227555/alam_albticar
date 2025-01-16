@@ -15,7 +15,7 @@
                     <span class="theme-icon-active">
                         <i class="my-1"></i>
                     </span>
-                    <span class="d-lg-none ms-2" id="bd-theme-text">Toggle theme</span>
+                    <span class="d-lg-none ms-2" id="bd-theme-text">اللون</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bd-theme-text"
                     style="--bs-dropdown-min-width: 8rem;">
