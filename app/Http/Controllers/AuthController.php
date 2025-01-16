@@ -87,7 +87,8 @@ class AuthController extends Controller
             'teachers' => $teachers,
             'employee' => $employee,
             'users' => $users,
-            'sections' => $sections
+            'sections' => $sections,
+            'season' => $season,
         ]);
     }
 

@@ -2,6 +2,18 @@
 
 @section('content')
     <div class="row">
+        <div class="col-6 mb-3">
+            <div class="callout callout-info">
+                مرحبا بك <b>{{ Auth::user()->username }}</b>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="callout callout-warning mb-3">
+                <p>
+                    الفصل الدراسي الحالي <b>{{ $season->name }} {{ $season->created_at->format('Y') }}</b>
+                </p>
+            </div>
+        </div>
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-header">
@@ -64,7 +76,7 @@
             data: {
                 labels: ['المدرسين', 'الموظفين', 'مستخدمو النظام', ],
                 datasets: [{
-                    label: '# of Votes',
+                    label: 'العدد',
                     data: [{{ $teachers }}, {{ $employee }}, {{ $users }}, ],
                     borderWidth: 1
                 }]
