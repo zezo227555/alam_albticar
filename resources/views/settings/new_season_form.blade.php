@@ -19,9 +19,9 @@
             <div class="form-group">
                 <label>اختر الفصل الدراسي</label>
                 <select class="form-control" name="name">
-                  <option value="صيف">صيف {{ Carbon\Carbon::now()->format('Y') }}</option>
-                  <option value="ربيع">ربيع {{ Carbon\Carbon::now()->format('Y') }}</option>
-                  <option value="خريف">خريف {{ Carbon\Carbon::now()->format('Y') }}</option>
+                    <option value="ربيع">ربيع {{ Carbon\Carbon::now()->format('Y') }}</option>
+                    <option value="صيف">صيف {{ Carbon\Carbon::now()->format('Y') }}</option>
+                    <option value="خريف">خريف {{ Carbon\Carbon::now()->format('Y') }}</option>
                 </select>
             </div>
               <input type="submit" value="حفظ" class="btn btn-primary w-25">
