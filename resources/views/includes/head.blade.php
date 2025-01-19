@@ -3,6 +3,8 @@
     <title>عالم الابتكار</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link href="{{ asset('favicon.ico') }}" rel="icon">
+
     <link href="{{ asset('dist/css/bootstrap5.min.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('dist/css/ovelayscrollbar.css') }}">
