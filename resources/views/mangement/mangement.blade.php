@@ -5,7 +5,7 @@
 @endsection
 
 @section('content_action')
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         اضافة قسم اداري <i class="fa-solid fa-plus"></i>
     </button>
 @endsection
@@ -58,14 +58,12 @@
 @endsection
 
 @section('section_modals')
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">اضافة قسم اداري</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">اضافة قسم دراسي</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="card card-primary">
@@ -88,12 +86,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق <i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">اغلاق <i class="fa-solid fa-xmark"></i></button>
                 <button role="submit" class="btn btn-primary">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
             </form>
             </div>
         </div>
-        </div>
     </div>
+</div>
 @endsection
 
