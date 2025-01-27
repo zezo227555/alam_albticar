@@ -42,7 +42,7 @@
               <th>المادة</th>
               <th>القسم</th>
               <th>تاريخ الاضافة</th>
-              <th>اجراء</th>
+              <th>تحديد</th>
             </tr>
             </thead>
             <tbody>
@@ -54,10 +54,10 @@
                         <td>{{ $co }}</td>
                         <td>{{ $teacher_course->course->name }}</td>
                         <td>{{ $teacher_course->section->name }} ({{ $teacher_course->section->level }})</td>
-                        <td>{{ $teacher_course->created_at }}</td>
+                        <td>{{ $teacher_course->created_at->format('Y-m-d') }}</td>
                         <td>
                             <div class="form-check">
-                                <input class="form-check-input w-25 h-100" name="course_id[]" type="checkbox" value="{{ $teacher_course->id }}">
+                                <input class="form-check w-100 h-100" name="course_id[]" type="checkbox" value="{{ $teacher_course->id }}">
                             </div>
                         </td>
                     </tr>
