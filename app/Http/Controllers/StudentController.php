@@ -163,6 +163,7 @@ class StudentController extends Controller
             'nationality' => 'required',
             'section_id' => 'required',
             'attendance_type' => 'required',
+            'st_id' => 'required|unique:student,st_id',
         ]);
 
         $student->update([
@@ -172,6 +173,7 @@ class StudentController extends Controller
             'section_id' => $request->section_id,
             'attendance_type' => $request->attendance_type,
             'fees' => $request->fees,
+            'st_id' => $request->st_id,
         ]);
 
         return redirect()->back()->with('success','تم التعديل بنجاح');
