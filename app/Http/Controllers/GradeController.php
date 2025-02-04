@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 use function PHPUnit\Framework\assertNotTrue;
+use function PHPUnit\Framework\isEmpty;
 
 class GradeController extends Controller
 {
@@ -18,9 +19,7 @@ class GradeController extends Controller
     {
         $student = Student::find($student_id);
         $season = Season::where('active', '=', 1)->first();
-        $grades = Grade::where('student_id', '=', $student_id)
-            ->where('season_id', '=', $season->id)
-            ->get();
+        $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
 
         return view('grade.grade', ['grades' => $grades, 'student' => $student]);
     }
@@ -31,13 +30,9 @@ class GradeController extends Controller
 
         $student = Student::find($request->student_id);
 
-        $grades = Grade::where('student_id', '=', $request->student_id)
-            ->where('season_id', '=', $season->id)
-            ->get();
+        $grades = Grade::where('student_id', '=', $request->student_id)->where('season_id', '=', $season->id)->get();
 
-        $courses = Course::where('section_id', '=', $student->section_id)
-            ->where('semester', '=', $student->student_semester)
-            ->get();
+        $courses = Course::where('section_id', '=', $student->section_id)->where('semester', '=', $student->student_semester)->get();
 
         if ($grades->isNotEmpty()) {
             return redirect()->back()->with('error', 'يوجد كشف مسبقا للطالب');
@@ -98,9 +93,7 @@ class GradeController extends Controller
 
     public function old_grade_sheet(Request $request)
     {
-        $students = Student::where('section_id', '=', $request->section_id)
-            ->where('graduated', '=', 0)
-            ->get();
+        $students = Student::where('section_id', '=', $request->section_id)->where('graduated', '=', 0)->get();
         $season = Season::find($request->season_id);
         return view('grade.old_grade_sheet', ['students' => $students, 'season' => $season]);
     }
@@ -118,5 +111,69 @@ class GradeController extends Controller
         $season = Season::find($season_id);
         $grades = Grade::where('student_id', '=', $student_id)->where('section_id', '=', $section_id)->where('season_id', '=', $season_id)->get();
         return view('grade.grade', ['grades' => $grades, 'student' => $student, 'season' => $season]);
+    }
+
+    public function group_grade_sheet(Request $request)
+    {
+        $request->validate([
+            'section_id' => 'required',
+            'semester' => 'required',
+        ]);
+
+        $season = Season::where('active', '=', 1)->first();
+
+        $students = Student::where('student_semester', '=', $request->semester)
+            ->where('section_id', '=', $request->section_id)
+            ->with('grade', function ($query) use ($season) {
+                return $query->where('season_id', '=', $season->id);
+            })
+            ->get();
+
+        foreach ($students as $student) {
+            $check_student_isEmpty = $student->grade->isEmpty();
+            if ($check_student_isEmpty) {
+                GradeController::create_grade_sheet_group($season->id, $student->id);
+            }
+        }
+
+        $students = Student::where('student_semester', '=', $request->semester)
+            ->where('section_id', '=', $request->section_id)
+            ->with('grade', function ($query) use ($season) {
+                return $query->where('season_id', '=', $season->id);
+            })
+            ->get();
+
+        $courses = Course::where('section_id', '=', $request->section_id)->where('semester', '=', $request->semester)->get();
+
+        return view('grade.group_grade_sheet', [
+            'students' => $students,
+            'courses' => $courses,
+        ]);
+    }
+    
+    public function create_grade_sheet_group($season_id, $student_id)
+    {
+        $season = Season::find($season_id);
+
+        $student = Student::find($student_id);
+
+        $grades = Grade::where('student_id', '=', $student_id)->where('season_id', '=', $season->id)->get();
+
+        $courses = Course::where('section_id', '=', $student->section_id)->where('semester', '=', $student->student_semester)->get();
+
+        if ($grades->isNotEmpty()) {
+            return redirect()->back()->with('error', 'يوجد كشف مسبقا للطالب');
+        }
+
+        foreach ($courses as $course) {
+            Grade::create([
+                'student_id' => $student_id,
+                'season_id' => $season->id,
+                'course_id' => $course->id,
+                'section_id' => $course->section->id,
+                'active' => true,
+                'user_id' => Auth::user()->id,
+            ]);
+        }
     }
 }

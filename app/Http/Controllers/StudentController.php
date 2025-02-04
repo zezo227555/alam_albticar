@@ -157,13 +157,38 @@ class StudentController extends Controller
             ]);
         }
 
+        if($student->st_id != $request->st_id){
+            $request->validate([
+                'st_id' => 'required|unique:student,st_id',
+            ]);
+            $student->update([
+                'st_id' => $request->st_id,
+            ]);
+        }
+
+        if($student->section_id != $request->section_id){
+            $request->validate([
+                'section_id' => 'required',
+            ]);
+
+            $grades = Grade::where('student_id', '=', $student->id)
+            ->where('section_id', '=', $student->section_id)->get();
+
+            foreach ($grades as $grade) {
+                $grade->delete();
+            }
+
+            $student->update([
+                'section_id' => $request->section_id,
+            ]);
+        }
+
         $request->validate([
             'name' => 'required',
             'gender' => 'required',
             'nationality' => 'required',
-            'section_id' => 'required',
             'attendance_type' => 'required',
-            'st_id' => 'required|unique:student,st_id',
+            'fees' => 'required',
         ]);
 
         $student->update([
@@ -173,7 +198,6 @@ class StudentController extends Controller
             'section_id' => $request->section_id,
             'attendance_type' => $request->attendance_type,
             'fees' => $request->fees,
-            'st_id' => $request->st_id,
         ]);
 
         return redirect()->back()->with('success','تم التعديل بنجاح');

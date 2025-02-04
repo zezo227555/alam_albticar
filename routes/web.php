@@ -29,7 +29,7 @@ Route::get('student_dashboard', [AuthController::class,'student_main'])->name('s
 
 Route::middleware(IsUserLogedIn::class)->group(function (){
 
-    Route::get('dashboard', [AuthController::class,'main'])->name('main');
+    Route::get('', [AuthController::class,'main'])->name('main');
 
     // موارد النظام
     Route::resource('users', UserController::class);
@@ -61,6 +61,8 @@ Route::middleware(IsUserLogedIn::class)->group(function (){
     Route::get('grade/old_grade_sheet_form', [GradeController::class, 'old_grade_sheet_form'])->name('grade.old_grade_sheet_form');
     Route::get('grade/old_grade_sheet/student/{student_id}/section/{section_id}/season/{season_id}', [GradeController::class, 'old_grade_sheet_search'])->name('grade.old_grade_sheet_search');
     Route::get('grade/old_grade_sheet_print/{student_id}/season/{season_id}', [GradeController::class, 'old_grade_sheet_print'])->name('grade.old_grade_sheet_print');
+
+    Route::get('grade/group_grade_sheet', [GradeController::class, 'group_grade_sheet'])->name('grade.group_grade_sheet');
 
     // الخزينة و تجديد القيد
     Route::get('treasury/select/season_and_section', [TreasuryController::class, 'select_season_and_section'])->name('treasury.select_season_and_section');

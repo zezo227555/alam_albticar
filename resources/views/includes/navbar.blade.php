@@ -38,7 +38,7 @@
                     <li>
                         <button type="button" class="dropdown-item d-flex align-items-center"
                             data-bs-theme-value="auto" aria-pressed="true">
-                            <i class="bi bi-circle-fill-half-stroke me-2"></i>
+                            <i class="bi bi-circle-half me-2"></i>
                             تلقائي
                             <i class="bi bi-check-lg ms-auto d-none"></i>
                         </button>

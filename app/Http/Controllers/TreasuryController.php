@@ -16,7 +16,9 @@ class TreasuryController extends Controller
      */
     public function index()
     {
-        $treasury = Treasury::orderBy('created_at', 'desc')->paginate(50);
+        $treasury = Treasury::orderBy('created_at', 'desc')->with(['student' => function($query) {
+            $query->withTrashed();
+        }])->paginate(50);
         $treasury_all = Treasury::all();
         return view('treasury.treasury', ['treasury' => $treasury, 'treasury_all' => $treasury_all]);
     }

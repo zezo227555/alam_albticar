@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('plugins/data_table_exporting/data_table_style.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/data_table_exporting/data_table_buttons_style.css') }}">
+    <link href="{{ asset('plugins/datatable/main.css') }}" rel="stylesheet">
+
     {{-- select 2 --}}
     <link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
@@ -47,6 +47,7 @@
         th,
         td {
             text-align: center !important;
+            vertical-align: middle !important;
         }
 
         label {

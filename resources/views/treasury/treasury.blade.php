@@ -53,7 +53,12 @@
                                     @endif
                                 @elseif($t->type == 'تجديد قيد')
                                     @if (isset($t->student_id))
-                                        {{ $t->student->name }}
+                                        @if ($t->student->trashed())
+                                            <span class="text-danger">{{ $t->student->name }} <i
+                                                    class="bi bi-trash"></i></span>
+                                        @else
+                                            {{ $t->student->name }}
+                                        @endif
                                     @else
                                         <span class="btn btn-warning">تم حذف الطالب</span>
                                     @endif
@@ -112,7 +117,6 @@
 
 
 @section('section_modals')
-
     <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -228,12 +232,17 @@
     <script>
         $('#datatable').DataTable().destroy();
         $('#datatable').DataTable({
-            dom: '<"row mb-2"<"col-sm-6"f><"col-sm-6 text-right"B>>' +
+            dom: '<"row mb-2"<"col-sm-6"f><"col-sm-6 text-end"B>>' +
                 't' +
                 "<'row mt-2'<'col-sm-7'p>>",
-            buttons: [
-                'excel',
-                'print',
+            buttons: [{
+                    extend: 'excel',
+                    text: '<i class="bi bi-filetype-csv"></i>'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="bi bi-printer"></i>'
+                },
                 {
                     extend: 'colvis',
                     text: 'اظهار - اخفاء'
@@ -241,6 +250,7 @@
             ],
             language: {
                 search: "بحث:",
+                emptyTable: "لا توجد اي سجلات",
             },
             paging: false,
             pageLength: 50

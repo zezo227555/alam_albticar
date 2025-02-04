@@ -113,13 +113,9 @@
 </script>
 
 {{-- data table 2 --}}
-<script src="{{ asset('plugins/data_table_exporting/jquery.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/data_table.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/data_table_buttons.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/data_table_buttons_html5.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/data_table_buttons_print.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/Stuk-jszip-2ceb998/dist/jszip.min.js') }}"></script>
-<script src="{{ asset('plugins/data_table_exporting/colVis.js') }}"></script>
+<script src="{{ asset('plugins/datatable/pdfmake.js') }}"></script>
+<script src="{{ asset('plugins/datatable/vfs_fonts.js') }}"></script>
+<script src="{{ asset('plugins/datatable/main.js') }}"></script>
 
 {{-- sweet alert 2 --}}
 <script src="{{ asset('plugins/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
@@ -146,12 +142,18 @@
 
 <script>
     $('#datatable').DataTable({
-        dom: '<"row mb-2"<"col-sm-6"f><"col-sm-6 text-right"B>>' +
+        dom: '<"row mb-2"<"col-sm-6"f><"col-sm-2 text-end pt-2"l><"col-sm-4 text-end"B>>' +
             't' +
             "<'row mt-2'<'col-sm-7'p>>",
         buttons: [
-            'excel',
-            'print',
+            {
+                extend: 'excel',
+                text: '<i class="bi bi-filetype-csv"></i>'
+            },
+            {
+                extend: 'print',
+                text: '<i class="bi bi-printer"></i>'
+            },
             {
                 extend: 'colvis',
                 text: 'اظهار - اخفاء'
@@ -159,6 +161,8 @@
         ],
         language: {
             search: "بحث:",
+            emptyTable: "لا توجد اي سجلات",
+            lengthMenu: "عرض: _MENU_",
         },
         paging: true,
         pageLength: 50

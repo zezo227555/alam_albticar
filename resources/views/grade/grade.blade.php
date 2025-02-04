@@ -14,66 +14,65 @@
 @endsection
 
 @section('content')
-<form action="{{ route('grade.update_grade_sheet') }}" method="POST">
-    @csrf
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">كشف درجات الطالب <span class="btn btn-secondary">{{ $student->name }}</span></h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
-            <table class="table table-bordered table-striped text-center w-100" id="datatable">
-                <thead>
-                <tr>
-                    <th>ر.م</th>
-                  <th>المادة</th>
-                  <th>اعمال السنة</th>
-                  <th>النهائي</th>
-                  <th>النتيجة</th>
-                  <th>المجموع</th>
-                  <th>تاريخ اخر تعديل</th>
-                  <th>اخر تعديل بواسطة</th>
-                </tr>
-                </thead>
-                <tbody>
-                    @php
-                        $co = 1;
-                    @endphp
-                    @foreach ($grades as $grade)
+    <form action="{{ route('grade.update_grade_sheet') }}" method="POST">
+        @csrf
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">كشف درجات الطالب <span class="btn btn-secondary">{{ $student->name }}</span></h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table class="table table-bordered table-striped text-center w-100" id="datatable">
+                    <thead>
                         <tr>
-                            <td>{{ $co }}</td>
-                            <td>{{ $grade->course->name }}</td>
-                            <td>
-                                <input class="form-control d-inline" type="number" name="semester_work[{{ $grade->id }}]" value="{{ $grade->semester_work }}" min="0" max="40">
-                            </td>
-                            <td>
-                                <input class="form-control d-inline" type="number" name="final[{{ $grade->id }}]" value="{{ $grade->final }}" min="0" max="60">
-                            </td>
-                            <td>{{ $grade->total }}</td>
-                            <td>
-                                @if ($grade->semester_work + $grade->final >= 50)
-                                    <span class="btn btn-success">ناجح <i class="fa-solid fa-check"></i></span>
-                                @else
-                                    <span class="btn btn-danger">راسب <i class="fa-solid fa-xmark"></i></span>
-                                @endif
-                            </td>
-                            <td>{{ $grade->updated_at->format('Y/m/d') }}</td>
-                            <td>{{ $grade->user->username }}</td>
+                            <th>ر.م</th>
+                            <th>المادة</th>
+                            <th>اعمال السنة</th>
+                            <th>النهائي</th>
+                            <th>النتيجة</th>
+                            <th>المجموع</th>
+                            <th>تاريخ اخر تعديل</th>
+                            <th>اخر تعديل بواسطة</th>
                         </tr>
+                    </thead>
+                    <tbody>
                         @php
-                            $co++ ;
+                            $co = 1;
                         @endphp
-                    @endforeach
-                </tbody>
-            </table>
+                        @foreach ($grades as $grade)
+                            <tr>
+                                <td>{{ $co }}</td>
+                                <td>{{ $grade->course->name }}</td>
+                                <td>
+                                    <input class="form-control d-inline" type="number"
+                                        name="semester_work[{{ $grade->id }}]" value="{{ $grade->semester_work }}"
+                                        min="0" max="40">
+                                </td>
+                                <td>
+                                    <input class="form-control d-inline" type="number" name="final[{{ $grade->id }}]"
+                                        value="{{ $grade->final }}" min="0" max="60">
+                                </td>
+                                <td>{{ $grade->total }}</td>
+                                <td>
+                                    @if ($grade->semester_work + $grade->final >= 50)
+                                        <span class="btn btn-success">ناجح <i class="fa-solid fa-check"></i></span>
+                                    @else
+                                        <span class="btn btn-danger">راسب <i class="fa-solid fa-xmark"></i></span>
+                                    @endif
+                                </td>
+                                <td>{{ $grade->updated_at->format('Y/m/d') }}</td>
+                                <td>{{ $grade->user->username }}</td>
+                            </tr>
+                            @php
+                                $co++;
+                            @endphp
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <button role="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
+            </div>
         </div>
-        <div class="card-footer">
-            <button role="submit" class="btn btn-primary w-25">حفظ <i class="fa-solid fa-floppy-disk"></i></button>
-        </div>
-    </div>
-</form>
+    </form>
 @endsection
-
-
-
-
