@@ -29,7 +29,7 @@ Route::get('student_dashboard', [AuthController::class,'student_main'])->name('s
 
 Route::middleware(IsUserLogedIn::class)->group(function (){
 
-    Route::get('', [AuthController::class,'main'])->name('main');
+    Route::get('dashboard', [AuthController::class,'main'])->name('main');
 
     // موارد النظام
     Route::resource('users', UserController::class);
