@@ -99,7 +99,7 @@
                             @if (auth()->user()->student_marksheet_create == 1)
                                 <li class="nav-item">
                                     <a href="{{ route('grade.old_grade_sheet_form') }}"
-                                        class="nav-link {{ request()->is('grade/old_grade_sheet_form') || request()->is('grade/old_grade_sheet*') ? 'active' : '' }}">
+                                        class="nav-link {{ request()->is('grade/old_grade_sheet_form') || request()->is('grade/old_grade_sheet*') ? 'active' : '' }} {{ request()->is('grade/group_grade_sheet*') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>كشف درجات الطلبة</p>
                                     </a>
