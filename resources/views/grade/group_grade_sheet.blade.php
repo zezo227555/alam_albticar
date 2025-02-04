@@ -18,10 +18,10 @@
                 <table class="table table-bordered table-striped text-center" id="datatable" data-page-length='25'>
                     <thead>
                         <tr>
-                            <th width="150">الاسم</th>
-                            <th width="150">رقم القيد</th>
+                            <th>الاسم</th>
+                            <th>رقم القيد</th>
                             @foreach ($courses as $course)
-                                <th style="width: 20rem;">{{ $course->name }}</th>
+                                <th>{{ $course->name }}</th>
                             @endforeach
                         </tr>
                     </thead>
