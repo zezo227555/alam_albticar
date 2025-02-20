@@ -1,44 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="rtl">
+
+<head>
+
     @include('includes.head')
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
 
-  <!-- Navbar -->
-  @include('includes.student_navbar')
-  <!-- /.navbar -->
+    <style>
+        .accordion-button::after {
+            margin-left: 0;
+        }
+    </style>
 
-  <!-- Main Sidebar Container -->
-  @include('includes.student_sidebar')
+</head>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    @include('components.content_header')
-    <!-- /.content-header -->
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
 
-    <!-- Main content -->
-    <section class="content">
-      @yield('content')
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
-  @include('includes.footer')
+    <div class="app-wrapper">
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
+        @include('includes.student_navbar')
+
+        @include('includes.student_sidebar')
+
+        <main class="app-main p-3">
+            @include('components.content_header')
+
+            @yield('content')
+
+        </main>
+        @include('includes.footer')
+    </div>
 
     @yield('section_modals')
 
     @include('includes.foot')
 
     @yield('costome_section_scripts')
-
 </body>
+
 </html>

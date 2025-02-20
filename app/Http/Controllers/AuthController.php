@@ -93,6 +93,7 @@ class AuthController extends Controller
     }
 
     public function student_main(){
+        $student = Student::find(session('student'));
         return view('student_dashboard');
     }
 
