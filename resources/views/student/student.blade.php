@@ -24,6 +24,7 @@
           <th>رقم القيد</th>
           <th>الاسم</th>
           <th>رقم الهاتف</th>
+          <th>رقم ولي الامر</th>
           <th>الفصل الدراسي</th>
           <th>صفة القيد</th>
           <th>اجراء</th>
@@ -39,6 +40,7 @@
                     <td>{{ $student->st_id }}</td>
                     <td>{{ $student->name }}</td>
                     <td>{{ $student->phone }}</td>
+                    <td>{{ $student->perant_phone }}</td>
                     <td>الفصل {{ $student->student_semester }}</td>
                     <td>{{ $student->attendance_type }}</td>
                     <td>
